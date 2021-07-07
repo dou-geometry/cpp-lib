@@ -1,6 +1,5 @@
 #ifndef __CAR_LINEAR_HPP__
 #define __CAR_LINEAR_HPP__
-#include <initializer_list>
 
 template<typename T>
 struct coord {
@@ -111,7 +110,6 @@ struct coord {
         return ans;
     }
     coord<T>& operator+=(const coord<T> &r) {
-        for(int i=0; i<(r.dim<this->dim?r.dim:this->dim); i++) {
         if(r.dim>this->dim) {
             throw "Addition's rhs has larger Dimension than lhs.";
         }
