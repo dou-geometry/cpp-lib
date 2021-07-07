@@ -1,0 +1,17 @@
+# Build image:
+# docker build -t doumu-cpp17-env -o out/ . > buildLog
+#
+# Create container:
+# docker run --name dmcpp17 -it doumu-cpp17-env bash
+FROM archlinux
+
+RUN rm /etc/pacman.d/mirrorlist
+RUN echo "# Mirrorlist chosen for Eastern-Asia region" > /etc/pacman.d/mirrorlist
+RUN echo "Server = https://ftp.jaist.ac.jp/pub/Linux/ArchLinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
+RUN echo "Server = http://archlinux.ccns.ncku.edu.tw/archlinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
+RUN echo "Server = https://shadow.ind.ntou.edu.tw/archlinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
+RUN pacman -Syyu --noconfirm
+# Install Dev Env
+RUN pacman -S --needed git gcc --noconfirm
+# Add editor
+RUN pacman -S vim --noconfirm
