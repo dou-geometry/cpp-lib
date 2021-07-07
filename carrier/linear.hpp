@@ -67,7 +67,7 @@ struct coord {
         }
         return (res);
     }
-    coord<T> unit() {
+    coord<T> unit() const {
         return (*this)/(this->norm());
     }
     coord<long long int> round() const {
@@ -82,7 +82,7 @@ struct coord {
         for(di i=0; i<crd.dim; i++) crd[i]=floor((double)d[i]+0.5);
         return crd;
     }
-    coord<double> round(int digits) const {
+    coord<double> round(int digits=0) const {
         coord<double> crd(dim, 0);
         double r=pow(10, digits);
         for(di i=0; i<dim; i++) {
@@ -90,7 +90,7 @@ struct coord {
         }
         return crd;
     }
-    coord<T> abs() {
+    coord<T> abs() const {
         coord<T> res(this->dim);
         for(di i=0; i<this->dim; i++) { res[i]=fabs(this->d[i]); }
         return res;
