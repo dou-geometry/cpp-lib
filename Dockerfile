@@ -28,6 +28,7 @@ WORKDIR /home/user/ncurses5-compat-libs/
 RUN gpg --keyserver pgp.mit.edu --recv-keys C52048C0C0748FEE227D47A2702353E0F7E48EDB
 RUN makepkg -si --noconfirm
 USER root
+ENV PATH=$PATH:/opt/cuda/bin/
 WORKDIR /
 # Add editor
 RUN pacman -S vim --noconfirm
