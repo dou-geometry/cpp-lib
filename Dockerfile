@@ -11,8 +11,7 @@ RUN echo "Server = https://ftp.jaist.ac.jp/pub/Linux/ArchLinux/\$repo/os/\$arch"
 RUN echo "Server = http://archlinux.ccns.ncku.edu.tw/archlinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
 RUN echo "Server = https://shadow.ind.ntou.edu.tw/archlinux/\$repo/os/\$arch" >> /etc/pacman.d/mirrorlist
 RUN pacman -Syyu --noconfirm
+# Install Dev Env
 RUN pacman -S --needed git gcc --noconfirm
-#Add editor
+# Add editor
 RUN pacman -S vim --noconfirm
-# launch bash by default?
-RUN bash
