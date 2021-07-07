@@ -34,3 +34,6 @@
 # Docker output
 out/*
 buildLog
+
+# Testing files
+test*
