@@ -6,4 +6,4 @@ This branch `main` is aimed for developing a library specific for GNU++20.
   - [Structure](./structure)
   - [Carrier](./carrier)
     - [Linear Algebra](./carrier/linear)
-      - [coord<T>](./carrier/linear/coord)
+      - [coord](./carrier/linear/coord)
