@@ -164,9 +164,9 @@ struct coord {
             cin >> d[i];
         }
     }
-    static void input(coord<T> &ptr) {
+    static void input(coord<T> &x) {
         cout << "Please enter coordinate with each parameter seperated by space: ";
-        (ptr).input();
+        x.input();
     }
     operator T() const {
         T res=1;

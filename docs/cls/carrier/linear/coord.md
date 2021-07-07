@@ -21,10 +21,30 @@ coord(coord<T> &&other) noexcept
 
 # Operator
 
-## `=`
+## `operator=`
 ```cpp
 coord& operator=(const coord<T> &other)
 coord& operator=(coord<T> &&other) noexcept
+```
+
+## Arithmetic
+```cpp
+coord<T>& operator-=(const coord<T> &r)
+coord<T>& operator*=(const T &r)
+coord<T>& operator/=(const T &r)
+coord<T>& operator*=(const coord<T> &rhs)
+```
+```cpp
+friend coord<T> operator+(coord<T> lhs, const coord<T> &r)
+friend coord<T> operator-(coord<T> lhs, const coord<T> &r)
+friend coord<T> operator*(coord<T> lhs, const T &r)
+friend coord<T> operator/(coord<T> lhs, const T &r)
+```
+
+## `operator[]`
+```cpp
+T& operator[](int i)
+T operator[](int i) const
 ```
 
 # Functions
@@ -38,4 +58,11 @@ coord<double> round(int digits=0) const
 coord<T> abs() const
 coord<ull> unsign() const
 T dot(coord<T> &r) const
+```
+# I/O
+```cpp
+friend ostream& operator<<(ostream& os, const coord<T> &crd)
+void print(int precision=15)
+void input()
+static void input(coord<T> &x)
 ```
