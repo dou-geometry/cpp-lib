@@ -10,10 +10,10 @@
 
 using namespace std;
 
-#include"structure/chain.hpp"
-#include"carrier/linear.hpp"
-#include"structure/field.hpp"
-#include"structure/line.hpp"
+#include"cls/structure/chain.hpp"
+#include"cls/carrier/linear.hpp"
+#include"cls/structure/field.hpp"
+#include"cls/structure/line.hpp"
 
 
 template<typename G> struct mono{};
