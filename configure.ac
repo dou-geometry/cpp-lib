@@ -22,5 +22,11 @@ AC_FUNC_MALLOC
 AC_CHECK_FUNCS([floor pow sqrt])
 
 AC_CONFIG_FILES([Makefile
+                 include/Makefile
+                 include/cls/Makefile
+                 include/conn/Makefile
+                 include/func/Makefile
+                 lib/Makefile
+                 lib/conn/Makefile
                  src/Makefile])
 AC_OUTPUT
