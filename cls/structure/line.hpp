@@ -1,5 +1,6 @@
 #ifndef __STRUCT_LINE__
 #define __STRUCT_LINE__
+namespace d {
 
 template<typename L>
 struct line {
@@ -16,4 +17,5 @@ struct line {
     }
 };
 
+}
 #endif

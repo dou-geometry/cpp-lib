@@ -1,5 +1,6 @@
 #ifndef __STRUCT_FIELD_HPP__
 #define __STRUCT_FIELD_HPP__
+namespace d{
 
 #include"line.hpp"
 
@@ -157,4 +158,5 @@ struct field {
     }
 };
 
+}
 #endif

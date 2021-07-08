@@ -1,5 +1,6 @@
 #ifndef __CAR_LINEAR_HPP__
 #define __CAR_LINEAR_HPP__
+namespace d{
 
 template<typename T>
 struct coord {
@@ -324,4 +325,5 @@ struct matrix {
     }
 };
 
+}
 #endif

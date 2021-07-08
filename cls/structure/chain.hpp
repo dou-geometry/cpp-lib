@@ -1,5 +1,6 @@
 #ifndef __STRUCT_CHAIN_HPP
 #define __STRUCT_CHAIN_HPP
+namespace d{
 
 template<typename C> //Carrier type
 struct Karabinerhaken {
@@ -30,4 +31,5 @@ struct Karabinerhaken {
     }
 };
 
+}
 #endif

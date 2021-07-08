@@ -1,5 +1,6 @@
 #ifndef __CLS_STRUCT_COV__
 #define __CLS_STRUCT_COV__
+namespace d {
 
 #include"./field.hpp"
 
@@ -95,4 +96,5 @@ struct cov:field<bool> {
     }
 };
 
+}
 #endif
