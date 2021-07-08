@@ -1,5 +1,4 @@
 # Data Structure
-
 ```cpp
 template<typename T>
 struct coord {
