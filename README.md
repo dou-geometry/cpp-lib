@@ -19,3 +19,4 @@ This project is mainly to maintain a general-physics-oriented C++ library. Follo
 - [x] Linear Algebra
 - [ ] Dynamic Systems
 - [ ] Numerical Integration
+- [ ] boxCounting
