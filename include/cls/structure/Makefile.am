@@ -1,2 +1,1 @@
-bin_PROGRAMS = main
-main_SOURCES = chain.hpp line.hpp field.hpp cov.hpp
+include_HEADERS = chain.hpp line.hpp field.hpp cov.hpp

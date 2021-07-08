@@ -1,2 +1,1 @@
-bin_PROGRAMS = main
-main_SOURCES = settings.hpp plot.hpp
+include_HEADERS = settings.hpp plot.hpp

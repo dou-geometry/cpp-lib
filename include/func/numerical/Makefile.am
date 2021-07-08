@@ -1,2 +1,1 @@
-bin_PROGRAMS = main
-main_SOURCES = integration.hpp
+include_HEADERS = integration.hpp
