@@ -8,7 +8,7 @@ def readFromStdin():
     pts=[]
     for line in sys.stdin:
         line=line.rstrip()
-        pts.append(sage_eval("vector("+line+")"))
+        pts.append(sage_eval('vector('+line+')'))
     return pts
 
 def plotPts(l, connect=False):
@@ -18,9 +18,9 @@ def plotPts(l, connect=False):
         else: gph+=point(l[i])
     return gph
 
-def savePlot(G, view=False, p="./graph/"):
+def savePlot(G, view=False, p='./graph/'):
     import time
-    fnN=p+time.strftime("%Y.%m.%d-%H:%M:%S")+'.png'
+    fnN=p+time.strftime('%Y.%m.%d-%H:%M:%S')+'.png'
     save(G,fnN,dpi=1225,axes=False,aspect_ratio=1)
     if view: os.system('gwenview '+fnN+' &')
 

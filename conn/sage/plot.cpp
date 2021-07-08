@@ -1,13 +1,8 @@
-#ifndef __CONN_SAGE_PLOT__
-#define __CONN_SAGE_PLOT__
-
-#include"../../cls.hpp"
 #include"./settings.hpp"
+#include"../../cls.hpp"
 #include"../bash/stdout.hpp"
-//namespace d { namespace conn { namespace sage {
-namespace d::conn::sage {
 
-    void plot(d::conn::sage::settings::files info) {
+    void d::conn::sage::plotx(conn::sage::settings::files info) {
         info.scriptf<<"#!/usr/bin/env sage\n";
         info.scriptf<<"import sys\n";
         info.scriptf<<"from sage.all import *\n";
@@ -33,13 +28,5 @@ namespace d::conn::sage {
         info.scriptf<<"main()\n";
         std::string ttttt;
         cin>>ttttt;
+        return;
     }
-    template<typename D> void plot(field<D>& f, settings::files info) {
-    }
-    template<typename D> void point(Karabinerhaken<coord<D>>& pts, settings::files info) {
-    }
-    template<typename D> void line(Karabinerhaken<coord<D>>& pts, settings::files info) {}
-
-
-}}}
-#endif
