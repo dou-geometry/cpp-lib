@@ -1,2 +1,2 @@
-bin_PROGRAMS = main
-main_SOURCES = stdout.cpp
+noinst_PROGRAMS = iofunc
+iofunc_SOURCES = stdout.cpp

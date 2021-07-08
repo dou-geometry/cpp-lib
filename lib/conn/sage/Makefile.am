@@ -1,2 +1,2 @@
-bin_PROGRAMS = main
-main_SOURCES = plot.cpp
+noinst_PROGRAMS = plot
+plot_SOURCES = plot.cpp
