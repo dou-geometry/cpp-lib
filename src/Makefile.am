@@ -1,2 +1,2 @@
 bin_PROGRAMS = main
-main_SOURCES = main.cpp
+main_SOURCES = ../include/**/*.hpp ../lib/**/*.cpp main.cpp
