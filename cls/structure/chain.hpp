@@ -25,6 +25,9 @@ struct Karabinerhaken {
         (*mae).tugi=this;
         return;
     }
+    void insert(Karabinerhaken* mae) {
+	    return this->insertAfter(mae);
+    }
     void insert(Karabinerhaken* ptr1, Karabinerhaken* ptr2) {
         if((*ptr2).tugi==ptr1) return (*this).insertAfter(ptr2);
         return (*this).insertAfter(ptr2);
