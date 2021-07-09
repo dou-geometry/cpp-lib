@@ -8,6 +8,10 @@ AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
+AC_LANG([C++])
+AX_CHECK_COMPILE_FLAG([-std=c++20], [
+		       CXXFLAGS="$CXXFLAGS -std=c++20"])
+AM_CXXFLAGS=-std=c++20
 AC_PROG_CXX
 
 # Checks for libraries.
