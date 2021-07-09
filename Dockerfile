@@ -13,5 +13,6 @@ RUN echo "Server = https://shadow.ind.ntou.edu.tw/archlinux/\$repo/os/\$arch" >>
 RUN pacman -Syyu --noconfirm
 # Install Dev Env
 RUN pacman -S --needed base-devel git gcc --noconfirm
+RUN pacman -S --needed autoconf-archive --noconfirm
 # Add editor
 RUN pacman -S vim --noconfirm
