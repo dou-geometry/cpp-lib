@@ -7,6 +7,8 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 
+AC_CONFIG_MACRO_DIRS([m4])
+
 # Checks for programs.
 AC_LANG([C++])
 AX_CHECK_COMPILE_FLAG([-std=c++20], [
