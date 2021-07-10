@@ -1,8 +1,12 @@
-#ifndef __CONN_BASH_O__
-#define __CONN_BASH_O__
-namespace d { namespace conn { namespace bash {
+#include"../../../include/conn/bash/stdout.hpp"
+#include <cstdio>
+#include <iostream>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <array>
 
-std::string exec(const char* cmd) {
+std::string d::conn::bash::exec(const char* cmd) {
     std::array<char, 128> buffer;
     std::string result;
     std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
@@ -15,6 +19,3 @@ std::string exec(const char* cmd) {
     return result;
 }
 // https://stackoverflow.com/a/478960/8460574
-
-}}}
-#endif
