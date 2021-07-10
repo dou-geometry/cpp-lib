@@ -30,9 +30,17 @@ AC_CHECK_FUNCS([floor pow sqrt])
 AC_CONFIG_FILES([Makefile
                  include/Makefile
                  include/cls/Makefile
+                 include/cls/carrier/Makefile
+                 include/cls/structure/Makefile
                  include/conn/Makefile
+                 include/conn/bash/Makefile
+                 include/conn/sage/Makefile
                  include/func/Makefile
+                 include/func/boxCounting/Makefile
+                 include/func/numerical/Makefile
                  lib/Makefile
                  lib/conn/Makefile
+                 lib/conn/bash/Makefile
+                 lib/conn/sage/Makefile
                  src/Makefile])
 AC_OUTPUT

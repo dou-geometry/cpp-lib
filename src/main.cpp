@@ -1,7 +1,9 @@
-#include"../include/cls.hpp"
+#include"../include/conn/bash/stdout.hpp"
+#include<string>
+#include<iostream>
 
 int main() {
-	d::coord<double> x({1, 2, 2, 4});
-	std::cout << x << std::endl;
+	std::string  o=d::conn::bash::exec("ls");
+	std::cout << o << std::endl;
 	return 0;
 }
