@@ -1,4 +1,4 @@
-#include"../../../../include/conn/sage/plot.hpp"
+#include"../../../include/conn/sage/plot.hpp"
 
 void d::conn::sage::plot(d::conn::sage::settings::files info) {
     info.scriptf<<"#!/usr/bin/env sage\n";
