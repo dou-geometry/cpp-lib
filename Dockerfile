@@ -15,3 +15,4 @@ RUN pacman -Syyu --noconfirm
 RUN pacman -S --needed git gcc --noconfirm
 # Add editor
 RUN pacman -S vim --noconfirm
+RUN ln -s /bin/vim /bin/vi
