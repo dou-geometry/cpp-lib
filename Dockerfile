@@ -14,6 +14,7 @@ RUN pacman -Syyu --noconfirm
 # Install Dev Env
 RUN pacman -S --needed base-devel git gcc --noconfirm
 RUN pacman -S --needed autoconf-archive --noconfirm
+RUN pacman -S --needed sagemath --noconfirm
 # Add editor
 RUN pacman -S vim --noconfirm
 RUN ln -s /bin/vim /bin/vi
