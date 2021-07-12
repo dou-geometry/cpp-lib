@@ -1,5 +1,5 @@
 # Build image:
-# docker build -t doumu-cpp-env -o out/ . > buildLog
+# docker build --no-cache -t doumu-cpp-env -o out/ . > buildLog
 #
 # Create container:
 # docker run --name dmcpp -it doumu-cpp-env bash
