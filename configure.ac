@@ -11,9 +11,9 @@ AC_CONFIG_MACRO_DIRS([m4])
 
 # Checks for programs.
 AC_LANG([C++])
-AX_CHECK_COMPILE_FLAG([-std=c++20], [
-		       CXXFLAGS="$CXXFLAGS -std=c++20"])
-AM_CXXFLAGS=-std=c++20
+AX_CHECK_COMPILE_FLAG([-std=gnu++20], [
+		       CXXFLAGS="$CXXFLAGS -std=gnu++20"])
+AM_CXXFLAGS=-std=gnu++20
 AC_PROG_CXX
 AC_PROG_RANLIB
 AM_PROG_AR
