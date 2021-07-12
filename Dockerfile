@@ -17,3 +17,5 @@ RUN pacman -S --needed autoconf-archive --noconfirm
 # Add editor
 RUN pacman -S vim --noconfirm
 RUN ln -s /bin/vim /bin/vi
+# Enable globstar
+RUN shopt -s globstar
