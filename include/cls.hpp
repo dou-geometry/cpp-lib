@@ -14,6 +14,7 @@ using namespace std;
 #include"cls/carrier/linear.hpp"
 #include"cls/structure/field.hpp"
 #include"cls/structure/line.hpp"
+#include"cls/structure/cov.hpp"
 
 
 template<typename G> struct mono{};
