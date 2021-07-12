@@ -3,11 +3,7 @@
 
 AC_PREREQ([2.71])
 AC_INIT([Dou-geometry-Cpp-Library], [0], [fudepia@outlook.jp])
-<<<<<<< Updated upstream
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
-=======
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
->>>>>>> Stashed changes
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 
@@ -19,11 +15,8 @@ AX_CHECK_COMPILE_FLAG([-std=c++20], [
 		       CXXFLAGS="$CXXFLAGS -std=c++20"])
 AM_CXXFLAGS=-std=c++20
 AC_PROG_CXX
-<<<<<<< Updated upstream
-=======
 AC_PROG_RANLIB
 AM_PROG_AR
->>>>>>> Stashed changes
 
 # Checks for libraries.
 
