@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.71])
-AC_INIT([Dou-geometry-Cpp-Library], [0], [fudepia@outlook.jp])
+AC_INIT([Dou-geometry-Cpp-Library], [v0-alpha], [fudepia@outlook.jp])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
