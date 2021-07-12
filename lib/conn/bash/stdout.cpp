@@ -19,3 +19,7 @@ std::string d::conn::bash::exec(const char* cmd) {
     return result;
 }
 // https://stackoverflow.com/a/478960/8460574
+
+std::string d::conn::bash::exec(std::string s) {
+    return d::conn::bash::exec(s.c_str());
+}
