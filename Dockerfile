@@ -32,3 +32,4 @@ ENV PATH=$PATH:/opt/cuda/bin/
 WORKDIR /
 # Add editor
 RUN pacman -S vim --noconfirm
+RUN ln -s /bin/vim /bin/vi
