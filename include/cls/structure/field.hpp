@@ -130,8 +130,13 @@ struct field {
         coord<ll> x(i);
         do {
             i--;
-            ll b=pow(sL[i], i);
-            x[i]=id/b;
+            di j=i;
+            ll b=1;
+            while(j!=0) {
+                j--;
+                b*=sL[j];
+            }
+            x[i]=floor(id/b);
             id-=x[i]*b;
         } while(i!=0);
         x+=(*baseCrd);
