@@ -3,6 +3,7 @@
 namespace d {
 
 #include"./field.hpp"
+#include"./line.hpp"
 
 struct cov:field<bool> {
     di resolution=1;
@@ -10,7 +11,7 @@ struct cov:field<bool> {
     cov(const coord<long long int> sz, di r=1):cov(sz*-1LL, sz, r){}
     template<typename C>cov(const coord<C> sz, di r=1):cov(sz.round(), r){}
     template<typename C>cov(const coord<C> bl, const coord<C> tr, di r=1):cov(bl.round(), tr.round(), r) {}
-    template<typename C>ull calc(line<C> l) {
+    template<typename C>ull calc(d::line<C> l) {
         if(l.s.dim!=2) throw"This function isn't compatible with dimension!=2";
         ull res=0;
         coord<coord<ll>> genDir(l.s.dim, coord<ll>(l.s.dim, (ll)0));
@@ -85,7 +86,7 @@ struct cov:field<bool> {
         return *this;
     }
     friend ostream& operator<<(ostream& os, const cov &f) {
-        cout << (*(f.baseCrd)) << "=>" << f.IDzuCoord(f.border) <<endl;
+        os << (*(f.baseCrd)) << "=>" << f.IDzuCoord(f.border) <<endl;
         for(ll i=(*(f.baseCrd))[0]; i<((*(f.baseCrd))[0]+(ll)(f.sL[0])); i++) {
             for(ll j=(*(f.baseCrd))[1]; j<((*(f.baseCrd))[1]+(ll)(f.sL[1])); j++) {
                 os << f[coord<ll>({i, j})];
