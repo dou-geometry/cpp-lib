@@ -1,4 +1,6 @@
 AUTOMAKE_OPTIONS = subdir-objects foreign
 bin_PROGRAMS = main
-include_HEADERS = -I../include/**/*.hpp 
-main_SOURCES = ../lib/**/*.cpp main.cpp
+main_SOURCES = main.cpp
+main_LDADD = \
+	     ../lib/conn/bash/libbashstdout.a \
+	     ../lib/conn/sage/libsageplot.a

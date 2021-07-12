@@ -1,6 +1,7 @@
 #include"../../../include/conn/sage/plot.hpp"
 
-void d::conn::sage::plot(d::conn::sage::settings::files info) {
+namespace d::conn::sage {
+void plot(conn::sage::settings::files& info) {
     info.scriptf<<"#!/usr/bin/env sage\n";
     info.scriptf<<"import sys\n";
     info.scriptf<<"from sage.all import *\n";
@@ -26,4 +27,5 @@ void d::conn::sage::plot(d::conn::sage::settings::files info) {
     info.scriptf<<"main()\n";
     std::string ttttt;
     cin>>ttttt;
+}
 }

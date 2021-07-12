@@ -26,10 +26,10 @@ struct files {
         this->dataf.open(this->data);
         return;
     }
-    files(const files &other) {}
-    files(files &&other) noexcept {}
-    files& operator=(const files &other) {}
-    files& operator=(files &&other) noexcept {}
+    files(const files &other) =delete;
+    files(files &&other) noexcept =delete;
+    files& operator=(const files &other) =delete;
+    files& operator=(files &&other) noexcept =delete;
     ~files() {
         if(rmScript) conn::bash::exec(("rm "+this->script).c_str());
         if(rmData) conn::bash::exec(("rm "+this->data).c_str());
