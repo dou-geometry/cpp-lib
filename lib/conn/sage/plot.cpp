@@ -1,30 +1,37 @@
-#include"../../../include/conn/sage/settings.hpp"
+#include"../../../include/cls.hpp"
+#include"../../../include/conn/sage/plot.hpp"
 #include<bits/stdc++.h>
 
-namespace d::conn::sage {
-    void plot(conn::sage::settings::files& info) {
-        info.scriptf<<"#!/usr/bin/env sage\n";
-        info.scriptf<<"import sys\n";
-        info.scriptf<<"from sage.all import *\n";
-        info.scriptf<<"def readFromStdin():\n";
-        info.scriptf<<"    pts=[]\n";
-        info.scriptf<<"    for line in sys.stdin:\n";
-        info.scriptf<<"        line=line.rstrip()\n";
-        info.scriptf<<"        pts.append(sage_eval('vector('+line+')'))\n";
-        info.scriptf<<"    return pts\n";
-        info.scriptf<<"def plotPts(l, connect=False):\n";
-        info.scriptf<<"    gph=Graphics()\n";
-        info.scriptf<<"    for i in range(len(l)-(1 if connect else 0)):\n";
-        info.scriptf<<"        if connect: gph+=line([l[i], l[i+1]])\n";
-        info.scriptf<<"        else: gph+=point(l[i])\n";
-        info.scriptf<<"    return gph\n";
-        info.scriptf<<"def savePlot(G, view=False, p='./graph/'):\n";
-        info.scriptf<<"    import time\n";
-        info.scriptf<<"    fnN=p+time.strftime('%Y.%m.%d-%H:%M:%S')+'.png'\n";
-        info.scriptf<<"    save(G,fnN,dpi=1225,axes=False,aspect_ratio=1)\n";
-        info.scriptf<<"    if view: os.system('gwenview '+fnN+' &')\n";
-        info.scriptf<<"def main():\n";
-        info.scriptf<<"    savePlot(plotPts(readFromStdin(), True), True)\n";
-        info.scriptf<<"main()\n";
-    }
+void d::conn::sage::plot(cov& f, conn::sage::settings::files& info) {
+info.scriptf<<"#!/usr/bin/env sage\n";
+info.scriptf<<"import sys\n";
+info.scriptf<<"from sage.all import *\n";
+info.scriptf<<"def colorTile(v):\n";
+info.scriptf<<"    return polygon([v+d for d in [vector(x) for x in [(-0.5, -0.5),(-0.5, 0.5),(0.5,0.5),(0.5, -0.5)]]],alpha=0.5)\n";
+info.scriptf<<"def main():\n";
+info.scriptf<<"    ln=-2\n";
+info.scriptf<<"    rn=[]\n";
+info.scriptf<<"    Gph=Graphics()\n";
+info.scriptf<<"    for line in sys.stdin:\n";
+info.scriptf<<"        line=line.rstrip()\n";
+info.scriptf<<"        ln+=1\n";
+info.scriptf<<"        if(ln==-1): \n";
+info.scriptf<<"            rn=line.split(\"=>\")\n";
+info.scriptf<<"            rn=[\"vector(\"+x+\")\" for x in rn]\n";
+info.scriptf<<"            rn=[sage_eval(x) for x in rn]\n";
+info.scriptf<<"            continue\n";
+info.scriptf<<"        i=0\n";
+info.scriptf<<"        for b in line:\n";
+info.scriptf<<"            if(int(b)==1):\n";
+info.scriptf<<"                Gph+=colorTile(rn[0]+vector((ln, i)))\n";
+info.scriptf<<"            i+=1\n";
+info.scriptf<<"    import time\n";
+info.scriptf<<"    fnN=sys.argv[1]\n";
+info.scriptf<<"    Gph.save(fnN,dpi=1224, xmin=rn[0][0], xmax=rn[1][0], ymin=rn[0][1], ymax=rn[1][1], aspect_ratio=1)\n";
+info.scriptf<<"main()\n";
+    info.dataf<<f;
+    info.dataf.close();
+    info.scriptf.close();
+    conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
+    return;
 }
