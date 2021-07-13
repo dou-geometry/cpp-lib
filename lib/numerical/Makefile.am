@@ -1,2 +1,2 @@
 noinst_LIBRARIES = libnumintegration.a
-libsageplot_a_SOURCES = integration.cpp
+libnumintegration_a_SOURCES = integration.cpp
