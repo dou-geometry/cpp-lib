@@ -101,3 +101,12 @@ stamp-h1
 config.h.in~
 lib/numerical/.deps/integration.Po
 lib/numerical/.deps/integration.Tpo
+autoscan.log
+bin/.dirstamp
+bin/CMF
+bin/JROFI
+configure~
+src/CMF/.deps/.dirstamp
+src/CMF/.dirstamp
+src/JROFI/.dirstamp
+src/JROFI/.deps/.dirstamp
