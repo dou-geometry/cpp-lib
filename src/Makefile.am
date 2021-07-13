@@ -1,10 +1,8 @@
 AUTOMAKE_OPTIONS = subdir-objects foreign
-bin_PROGRAMS = $(top_builddir)/bin/test
+bin_PROGRAMS = $(top_builddir)/bin/test $(top_builddir)/bin/JROFI $(top_builddir)/bin/CMF
 __top_builddir__bin_main_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a
 __top_builddir__bin_main_SOURCES = main.cpp
-bin_PROGRAMS = $(top_builddir)/bin/JROFI
 __top_builddir__bin_JROFI_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a
 __top_builddir__bin_JROFI_SOURCES = JROFI/main.cpp
-bin_PROGRAMS = $(top_builddir)/bin/CMF
 __top_builddir__bin_CMF_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a
 __top_builddir__bin_CMF_SOURCES = CMF/main.cpp
