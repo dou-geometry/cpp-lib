@@ -10,11 +10,11 @@
 
 using namespace std;
 
-#include"cls/structure/chain.hpp"
-#include"cls/carrier/linear.hpp"
-#include"cls/structure/field.hpp"
-#include"cls/structure/line.hpp"
-#include"cls/structure/cov.hpp"
+#include"cls/Karabinerhaken.hpp"
+#include"cls/linear.hpp"
+#include"cls/field.hpp"
+#include"cls/line.hpp"
+#include"cls/cov.hpp"
 
 
 template<typename G> struct mono{};
