@@ -1,1 +1,1 @@
-SUBDIRS = cls func conn
+SUBDIRS = cls conn numerical boxCounting
