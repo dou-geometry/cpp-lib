@@ -1,5 +1,5 @@
-#ifndef __STRUCT_CHAIN_HPP
-#define __STRUCT_CHAIN_HPP
+#ifndef __STRUCT_KARABINERHAKEN_HPP
+#define __STRUCT_KARABINERHAKEN_HPP
 namespace d{
 
 template<typename C> //Carrier type
