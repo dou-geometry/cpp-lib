@@ -3,7 +3,7 @@
 #include<string>
 #include<iostream>
 
-int main() {
+int main(int argv, char **argv) {
 	d::conn::sage::settings::files x("/tmp/plot.png");
 	d::cov f(d::coord<int>({12, 24}));
 	std::cout << x << std::endl;
