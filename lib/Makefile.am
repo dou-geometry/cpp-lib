@@ -1,1 +1,1 @@
-SUBDIRS = conn
+SUBDIRS = conn boxCounting numerical dyn
