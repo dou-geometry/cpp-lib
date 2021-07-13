@@ -98,3 +98,6 @@ src/CMF/.deps/main.Po
 src/JROFI/.deps/main.Po
 src/Makefile
 stamp-h1
+config.h.in~
+lib/numerical/.deps/integration.Po
+lib/numerical/.deps/integration.Tpo
