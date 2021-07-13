@@ -27,64 +27,9 @@ struct field {
     field(const coord<long long int> sz,H val=1):field(sz*-1, sz, val){}
     template<typename V>field(const coord<V> sz, H val=1):field(sz.round(), val){}
     template<typename V>field(const coord<V> bl, const coord<V> tr, H val=1):field(bl.round(), tr.round(), val){}
-#ifdef __NVCC__
-    field<H>* push() {
-        field<H> *dest;
-        auto cpy=*this;
-        auto nB=sizeof(*this);
-        gpuErrchk(cudaMalloc((void **) &dest, nB));
-        auto oldD=cpy.d;
-        auto oldSl=cpy.sL;
-        gpuErrchk(cudaMalloc((void **) &(cpy.d), sizeof(H)*(border+1)));
-        gpuErrchk(cudaMalloc((void **) &(cpy.sL), sizeof(ull)*((*baseCrd).dim)));
-        auto oldCrd=cpy.baseCrd;
-        cpy.baseCrd=(*baseCrd).push();
-        gpuErrchk(cudaMemcpy(cpy.d, this->d, sizeof(H)*(border+1), cudaMemcpyHostToDevice));
-        gpuErrchk(cudaMemcpy(cpy.sL, this->sL, sizeof(ull)*((*baseCrd).dim), cudaMemcpyHostToDevice));
-        gpuErrchk(cudaMemcpy(dest, &cpy, nB, cudaMemcpyHostToDevice));
-        cpy.d=oldD; cpy.sL=oldSl; cpy.baseCrd=oldCrd;
-        return dest;
-    }
-    field<H>* pull() {
-        auto nB=sizeof(*this);
-        field<H> *dest=(field<H> *)malloc(nB);
-        gpuErrchk(cudaMemcpy(dest, this, nB, cudaMemcpyDeviceToHost));
-        //auto dBk=(*dest).d, slBk=(*dest).sL, bcrdBk=(*dest).baseCrd;
-        auto oldD=(*dest).d;
-        auto oldSl=(*dest).sL;
-        (*dest).baseCrd=(*((*dest).baseCrd)).pull();
-        (*dest).d=new H[(*dest).border+1];
-        (*dest).sL=new ull[(*((*dest).baseCrd)).dim];
-        gpuErrchk(cudaMemcpy((*dest).d, oldD, sizeof(H)*((*dest).border+1), cudaMemcpyDeviceToHost));
-        gpuErrchk(cudaMemcpy((*dest).sL, oldSl, sizeof(ull)*((*(*dest).baseCrd).dim), cudaMemcpyDeviceToHost));
-        return dest;
-    }
-#endif
     ~field() {
-        #ifdef __NVCC__
-            #ifdef __CUDA_ARCH__
-            free(d);
-            free(sL);
-            #else
-            cudaPointerAttributes attributes;
-            gpuErrchk(cudaPointerGetAttributes(&attributes, d));
-            if(attributes.type == 0) {
-                free(d);
-                free(sL);
-            } else if(attributes.type==1) {
-                free(d);
-                free(sL);
-            } else if(attributes.type==2) {
-                gpuErrchk(cudaFree(d));
-                gpuErrchk(cudaFree(sL));
-            } else {
-                // This is cudaMemoryTypeManaged memory, which no idea what this is...
-            }
-            #endif
-        #else
-            delete[]d;
-            delete[]sL;
-        #endif
+        delete[]d;
+        delete[]sL;
         (*baseCrd).~coord();
     }
     field(const field<H> &other): border(other.border) {

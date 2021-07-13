@@ -7,10 +7,12 @@ namespace d {
 
 struct cov:field<bool> {
     di resolution=1;
-    cov(coord<long long int> bl, coord<long long int> tr, di r=1): field<bool>(bl, tr, false), resolution(r) {}
-    cov(const coord<long long int> sz, di r=1):cov(sz*-1LL, sz, r){}
-    template<typename C>cov(const coord<C> sz, di r=1):cov(sz.round(), r){}
-    template<typename C>cov(const coord<C> bl, const coord<C> tr, di r=1):cov(bl.round(), tr.round(), r) {}
+    cov(coord<long long int> &bl, coord<long long int> &tr, di r=1): field<bool>(bl, tr, false), resolution(r) {}
+    cov(const coord<long long int> &sz, di r=1):cov(sz*-1LL, sz, r){}
+    template<typename C>cov(const coord<C> &sz, di r=1):cov(sz.round(), r){}
+    template<typename C>cov(const coord<C> &bl, const coord<C> &tr, di r=1):cov(bl.round(), tr.round(), r) {}
+    template<typename C>cov(const field<C> &f): cov(f.baseCrd, f.IDzuCoord(f.border), f.multiplier) {}
+    template<typename C>cov(const field<C> &f, di r): cov(f.baseCrd, f.IDzuCoord(f.border), r) {}
     template<typename C>ull calc(d::line<C> l) {
         if(l.s.dim!=2) throw"This function isn't compatible with dimension!=2";
         ull res=0;
