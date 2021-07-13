@@ -43,6 +43,7 @@ AC_CONFIG_FILES([Makefile
                  lib/conn/Makefile
                  lib/conn/bash/Makefile
                  lib/conn/sage/Makefile
+                 lib/dyn/Makefile
                  lib/numerical/Makefile
                  src/Makefile])
 AC_OUTPUT
