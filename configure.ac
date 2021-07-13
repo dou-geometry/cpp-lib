@@ -21,6 +21,7 @@ AM_PROG_AR
 # Checks for libraries.
 
 # Checks for header files.
+AC_CHECK_HEADERS([unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
@@ -31,18 +32,17 @@ AC_CHECK_FUNCS([floor pow sqrt])
 
 AC_CONFIG_FILES([Makefile
                  include/Makefile
+                 include/boxCounting/Makefile
                  include/cls/Makefile
-                 include/cls/carrier/Makefile
-                 include/cls/structure/Makefile
                  include/conn/Makefile
                  include/conn/bash/Makefile
                  include/conn/sage/Makefile
-                 include/func/Makefile
-                 include/func/boxCounting/Makefile
-                 include/func/numerical/Makefile
+                 include/numerical/Makefile
                  lib/Makefile
+                 lib/boxCounting/Makefile
                  lib/conn/Makefile
                  lib/conn/bash/Makefile
                  lib/conn/sage/Makefile
+                 lib/numerical/Makefile
                  src/Makefile])
 AC_OUTPUT
