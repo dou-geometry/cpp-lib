@@ -17,6 +17,8 @@ on:
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ gnu-prod-env ]
+  workflow_dispatch:
+    branches: [ gnu-prod-env ]
 
 jobs:
   analyze:
