@@ -40,6 +40,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+      with:
+        ref: 'gnu-prod-env'
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
@@ -64,8 +66,8 @@ jobs:
     #    uses a compiled language
 
     - run: |
-       tree
-       ./setupAutotools.sh
+       #tree
+       #./setupAutotools.sh
        ./configure
        make
        make dist
