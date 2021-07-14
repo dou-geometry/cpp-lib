@@ -88,7 +88,9 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = $(top_builddir)/bin/main$(EXEEXT)
+bin_PROGRAMS = $(top_builddir)/bin/test$(EXEEXT) \
+	$(top_builddir)/bin/JROFI$(EXEEXT) \
+	$(top_builddir)/bin/CMF$(EXEEXT)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_check_compile_flag.m4 \
@@ -102,13 +104,28 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am___top_builddir__bin_main_OBJECTS = main.$(OBJEXT)
-__top_builddir__bin_main_OBJECTS =  \
-	$(am___top_builddir__bin_main_OBJECTS)
-__top_builddir__bin_main_DEPENDENCIES =  \
-	../lib/conn/bash/libbashstdout.a \
-	../lib/conn/sage/libsageplot.a
 am__dirstamp = $(am__leading_dot)dirstamp
+am___top_builddir__bin_CMF_OBJECTS = CMF/main.$(OBJEXT)
+__top_builddir__bin_CMF_OBJECTS =  \
+	$(am___top_builddir__bin_CMF_OBJECTS)
+__top_builddir__bin_CMF_DEPENDENCIES =  \
+	../lib/conn/bash/libbashstdout.a \
+	../lib/conn/sage/libsageplot.a \
+	../lib/numerical/libnumintegration.a
+am___top_builddir__bin_JROFI_OBJECTS = JROFI/main.$(OBJEXT)
+__top_builddir__bin_JROFI_OBJECTS =  \
+	$(am___top_builddir__bin_JROFI_OBJECTS)
+__top_builddir__bin_JROFI_DEPENDENCIES =  \
+	../lib/conn/bash/libbashstdout.a \
+	../lib/conn/sage/libsageplot.a \
+	../lib/numerical/libnumintegration.a
+am___top_builddir__bin_test_OBJECTS = main.$(OBJEXT)
+__top_builddir__bin_test_OBJECTS =  \
+	$(am___top_builddir__bin_test_OBJECTS)
+__top_builddir__bin_test_DEPENDENCIES =  \
+	../lib/conn/bash/libbashstdout.a \
+	../lib/conn/sage/libsageplot.a \
+	../lib/numerical/libnumintegration.a
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -124,7 +141,8 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/main.Po
+am__depfiles_remade = ./$(DEPDIR)/main.Po CMF/$(DEPDIR)/main.Po \
+	JROFI/$(DEPDIR)/main.Po
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -139,8 +157,12 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(__top_builddir__bin_main_SOURCES)
-DIST_SOURCES = $(__top_builddir__bin_main_SOURCES)
+SOURCES = $(__top_builddir__bin_CMF_SOURCES) \
+	$(__top_builddir__bin_JROFI_SOURCES) \
+	$(__top_builddir__bin_test_SOURCES)
+DIST_SOURCES = $(__top_builddir__bin_CMF_SOURCES) \
+	$(__top_builddir__bin_JROFI_SOURCES) \
+	$(__top_builddir__bin_test_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -268,8 +290,12 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = subdir-objects foreign
-__top_builddir__bin_main_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a
-__top_builddir__bin_main_SOURCES = main.cpp
+__top_builddir__bin_test_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/numerical/libnumintegration.a
+__top_builddir__bin_test_SOURCES = main.cpp
+__top_builddir__bin_JROFI_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/numerical/libnumintegration.a
+__top_builddir__bin_JROFI_SOURCES = JROFI/main.cpp
+__top_builddir__bin_CMF_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/numerical/libnumintegration.a
+__top_builddir__bin_CMF_SOURCES = CMF/main.cpp
 all: all-am
 
 .SUFFIXES:
@@ -345,21 +371,48 @@ uninstall-binPROGRAMS:
 
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+CMF/$(am__dirstamp):
+	@$(MKDIR_P) CMF
+	@: > CMF/$(am__dirstamp)
+CMF/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) CMF/$(DEPDIR)
+	@: > CMF/$(DEPDIR)/$(am__dirstamp)
+CMF/main.$(OBJEXT): CMF/$(am__dirstamp) CMF/$(DEPDIR)/$(am__dirstamp)
 $(top_builddir)/bin/$(am__dirstamp):
 	@$(MKDIR_P) $(top_builddir)/bin
 	@: > $(top_builddir)/bin/$(am__dirstamp)
 
-$(top_builddir)/bin/main$(EXEEXT): $(__top_builddir__bin_main_OBJECTS) $(__top_builddir__bin_main_DEPENDENCIES) $(EXTRA___top_builddir__bin_main_DEPENDENCIES) $(top_builddir)/bin/$(am__dirstamp)
-	@rm -f $(top_builddir)/bin/main$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(__top_builddir__bin_main_OBJECTS) $(__top_builddir__bin_main_LDADD) $(LIBS)
+$(top_builddir)/bin/CMF$(EXEEXT): $(__top_builddir__bin_CMF_OBJECTS) $(__top_builddir__bin_CMF_DEPENDENCIES) $(EXTRA___top_builddir__bin_CMF_DEPENDENCIES) $(top_builddir)/bin/$(am__dirstamp)
+	@rm -f $(top_builddir)/bin/CMF$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(__top_builddir__bin_CMF_OBJECTS) $(__top_builddir__bin_CMF_LDADD) $(LIBS)
+JROFI/$(am__dirstamp):
+	@$(MKDIR_P) JROFI
+	@: > JROFI/$(am__dirstamp)
+JROFI/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) JROFI/$(DEPDIR)
+	@: > JROFI/$(DEPDIR)/$(am__dirstamp)
+JROFI/main.$(OBJEXT): JROFI/$(am__dirstamp) \
+	JROFI/$(DEPDIR)/$(am__dirstamp)
+
+$(top_builddir)/bin/JROFI$(EXEEXT): $(__top_builddir__bin_JROFI_OBJECTS) $(__top_builddir__bin_JROFI_DEPENDENCIES) $(EXTRA___top_builddir__bin_JROFI_DEPENDENCIES) $(top_builddir)/bin/$(am__dirstamp)
+	@rm -f $(top_builddir)/bin/JROFI$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(__top_builddir__bin_JROFI_OBJECTS) $(__top_builddir__bin_JROFI_LDADD) $(LIBS)
+
+$(top_builddir)/bin/test$(EXEEXT): $(__top_builddir__bin_test_OBJECTS) $(__top_builddir__bin_test_DEPENDENCIES) $(EXTRA___top_builddir__bin_test_DEPENDENCIES) $(top_builddir)/bin/$(am__dirstamp)
+	@rm -f $(top_builddir)/bin/test$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(__top_builddir__bin_test_OBJECTS) $(__top_builddir__bin_test_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f CMF/*.$(OBJEXT)
+	-rm -f JROFI/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@CMF/$(DEPDIR)/main.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@JROFI/$(DEPDIR)/main.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -501,6 +554,10 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-rm -f CMF/$(DEPDIR)/$(am__dirstamp)
+	-rm -f CMF/$(am__dirstamp)
+	-rm -f JROFI/$(DEPDIR)/$(am__dirstamp)
+	-rm -f JROFI/$(am__dirstamp)
 	-test -z "$(top_builddir)/bin/$(am__dirstamp)" || rm -f $(top_builddir)/bin/$(am__dirstamp)
 
 maintainer-clean-generic:
@@ -512,6 +569,8 @@ clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/main.Po
+	-rm -f CMF/$(DEPDIR)/main.Po
+	-rm -f JROFI/$(DEPDIR)/main.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -558,6 +617,8 @@ installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/main.Po
+	-rm -f CMF/$(DEPDIR)/main.Po
+	-rm -f JROFI/$(DEPDIR)/main.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
