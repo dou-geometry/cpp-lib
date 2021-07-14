@@ -1,1 +1,2 @@
-SUBDIRS = cls func conn
+SUBDIRS = cls conn numerical boxCounting
+include_HEADERS = cls.hpp

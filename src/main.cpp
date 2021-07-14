@@ -1,13 +1,11 @@
-#include"../include/conn/sage/plot.hpp"
-#include"../include/cls.hpp"
+#include"../include/numerical/integration.hpp"
 #include<string>
 #include<iostream>
 
-int main() {
-	d::conn::sage::settings::files x("/tmp/plot.png");
-	d::cov f(d::coord<int>({12, 24}));
-	std::cout << x << std::endl;
-	f[20]=true;
-	std::cout << d::conn::sage::plot(f, x) << std::endl;
+int main(int argc, char **argv) {
+    auto f=[](d::coord<double> x) { return sin(x[0]); };
+    std::function<double(d::coord<double>)> ff=f;
+    d::line<double> l(d::coord<double>({0}), d::coord<double>({1}));
+    std::cout << d::numerical::integrate(l, ff) << std::endl;
 	return 0;
 }
