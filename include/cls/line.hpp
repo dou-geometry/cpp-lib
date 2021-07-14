@@ -1,11 +1,12 @@
 #ifndef __STRUCT_LINE__
 #define __STRUCT_LINE__
-namespace d {
 #include"./coord.hpp"
+namespace d {
 template<typename L>
 struct line {
     d::coord<L> s, t, d;
-    line(d::coord<L> a, d::coord<L> b): s(a), t(b), d((b-a).unit()){}
+    L length;
+    line(d::coord<L> a, d::coord<L> b): s(a), t(b), d((b-a).unit()), length((b-a).norm()) {}
     ~line() {
         s.~coord();
         t.~coord();
