@@ -1,5 +1,31 @@
 #include"../../include/numerical/integration.hpp"
 #include<cmath>
+#include <functional>
+#include<iostream>
+
+template<typename T, typename L>
+T d::numerical::integrate(const d::line<T>& l, const L& f) {
+    auto sum=[&f, &l](di t) {
+        const ull divi=pow(4, t);
+        std::cout << divi << std::endl;
+        const double dl=l.length/((double)divi);
+        double res=0;
+        for(di i=0; i<divi; i++)
+            res+=f(l.s+l.d*dl*i)*dl;
+        return res;
+    };
+    di i=5;
+    d::numerical::dp<T> res;
+    res[i]=sum(i);
+    do {
+        i++;
+        res[i]=sum(i);
+        std::cout << res[i] << std::endl;
+    } while(std::abs(res[i]-res[i-1])>numerical::EPS);
+    std::cout << std::endl;
+    return (T)res[i];
+};
+template double d::numerical::integrate(const d::line<double>&, const std::function<double(d::coord<double>)>&);
 
 template<typename T>
 T d::numerical::integrate(const d::line<T>& l, const field<T>& f, di m=1) {

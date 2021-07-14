@@ -8,8 +8,12 @@
 #define ull unsigned long long int
 #define ll long long int
 #include<tuple>
+#include<iostream>
 namespace d::numerical {
-    const double EPS=1e-24;
+    const double EPS=1e-12;
+    // Function Integration
+    template<typename T, typename L> T integrate(const d::line<T>&, const L&);
+    // Field integration
     template<typename T> T integrate(const d::line<T>, const field<T>&);
     template<typename T> d::coord<T> integrateTil(const d::coord<T>&, const field<T>&, T);
     template<typename T> T integrate(const d::line<T>, const field<T>&, di);
@@ -28,6 +32,10 @@ namespace d::numerical {
         }
         T operator[](int i) const {
             return i%2?odd:even;
+        }
+        friend std::ostream& operator<<(std::ostream& os, dp<T>& x) {
+            os << "Odd: " << x.odd << ", Even: " << x.even;
+            return os;
         }
     };
 }
