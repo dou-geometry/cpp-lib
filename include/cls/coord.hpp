@@ -160,8 +160,10 @@ namespace d {
         }
         friend coord<T> operator+(coord<T> lhs, const coord<T> &r) { return lhs+=r; }
         friend coord<T> operator-(coord<T> lhs, const coord<T> &r) { return lhs-=r; }
-        friend coord<T> operator*(coord<T> lhs, const T &r) { return lhs*=r; }
-        friend coord<T> operator/(coord<T> lhs, const T &r) { return lhs/=r; }
+        template<typename O> friend coord<T> operator*(coord<T> lhs, const O &r) { return lhs*=(T)r; }
+        template<typename O> friend coord<T> operator*(const O &r, coord<T> lhs) { return lhs*=(T)r; }
+        template<typename O> friend coord<T> operator/(coord<T> lhs, const O &r) { return lhs/=(T)r; }
+        template<typename O> friend coord<T> operator/(const O &r, coord<T> lhs) { return lhs/=(T)r; }
         // cross product overload
         friend coord<T> operator*(coord<T> lhs, const coord<T> &rhs) {return lhs*=rhs;}
         void input() {
