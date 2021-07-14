@@ -68,6 +68,7 @@ jobs:
        make
        make dist
        make install
+    #  make check
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
