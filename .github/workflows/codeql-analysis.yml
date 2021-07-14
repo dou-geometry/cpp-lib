@@ -64,6 +64,8 @@ jobs:
     #    uses a compiled language
 
     - run: |
+       tree
+       ./setupAutotools.sh
        ./configure
        make
        make dist
