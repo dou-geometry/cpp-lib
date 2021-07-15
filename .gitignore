@@ -38,5 +38,5 @@ buildLog
 # Testing files
 test*
 comp
-
+bin/*
 dou-geometry-cpp-library-*.tar.gz
