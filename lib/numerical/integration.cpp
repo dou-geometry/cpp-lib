@@ -1,4 +1,4 @@
-#include"../../include/numerical/integration.hpp"
+#include"../integration.hpp"
 #include<cmath>
 #include <functional>
 #include<iostream>

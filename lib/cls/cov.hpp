@@ -1,10 +1,8 @@
 #ifndef __CLS_STRUCT_COV__
 #define __CLS_STRUCT_COV__
-namespace d {
-
 #include"./field.hpp"
 #include"./line.hpp"
-
+namespace d {
     struct cov:field<bool> {
         di resolution=1;
         cov(d::coord<long long int> &bl, d::coord<long long int> &tr, di r=1): field<bool>(bl, tr, false), resolution(r) {}
@@ -67,23 +65,7 @@ namespace d {
             }
             return res;
         }
-        template<typename D>ull set(d::coord<D> y, ll res=1) {
-            d::coord<ll> x=y.rupper();
-            switch(res%2) {
-                case 1:
-                    res=(res-1)/2;
-                    for(ll i=-res; i<=res; i++) for(ll j=-res; j<=res; j++) (*this)[x+d::coord<ll>({i, j})]=true;
-                    break;
-                case 0:
-                    res/=2;
-                    for(ll i=-res; i<res; i++) for(ll j=-res; j<res; j++) (*this)[x+d::coord<ll>({i, j})]=true;
-                    break;
-                default:
-                    throw"Unknown case in cov::set()";
-                    break;
-            }
-            return (ull)(res*res);
-        }
+        template<typename D>ull set(d::coord<D>, ll);
         cov& reset() {
             for(di i=0; i<field<bool>::border; i++) field<bool>::d[i]=false;
             return *this;
@@ -101,4 +83,5 @@ namespace d {
     };
 
 }
+#include"./cov.tpp"
 #endif

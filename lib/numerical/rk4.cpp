@@ -1,4 +1,4 @@
-#include"../../include/numerical/rk4.cpp
+#include"../numerical/rk4.cpp"
 // Explicit Instantiation
 namespace d::numerical::rk4 {
     template coord<float> next();

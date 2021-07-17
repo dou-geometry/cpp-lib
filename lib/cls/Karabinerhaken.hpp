@@ -11,15 +11,7 @@ namespace d{
                 delete d;
                 delete tugi;
             }
-            template<typename I>
-                Karabinerhaken* after(I count) { 
-                    if(count==0) return this;
-                    auto midp=(*this).tugi;
-                    while(--count) {
-                        midp=midp->tugi;
-                    }
-                    return midp;
-                }
+            template<typename I> Karabinerhaken* after(I);
             void insertAfter(Karabinerhaken* mae) {
                 tugi=(*mae).tugi;
                 (*mae).tugi=this;
@@ -33,6 +25,6 @@ namespace d{
                 return (*this).insertAfter(ptr2);
             }
         };
-
 }
+#include"./Karabinerhaken.tpp"
 #endif

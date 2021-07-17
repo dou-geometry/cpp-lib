@@ -1,0 +1,19 @@
+namespace d::cov {
+template<typename D>ull set(d::coord<D> y, ll res=1) {
+    d::coord<ll> x=y.rupper();
+    switch(res%2) {
+        case 1:
+            res=(res-1)/2;
+            for(ll i=-res; i<=res; i++) for(ll j=-res; j<=res; j++) (*this)[x+d::coord<ll>({i, j})]=true;
+            break;
+        case 0:
+            res/=2;
+            for(ll i=-res; i<res; i++) for(ll j=-res; j<res; j++) (*this)[x+d::coord<ll>({i, j})]=true;
+            break;
+        default:
+            throw"Unknown case in cov::set()";
+            break;
+    }
+    return (ull)(res*res);
+}
+}
