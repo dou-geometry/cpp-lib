@@ -1,5 +1,6 @@
 #ifndef __CAR_LINEAR_MONO_HPP__
 #define __CAR_LINEAR_MONO_HPP__
+#include"./coord.hpp"
 namespace d {
     template<typename G>
         struct mono {
