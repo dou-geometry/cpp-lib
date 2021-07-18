@@ -1,10 +1,10 @@
 #pragma once
 
-#include"../cls/coord.hpp"
+#include"../cls/coord.hh"
 #include <type_traits>
 
 namespace d::dyn {
-    template<typename T, constexpr logIncrPromise=false>
+    template<typename T, bool logIncrPromise=false>
         struct mono {
             double t;
             mono* log=nullptr;
