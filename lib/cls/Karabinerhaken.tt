@@ -1,5 +1,5 @@
-namespace d::Karabinerhaken {
-    template<typename I> Karabinerhaken* after(I count) { 
+template<typename C>
+    template<typename I> d::Karabinerhaken<C>* d::Karabinerhaken<C>::after(I count) { 
         if(count==0) return this;
         auto midp=(*this).tugi;
         while(--count) {
@@ -7,4 +7,3 @@ namespace d::Karabinerhaken {
         }
         return midp;
     }
-}
