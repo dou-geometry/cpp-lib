@@ -6,6 +6,10 @@
 #define deg unsigned short
 #include <initializer_list>
 #include <iostream>
+#include<cmath>
+#include <utility>
+#include <cstring>
+using namespace std;
 namespace d {
     template<typename T> struct coord {
         T *d;
@@ -44,7 +48,7 @@ namespace d {
             //printf("%p=>%p\n", &other.d, &d);
             memcpy(d, other.d, sizeof(T)*dim);
         }
-        coord(coord<T> &&other) noexcept: d(std::exchange(other.d, nullptr)), dim(std::exchange(other.dim,(di)0)) {}
+        coord(coord<T> &&other) noexcept: d(exchange(other.d, nullptr)), dim(exchange(other.dim,(di)0)) {}
         coord& operator=(const coord<T> &other) {
             //printf("move ro3");
             if (this == &other) return *this;
