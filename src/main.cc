@@ -1,4 +1,4 @@
-#include"../lib/numerical/integration.hh"
+#include"../include/numerical/integration.hpp"
 #include<string>
 #include<iostream>
 
