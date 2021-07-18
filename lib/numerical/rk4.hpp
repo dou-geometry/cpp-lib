@@ -1,9 +1,13 @@
-#ifndef __CLS_NUM_RK4__
-#define __CLS_NUM_RK4__
-#include"../cls/mono.hpp"
+#pragma once
+
+#include"../dyn/mono.hpp"
+
+// RK4 currently only support 2-order ODE
 
 namespace d::numerical::rk4 {
-    template<typename C> coord<C> next();
+    const double h=1e-4;
+    template<typename C> d::coord<C> run();
+    template<typename C> d::dyn::mono<C> next();
 }
 
-#endif
+#include"./rk4.tpp"
