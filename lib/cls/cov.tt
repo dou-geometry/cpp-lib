@@ -1,5 +1,4 @@
-namespace d::cov {
-template<typename D>ull set(d::coord<D> y, ll res=1) {
+template<typename D>ull d::cov::set(d::coord<D> y, ll res) {
     d::coord<ll> x=y.rupper();
     switch(res%2) {
         case 1:
@@ -15,5 +14,4 @@ template<typename D>ull set(d::coord<D> y, ll res=1) {
             break;
     }
     return (ull)(res*res);
-}
 }
