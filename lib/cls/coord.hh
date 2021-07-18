@@ -14,6 +14,7 @@ namespace d {
     template<typename T> struct coord {
         T *d;
         long unsigned int dim;
+        coord &pos=*this;
         //coord(int dim, T val=0.0): d(dim, val), dim(dim) {}
         coord(di dim, T val=0.0): dim(dim) {
             d=new T[dim];
