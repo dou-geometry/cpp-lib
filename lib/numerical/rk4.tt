@@ -6,7 +6,9 @@ namespace d::numerical::rk4 {
     template<bool runForever=false, typename R, typename F>
         requires x<R, F>
         R run(R cur, const F &f, const double tt) {
-            assert(f(cur.pos).dim==cur.pos.dim &&
+            if constexpr(tracksTime<R>) assert(f(cur.pos).dim==cur.pos.dim &&
+                    "Slope function within d::numerical::rk4::run() doesn't return d::coord with correct dimension");
+            else assert(f(cur).dim==cur.dim &&
                     "Slope function within d::numerical::rk4::run() doesn't return d::coord with correct dimension");
             // Since d::coord is VLA and dim isn't const
             assert((tt==0)==runForever && 
@@ -24,24 +26,40 @@ namespace d::numerical::rk4 {
             double h=tt/((double)loopTimes), hh=h/2;
             if constexpr(!runForever) {
                 for(int i=0; i<loopTimes; i++) { // WHy < not <= ?
-                    d::coord<double>   k1=f(cur.pos),
-                        k2=f(cur.pos+d::coord<double>({hh*k1})),
-                        k3=f(cur.pos+d::coord<double>({hh*k2})),
-                        k4=f(cur.pos+d::coord<double>({hh*k3}));
-                    if constexpr(tracksTime<R>) cur.t+=h;
-                    cur.pos+=(k1+2*k2+2*k3+k4)/6*h;
-                    if constexpr(log) cur.log[i]=cur;
+                    if constexpr(tracksTime<R>) {
+                        d::coord<double>   k1=f(cur.pos),
+                            k2=f(cur.pos+d::coord<double>({hh*k1})),
+                            k3=f(cur.pos+d::coord<double>({hh*k2})),
+                            k4=f(cur.pos+d::coord<double>({hh*k3}));
+                        cur.t+=h;
+                        cur.pos+=(k1+2*k2+2*k3+k4)/6*h;
+                        cur.log[i]=cur;
+                    } else {
+                        d::coord<double>   k1=f(cur.pos),
+                            k2=f(cur.pos+d::coord<double>({hh*k1})),
+                            k3=f(cur.pos+d::coord<double>({hh*k2})),
+                            k4=f(cur.pos+d::coord<double>({hh*k3}));
+                        cur+=(k1+2*k2+2*k3+k4)/6*h;
+                    }
                 }
                 return cur;
             } else {
                 std::cout << "Notice: Infinite loop of d::numerical::rk4, logging is disable.\n\n";
                 while(true) {
-                    d::coord<double>   k1=f(cur.pos),
-                        k2=f(cur.pos+d::coord<double>({hh*k1})),
-                        k3=f(cur.pos+d::coord<double>({hh*k2})),
-                        k4=f(cur.pos+d::coord<double>({hh*k3}));
-                    cur.t+=h;
-                    cur.pos+=(k1+2*k2+2*k3+k4)/6*h;
+                    if constexpr(tracksTime<R>) {
+                        d::coord<double>   k1=f(cur.pos),
+                            k2=f(cur.pos+d::coord<double>({hh*k1})),
+                            k3=f(cur.pos+d::coord<double>({hh*k2})),
+                            k4=f(cur.pos+d::coord<double>({hh*k3}));
+                        cur.t+=h;
+                        cur.pos+=(k1+2*k2+2*k3+k4)/6*h;
+                    } else {
+                        d::coord<double>   k1=f(cur.pos),
+                            k2=f(cur.pos+d::coord<double>({hh*k1})),
+                            k3=f(cur.pos+d::coord<double>({hh*k2})),
+                            k4=f(cur.pos+d::coord<double>({hh*k3}));
+                        cur+=(k1+2*k2+2*k3+k4)/6*h;
+                    }
                     std::cout << cur << std::endl;
                 }
                 return cur;
