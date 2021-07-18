@@ -1,12 +1,12 @@
-include_HEADERS = coord.hpp matrix.hpp mono.hpp linear.hpp Karabinerhaken.hpp line.hpp field.hpp cov.hpp
+include_HEADERS = coord.hh matrix.hh mono.hh linear.hh Karabinerhaken.hh line.hh field.hh cov.hh
 
 noinst_LIBRARIES = libinstcoord.a libinstmatrix.a libinstmono.a libinstlinear.a libinstkarabinerhaken.a libinstline.a libinstfield.a libinstcov.a
 
-libinstcoord_a_SOURCES = coord.cpp
-libinstmatrix_a_SOURCES = matrix.cpp
-libinstmono_a_SOURCES = mono.cpp
-libinstlinear_a_SOURCES = linear.cpp
-libinstkarabinerhaken_a_SOURCES = Karabinerhaken.cpp
-libinstline_a_SOURCES = line.cpp
-libinstfield_a_SOURCES = field.cpp
-libinstcov_a_SOURCES = cov.cpp
+libinstcoord_a_SOURCES = coord.cc
+libinstmatrix_a_SOURCES = matrix.cc
+libinstmono_a_SOURCES = mono.cc
+libinstlinear_a_SOURCES = linear.cc
+libinstkarabinerhaken_a_SOURCES = Karabinerhaken.cc
+libinstline_a_SOURCES = line.cc
+libinstfield_a_SOURCES = field.cc
+libinstcov_a_SOURCES = cov.cc

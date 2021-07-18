@@ -1,1 +1,1 @@
-include_HEADERS = mono.hpp
+include_HEADERS = mono.hh
