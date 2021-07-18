@@ -1,23 +1,49 @@
+#include<iostream>
+
 namespace d::numerical::rk4 {
-    template<typename C>
-        C run(C cur, &f, const double tt) {
-            constexpr log=d::dyn::Loggable<C>;
+    template<typename R, typename C>
+        requires(std::is_convertible<R, d::coord<C>>)
+        R run(R cur, const std::function<d::coord<C>(d::coord<C>)> &f, const double tt=0) {
+            assert(f(cur.pos).dim==cur.pos.dim &&
+                    "Slope function within d::numerical::rk4::run() doesn't return d::coord with correct dimension");
+            // Since d::coord is VLA and dim isn't const
+
             int loopTimes=(int)std::ceil(tt/d::numerical::rk4::h);
+
+            constexpr log=(d::dyn::Loggable<R>&&t!=0);
             if constexpr(log) {
                 static_assert(cur.log==nullptr, "Log of d::dyn::mono in d::numerical::rk4::run() isn't empty");
-                cur.log=(C*)malloc(sizeof(C)*(loopTimes+1));
+                cur.log=(R*)malloc(sizeof(R)*(loopTimes+1));
             }
+
             double h=tt/((double)loopTimes), hh=h/2;
-            for(int i=0; i<=loopTimes; i++) {
-                k1=f(cur.pos);
-                cur.pos+=d::coord<C>({hh, k1*hh});
-                k2=f(cur.pos);
-                cur.t+=h;
-                if constexpr(log) cur.log[i]=cur;
+            if constexpr(tt!=0) {
+                for(int i=0; i<=loopTimes; i++) {
+                    d::coord<double>   k1=f(cur.pos),
+                        k2=f(cur.pos+d::coord<double>({hh*k1})),
+                        k3=f(cur.pos+d::coord<double>({hh*k2})),
+                        k4=f(cur.pos+d::coord<double>({hh*k3}));
+                    cur.t+=h;
+                    cur.pos+=(k1+2*k2+2*k3+k4)/6*h;
+                    if constexpr(log) cur.log[i]=cur;
+                }
+                return cur;
+            } else {
+                std::cout << "Notice: Infinite loop of d::numerical::rk4, logging is disable.\n\n";
+                while(true) {
+                    d::coord<double>   k1=f(cur.pos),
+                        k2=f(cur.pos+d::coord<double>({hh*k1})),
+                        k3=f(cur.pos+d::coord<double>({hh*k2})),
+                        k4=f(cur.pos+d::coord<double>({hh*k3}));
+                    cur.t+=h;
+                    cur.pos+=(k1+2*k2+2*k3+k4)/6*h;
+                    std::cout << cur << std::endl;
+                }
+                return cur;
             }
         }
     template<typename C> mono<C> run(const mono<C>& x0, &f, const double s, const double t) { return run(x0, f, t-s); }
     template<typename C> coord<C> run(const coord<C>& x0, &f, const double s, const double t) { return run(x0, f, t-s); }
     // Perhaps a duplicated version of the loop in run() could be made seperately.
-    template<typename C> d::dyn::mono<C> next(d::dyn::mono
+    template<typename C> d::dyn::mono<C> next(d::dyn::mono) {}
 }
