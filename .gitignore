@@ -111,3 +111,4 @@ src/CMF/.dirstamp
 src/JROFI/.dirstamp
 src/JROFI/.deps/.dirstamp
 dou-geometry-cpp-library-*.tar.gz
+*.Po
