@@ -72,6 +72,17 @@ namespace d {
             }
             return (res);
         }
+        coord& pow(int p) {
+            for(di i=0; i<dim; i++)
+                d[i]=pow(d[i], p);
+            return *this;
+        }
+        coord pow(int p) const {
+            auto res(*this);
+            for(di i=0; i<res.dim; i++)
+                res.d[i]=pow(res.d[i], p);
+            return res;
+        }
         coord<T> unit() const {
             return (*this)/(this->norm());
         }
