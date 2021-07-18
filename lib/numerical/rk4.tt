@@ -1,11 +1,11 @@
 #include<iostream>
-#include<functional>
 #include <cassert>
+#include<concepts>
 
 namespace d::numerical::rk4 {
-    template<typename R, typename C, bool runForever=false>
-        requires(std::is_convertible<R, d::coord<C>>)
-        R run(R cur, const std::function<d::coord<C>(d::coord<C>)> &f, const double tt=0) {
+    template<bool runForever=false, typename C, typename R, typename F>
+        requires std::convertible_to<R, d::coord<C>> && std::convertible_to<F, std::function<d::coord<C>(d::coord<C>)>>
+        R run(R cur, const F &f, const double tt) {
             assert(f(cur.pos).dim==cur.pos.dim &&
                     "Slope function within d::numerical::rk4::run() doesn't return d::coord with correct dimension");
             // Since d::coord is VLA and dim isn't const
@@ -16,13 +16,14 @@ namespace d::numerical::rk4 {
 
             constexpr bool log=(d::dyn::Loggable<R>&&!runForever);
             if constexpr(log) {
-                static_assert(cur.log==nullptr, "Log of d::dyn::mono in d::numerical::rk4::run() isn't empty");
+                assert(cur.log==nullptr&&
+                        "Log of d::dyn::mono in d::numerical::rk4::run() isn't empty");
                 cur.log=(R*)malloc(sizeof(R)*(loopTimes+1));
             }
 
             double h=tt/((double)loopTimes), hh=h/2;
             if constexpr(!runForever) {
-                for(int i=0; i<=loopTimes; i++) {
+                for(int i=0; i<loopTimes; i++) { // WHy < not <= ?
                     d::coord<double>   k1=f(cur.pos),
                         k2=f(cur.pos+d::coord<double>({hh*k1})),
                         k3=f(cur.pos+d::coord<double>({hh*k2})),
@@ -46,8 +47,8 @@ namespace d::numerical::rk4 {
                 return cur;
             }
         }
-    template<typename C> mono<C> run(const mono<C>& x0, &f, const double s, const double t) { return run(x0, f, t-s); }
-    template<typename C> coord<C> run(const coord<C>& x0, &f, const double s, const double t) { return run(x0, f, t-s); }
+    template<typename C> d::dyn::mono<C> run(const d::dyn::mono<C>& x0, const std::function<C(C)> &f, const double s, const double t) { return run(x0, f, t-s); }
+    template<typename C> C run(const C& x0, const std::function<C(C)> &f, const double s, const double t) { return run(x0, f, t-s); }
     // Perhaps a duplicated version of the loop in run() could be made seperately.
     template<typename C> d::dyn::mono<C> next(d::dyn::mono<C>) {}
 }
