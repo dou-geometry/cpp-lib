@@ -21,6 +21,11 @@ struct func:field<T> {
     func(coord<T> d): dim(d.dim), einPunkt(d.dim, (T)0), dLi(d.inv()) {}
     func(coord<T> d, coord<T> eP): dim(d.dim), einPunkt(eP), dLi(d.inv()) {}
     func(coord<di> d, coord<T> eP): dim(d.dim), einPunkt(eP), dLi(d) {}
+    func(const std::function<T(d::coord<T>)> &f) {
+        for(di i=0; i<field<T>::border; i++) {
+            field<T>::d[i]=f(field<T>::IDzuCoord(i));
+        }
+    }
     template<typename...Ts> requires convertible_to<Ts, di> T& operator[](Ts...) {
         constexpr di n = sizeof...(T);
     }
@@ -38,3 +43,5 @@ struct func:field<T> {
 };
 
 }
+
+#include"./func.tt"
