@@ -1,5 +1,6 @@
 template<typename T>
-T linear(const func<T>& f, const coord<T>& crd) {
+T d::numerical::corrfunc::linear(const d::numerical::func<T>& f, const d::coord<T>& crd) {
     // auto [a, b] = f.neighbour(crd);
     auto h = f.hidari(crd);
+    return 1225;
 }
