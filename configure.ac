@@ -31,15 +31,10 @@ AC_FUNC_MALLOC
 AC_CHECK_FUNCS([floor pow sqrt])
 
 AC_CONFIG_FILES([Makefile
-                 include/Makefile
-                 include/boxCounting/Makefile
-                 include/cls/Makefile
-                 include/conn/Makefile
-                 include/conn/bash/Makefile
-                 include/conn/sage/Makefile
-                 include/numerical/Makefile
                  lib/Makefile
                  lib/boxCounting/Makefile
+                 lib/cls/Makefile
+                 lib/concept/Makefile
                  lib/conn/Makefile
                  lib/conn/bash/Makefile
                  lib/conn/sage/Makefile
