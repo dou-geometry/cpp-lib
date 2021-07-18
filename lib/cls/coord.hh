@@ -65,7 +65,7 @@ namespace d {
         double norm() const {
             double res=0;
             for(di i=0; i<dim; i++) {
-                res+=pow(this->d[i],2.0);
+                res+=std::pow(this->d[i],2.0);
             }
             return sqrt(res);
         }
@@ -76,15 +76,15 @@ namespace d {
             }
             return (res);
         }
-        coord& pow(int p) {
+        coord& pow(double p) {
             for(di i=0; i<dim; i++)
-                d[i]=pow(d[i], p);
+                d[i]=std::pow(d[i], p);
             return *this;
         }
-        coord pow(int p) const {
+        coord pow(double p) const {
             auto res(*this);
             for(di i=0; i<res.dim; i++)
-                res.d[i]=pow(res.d[i], p);
+                res.d[i]=std::pow(res.d[i], p);
             return res;
         }
         coord<T> unit() const {
