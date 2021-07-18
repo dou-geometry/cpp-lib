@@ -2,6 +2,8 @@
 
 #include"../cls/coord.hh"
 #include <type_traits>
+#define di long unsigned int
+#define ull unsigned long long int
 
 namespace d::dyn {
     template<typename T, bool logIncrPromise=false>

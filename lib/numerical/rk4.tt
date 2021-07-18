@@ -3,8 +3,8 @@
 #include<concepts>
 
 namespace d::numerical::rk4 {
-    template<bool runForever=false, typename C, typename R, typename F>
-        requires std::convertible_to<R, d::coord<C>> && std::convertible_to<F, std::function<d::coord<C>(d::coord<C>)>>
+    template<bool runForever=false, typename R, typename F>
+        requires x<R, F>
         R run(R cur, const F &f, const double tt) {
             assert(f(cur.pos).dim==cur.pos.dim &&
                     "Slope function within d::numerical::rk4::run() doesn't return d::coord with correct dimension");
@@ -28,7 +28,7 @@ namespace d::numerical::rk4 {
                         k2=f(cur.pos+d::coord<double>({hh*k1})),
                         k3=f(cur.pos+d::coord<double>({hh*k2})),
                         k4=f(cur.pos+d::coord<double>({hh*k3}));
-                    cur.t+=h;
+                    if constexpr(tracksTime<R>) cur.t+=h;
                     cur.pos+=(k1+2*k2+2*k3+k4)/6*h;
                     if constexpr(log) cur.log[i]=cur;
                 }
