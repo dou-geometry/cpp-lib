@@ -4,7 +4,7 @@
 #include <type_traits>
 
 namespace d::dyn {
-    template<typename T>
+    template<typename T, constexpr logIncrPromise=false>
         struct mono {
             double t;
             mono* log=nullptr;
@@ -46,8 +46,35 @@ namespace d::dyn {
                 v=uv;
                 return *this;
             }
+            mono& operator[](double t) { // This assumes the log follows const dt
+                double dt=this->log[1]-(this->log[0]);
+                t-=this->log[0];
+                return this->log[(int)(t/dt)];
+            }
+            mono& operator()(double t) { // This preforms check if t matches, if failed it'll be followed by binary search
+                double dt=this->log[1]-(this->log[0]);
+                t-=this->log[0];
+                int id=t/dt;
+                if constexpr(logIncrPromise) { return this->log[id]; }
+                else {
+                    if((this->log[id]).t==t) {
+                        return this->log[id];
+                    } else {
+                        while((this->log[id]).t!=t) {
+                            id-=((this->log[id]).t)>t?id/2:-1;
+                        }
+                        return this->log[id];
+                    }
+                }
+            }
+            friend ostream& operator<<(ostream& os, const mono& x) {
+                os << "t="<<x.t<<"; pos="<<x.pos<<"; vel="<<x.vel;
+                return os;
+            }
+            template<typename C> operator d::coord<C>() const { return pos; }
             template<typename X> requires std::integral<X> mono(coord<T> p, coord<T> v, X it): mono(p, v), t(it) {}
         };
+
     template<typename C>
         concept Loggable = requires(C& x) {
             {*(x.log)}->std::common_with<C>;
