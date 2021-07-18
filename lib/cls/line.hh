@@ -1,6 +1,6 @@
 #ifndef __STRUCT_LINE__
 #define __STRUCT_LINE__
-#include"./coord.hpp"
+#include"./coord.hh"
 namespace d {
 template<typename L>
 struct line {

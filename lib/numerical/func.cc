@@ -1,4 +1,4 @@
-#include"../numerical/func.hpp"
+#include"../numerical/func.hh"
 
 namespace d::numerical::corrfunc {
     template float linear(const func<float>&, const coord<float>&);

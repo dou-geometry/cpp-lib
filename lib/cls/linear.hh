@@ -1,6 +1,6 @@
 #ifndef __CAR_LINEAR_HPP__
 #define __CAR_LINEAR_HPP__
-#include"./coord.hpp"
-#include"./matrix.hpp"
-#include"./mono.hpp"
+#include"./coord.hh"
+#include"./matrix.hh"
+#include"./mono.hh"
 #endif

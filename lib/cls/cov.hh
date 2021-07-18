@@ -1,7 +1,8 @@
 #ifndef __CLS_STRUCT_COV__
 #define __CLS_STRUCT_COV__
-#include"./field.hpp"
-#include"./line.hpp"
+#include"./coord.hh"
+#include"./field.hh"
+#include"./line.hh"
 namespace d {
     struct cov:field<bool> {
         di resolution=1;
@@ -65,7 +66,7 @@ namespace d {
             }
             return res;
         }
-        template<typename D>ull set(d::coord<D>, ll);
+        template<typename D>ull set(coord<D>, ll res=1);
         cov& reset() {
             for(di i=0; i<field<bool>::border; i++) field<bool>::d[i]=false;
             return *this;
@@ -83,5 +84,5 @@ namespace d {
     };
 
 }
-#include"./cov.tpp"
+#include"./cov.tt"
 #endif

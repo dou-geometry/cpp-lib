@@ -1,6 +1,6 @@
 #ifndef __CLS_STRUCT_OBJ__
 #define __CLS_STRUCT_OBJ__
-#include"./Karabinerhaken.hpp"
+#include"./Karabinerhaken.hh"
 
 template<typename K, typename V>
 struct obj {

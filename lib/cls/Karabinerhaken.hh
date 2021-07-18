@@ -26,5 +26,5 @@ namespace d{
             }
         };
 }
-#include"./Karabinerhaken.tpp"
+#include"./Karabinerhaken.tt"
 #endif
