@@ -35,10 +35,10 @@ namespace d::numerical::rk4 {
                         cur.pos+=(k1+2*k2+2*k3+k4)/6*h;
                         cur.log[i]=cur;
                     } else {
-                        d::coord<double>   k1=f(cur.pos),
-                            k2=f(cur.pos+d::coord<double>({hh*k1})),
-                            k3=f(cur.pos+d::coord<double>({hh*k2})),
-                            k4=f(cur.pos+d::coord<double>({hh*k3}));
+                        d::coord<double>   k1=f(cur),
+                            k2=f(cur+d::coord<double>({hh*k1})),
+                            k3=f(cur+d::coord<double>({hh*k2})),
+                            k4=f(cur+d::coord<double>({hh*k3}));
                         cur+=(k1+2*k2+2*k3+k4)/6*h;
                     }
                 }
@@ -54,10 +54,10 @@ namespace d::numerical::rk4 {
                         cur.t+=h;
                         cur.pos+=(k1+2*k2+2*k3+k4)/6*h;
                     } else {
-                        d::coord<double>   k1=f(cur.pos),
-                            k2=f(cur.pos+d::coord<double>({hh*k1})),
-                            k3=f(cur.pos+d::coord<double>({hh*k2})),
-                            k4=f(cur.pos+d::coord<double>({hh*k3}));
+                        d::coord<double>   k1=f(cur),
+                            k2=f(cur+d::coord<double>({hh*k1})),
+                            k3=f(cur+d::coord<double>({hh*k2})),
+                            k4=f(cur+d::coord<double>({hh*k3}));
                         cur+=(k1+2*k2+2*k3+k4)/6*h;
                     }
                     std::cout << cur << std::endl;
