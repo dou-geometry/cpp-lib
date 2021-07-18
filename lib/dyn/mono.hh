@@ -10,8 +10,12 @@ namespace d::dyn {
             mono* log=nullptr;
             coord<T> pos, vel;
             mono(): t(0), pos(1, (T)0), vel(1, (T)0) {}
+            mono(di d): t(0), pos(d, (T)0), vel(d, (T)0) {}
             mono(coord<T> p): t(0), pos(p), vel(p.dim, (T)0) {}
             mono(coord<T> p, coord<T> v): t(0), pos(p), vel(v) {
+                static_assert(p.dim==v.dim, "d::dyn::mono's position and velocity coord has different dimension");
+            }
+            template<typename X> requires std::integral<X> mono(coord<T> p, coord<T> v, X it): pos(p), vel(v), t(it) {
                 static_assert(p.dim==v.dim, "d::dyn::mono's position and velocity coord has different dimension");
             }
             mono& operator=(const mono<T> &other) {
@@ -28,22 +32,6 @@ namespace d::dyn {
                 swap(log, other.log);
                 swap(pos, other.pos);
                 swap(vel, other.vel);
-                return *this;
-            }
-            mono& operator+=(double dt, d::coord<T> dx, d::coord<T> dv) {
-                static_assert(dx.dim==pos.dim, "d::dyn::mono::operator+= dx.dim!=pos.dim");
-                static_assert(dv.dim==vel.dim, "d::dyn::mono::operator+= dv.dim!=vel.dim");
-                t+=dt;
-                pos+=dx;
-                vel+=dv;
-                return *this;
-            }
-            mono& operator+=(double dt, d::coord<T> uv) {
-                // requires vel vector ratio to unit time
-                static_assert(uv.dim==pos.dim, "d::dyn::mono::operator+= uv.dim not same with mono's dim");
-                pos+=uv*dt;
-                t+=dt;
-                v=uv;
                 return *this;
             }
             mono& operator[](double t) { // This assumes the log follows const dt
@@ -72,7 +60,6 @@ namespace d::dyn {
                 return os;
             }
             template<typename C> operator d::coord<C>() const { return pos; }
-            template<typename X> requires std::integral<X> mono(coord<T> p, coord<T> v, X it): mono(p, v), t(it) {}
         };
 
     template<typename C>
