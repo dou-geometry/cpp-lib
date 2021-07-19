@@ -11,6 +11,6 @@ The `rk4.*` series under this directory are specifically designed to work for Do
 
 ## Arguments
 
-- `d::dyn::mono` or `d::coord`
+1. `d::dyn::mono` or `d::coord`
 
 ## Function Declaration
