@@ -10,16 +10,23 @@ namespace d::dyn {
         struct mono {
             double t;
             mono* log=nullptr;
-            coord<T> pos, vel;
-            mono(): t(0), pos(1, (T)0), vel(1, (T)0) {}
-            mono(di d): t(0), pos(d, (T)0), vel(d, (T)0) {}
-            mono(coord<T> p): t(0), pos(p), vel(p.dim, (T)0) {}
-            mono(coord<T> p, coord<T> v): t(0), pos(p), vel(v) {
+            coord<T> pos, vel, acc;
+            mono(): t(0), pos(1, (T)0), vel(1, (T)0), acc(1, (T)0) {}
+            mono(di d): t(0), pos(d, (T)0), vel(d, (T)0), acc(d, (T)0) {}
+            mono(coord<T> p): t(0), pos(p), vel(p.dim, (T)0), acc(p.dim, (T)0) {}
+            mono(coord<T> p, coord<T> v): t(0), pos(p), vel(v), acc(v.dim, (T)0) {
                 static_assert(p.dim==v.dim, "d::dyn::mono's position and velocity coord has different dimension");
             }
-            template<typename X> requires std::integral<X> mono(coord<T> p, coord<T> v, X it): pos(p), vel(v), t(it) {
+            mono(coord<T> p, coord<T> v, coord<T> a): t(0), pos(p), vel(v), acc(a) {
                 static_assert(p.dim==v.dim, "d::dyn::mono's position and velocity coord has different dimension");
+                static_assert(v.dim==a.dim, "d::dyn::mono's velocity and acceleration coord has different dimension");
             }
+            template<typename X> requires std::integral<X> mono(X it, coord<T> p, coord<T> v, coord<T> a): pos(p), vel(v), t(it), acc(a) {
+                static_assert(p.dim==v.dim, "d::dyn::mono's position and velocity coord has different dimension");
+                static_assert(v.dim==a.dim, "d::dyn::mono's velocity and acceleration coord has different dimension");
+            }
+            template<typename X> requires std::integral<X> mono(X it, coord<T> p, coord<T> v): mono(it, p, v, v) {}
+            template<typename X> requires std::integral<X> mono(X it, coord<T> p): mono(it, p, p, p) {}
             mono& operator=(const mono<T> &other) {
                 if(this==&other) return *this;
                 // Basically we aren't replacing logs
@@ -36,10 +43,11 @@ namespace d::dyn {
                 swap(vel, other.vel);
                 return *this;
             }
-            mono& operator[](double t) { // This assumes the log follows const dt
-                double dt=this->log[1]-(this->log[0]);
-                t-=this->log[0];
-                return this->log[(int)(t/dt)];
+            inline mono& operator[](const int& i) {
+                if (i==0) return pos;
+                if (i==1) return vel;
+                if (i==2) return acc;
+                // return d::coord<T>(pos.dim);
             }
             mono& operator()(double t) { // This preforms check if t matches, if failed it'll be followed by binary search
                 double dt=this->log[1]-(this->log[0]);
