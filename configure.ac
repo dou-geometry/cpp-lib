@@ -25,6 +25,7 @@ AC_CHECK_HEADERS([unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
+AC_C_INLINE
 
 # Checks for library functions.
 AC_FUNC_MALLOC
@@ -38,6 +39,8 @@ AC_CONFIG_FILES([Makefile
                  lib/conn/Makefile
                  lib/conn/bash/Makefile
                  lib/conn/sage/Makefile
+                 lib/dou/Makefile
+                 lib/dou/geo/Makefile
                  lib/dyn/Makefile
                  lib/numerical/Makefile
                  src/Makefile])
