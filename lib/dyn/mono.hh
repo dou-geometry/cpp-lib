@@ -1,6 +1,7 @@
 #pragma once
 
 #include"../cls/coord.hh"
+#include"../concepts/nonDim.hh"
 #include <type_traits>
 #define di long unsigned int
 #define ull unsigned long long int
@@ -8,11 +9,29 @@
 namespace d::dyn {
     template<typename T, bool logIncrPromise=false>
         struct mono {
+            const int order=2;
             double t;
             mono* log=nullptr;
-            coord<T> pos, vel, acc;
+            coord<T> *d=new coord<T>[3];
+            coord<T> &pos=d[0], &vel=d[1], &acc=d[2];
             mono(): t(0), pos(1, (T)0), vel(1, (T)0), acc(1, (T)0) {}
-            mono(di d): t(0), pos(d, (T)0), vel(d, (T)0), acc(d, (T)0) {}
+            mono(di d): order(2), t(0), pos(d, (T)0), vel(d, (T)0), acc(d, (T)0) {}
+            mono(di d, initializer_list<coord<T>> l) {}
+            mono(initializer_list<coord<T>> l) {}
+            // change to variadic template?
+            // And auto add empty d::coord<T>(dim) if variadic length<dim
+            // remember d[order+1];
+            template<typename X> requires d::nonDim<X> mono(X it, initializer_list<coord<T>> l) {}
+            template<typename X> requires d::nonDim<X> mono(X it, di d, initializer_list<coord<T>> l) {}
+            template<typename X> requires d::nonDim<X> mono(di d, X it, initializer_list<coord<T>> l): mono(it, d, l) {}
+            ~mono() {
+                delete[]log;
+                delete[]d;
+            }
+
+
+
+
             mono(coord<T> p): t(0), pos(p), vel(p.dim, (T)0), acc(p.dim, (T)0) {}
             mono(coord<T> p, coord<T> v): t(0), pos(p), vel(v), acc(v.dim, (T)0) {
                 static_assert(p.dim==v.dim, "d::dyn::mono's position and velocity coord has different dimension");
@@ -25,8 +44,7 @@ namespace d::dyn {
                 static_assert(p.dim==v.dim, "d::dyn::mono's position and velocity coord has different dimension");
                 static_assert(v.dim==a.dim, "d::dyn::mono's velocity and acceleration coord has different dimension");
             }
-            template<typename X> requires std::integral<X> mono(X it, coord<T> p, coord<T> v): mono(it, p, v, v) {}
-            template<typename X> requires std::integral<X> mono(X it, coord<T> p): mono(it, p, p, p) {}
+
             mono& operator=(const mono<T> &other) {
                 if(this==&other) return *this;
                 // Basically we aren't replacing logs
