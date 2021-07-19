@@ -1,4 +1,4 @@
-#include"../../../include/conn/bash/stdout.hpp"
+#include"./stdout.hh"
 #include <cstdio>
 #include <iostream>
 #include <memory>

@@ -1,5 +1,5 @@
-#include"../../cls.hpp"
-#include"../bash/stdout.hpp"
+#include"../../cls.hh"
+#include"../bash/stdout.hh"
 #include<bits/stdc++.h>
 #ifndef __CONN_SAGE_SETTINGS__
 #define __CONN_SAGE_SETTINGS__

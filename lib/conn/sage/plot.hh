@@ -1,6 +1,6 @@
-#include"../../cls.hpp"
-#include"./settings.hpp"
-#include"../bash/stdout.hpp"
+#include"../../cls.hh"
+#include"./settings.hh"
+#include"../bash/stdout.hh"
 #include<string>
 #ifndef __CONN_SAGE_PLOT__
 #define __CONN_SAGE_PLOT__
