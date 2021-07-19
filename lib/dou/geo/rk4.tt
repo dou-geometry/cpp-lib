@@ -2,7 +2,7 @@
 #include <cassert>
 #include<concepts>
 
-namespace d::numerical::rk4 {
+namespace d::dou::geo::rk4 {
     template<bool runForever=false, typename R, typename F>
         requires x<R, F>
         R run(R cur, const F &f, const double tt) {
@@ -22,7 +22,7 @@ namespace d::numerical::rk4 {
             assert((tt==0)==runForever && 
                     "(tt==0)!=runForever");
 
-            int loopTimes=(int)std::ceil(tt/d::numerical::rk4::h);
+            int loopTimes=(int)std::ceil(tt/d::dou::geo::rk4::h);
 
             constexpr bool log=(d::dyn::Loggable<R>&&!runForever);
             if constexpr(log) {

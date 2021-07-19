@@ -1,12 +1,12 @@
 #pragma once
 
-#include"../cls/coord.hh"
-#include"../dyn/mono.hh"
+#include"../../cls/coord.hh"
+#include"../../dyn/mono.hh"
 #include<functional>
 
 // RK4 currently only support 2-order ODE
 
-namespace d::numerical::rk4 {
+namespace d::dou::geo::rk4 {
     const double h=1e-4;
     template<typename R>
         concept tracksTime = requires(const R &r) { r.t; };
