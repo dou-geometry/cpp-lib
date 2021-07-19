@@ -118,3 +118,4 @@ dou-geometry-cpp-library-*.tar.gz
 bin/*
 */.deps/*
 */.dirstamp
+src/test/.dirstamp
