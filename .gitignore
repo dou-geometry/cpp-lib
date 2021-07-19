@@ -36,7 +36,9 @@ out/*
 buildLog
 
 # Testing files
-test*
+*test.cc
+*test.hh
+*test.tt
 comp
 aclocal.m4
 ar-lib
