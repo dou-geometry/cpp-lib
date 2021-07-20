@@ -11,9 +11,9 @@ AC_CONFIG_MACRO_DIRS([m4])
 
 # Checks for programs.
 AC_LANG([C++])
-AX_CHECK_COMPILE_FLAG([-std=gnu++20 -lquadmath], [
-		       CXXFLAGS="$CXXFLAGS -std=gnu++20 -lquadmath"])
-AM_CXXFLAGS="-std=gnu++20 -lquadmath"
+AX_CHECK_COMPILE_FLAG([-std=gnu++20 -lquadmath -O0], [
+		       CXXFLAGS="$CXXFLAGS -std=gnu++20 -lquadmath -O0"])
+AM_CXXFLAGS="-std=gnu++20 -lquadmath O0"
 AC_PROG_CXX
 AC_PROG_RANLIB
 AM_PROG_AR
@@ -35,7 +35,7 @@ AC_CONFIG_FILES([Makefile
                  lib/Makefile
                  lib/boxCounting/Makefile
                  lib/cls/Makefile
-                 lib/concept/Makefile
+                 lib/concepts/Makefile
                  lib/conn/Makefile
                  lib/conn/bash/Makefile
                  lib/conn/sage/Makefile
