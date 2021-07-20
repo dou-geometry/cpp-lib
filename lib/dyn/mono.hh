@@ -54,15 +54,15 @@ namespace d::dyn {
 
 
 
-            mono(const mono<T> &other): order(other.order), t(other.t) {
+            mono(const mono<T, logIncrPromise> &other): order(other.order), t(other.t) {
                 std::cout << "&()" << std::endl;
                 d=new d::coord<T>[order+1];
                 if constexpr(other.d!=nullptr) memcpy(d, other.d, sizeof(d::coord<T>)*(order+1));
             }
-            mono(mono<T> &&other) noexcept: d(std::exchange(other.d, nullptr)), order(std::exchange(other.order, 0)), t(std::exchange(other.t, 0)), log(std::exchange(other.log, nullptr)) {
+            mono(mono<T, logIncrPromise> &&other) noexcept: d(std::exchange(other.d, nullptr)), order(std::exchange(other.order, 0)), t(std::exchange(other.t, 0)), log(std::exchange(other.log, nullptr)) {
                 std::cout << "&&()" << std::endl;
             }
-            mono& operator=(const mono<T> &other) {
+            mono& operator=(const mono<T, logIncrPromise> &other) {
                 std::cout << "&=" << std::endl;
                 if(this==&other) return *this;
                 // Basically we aren't replacing logs
@@ -73,7 +73,7 @@ namespace d::dyn {
                 memcpy(d, other.d, sizeof(d::coord<T>)*(order+1));
                 return *this;
             }
-            mono& operator=(mono<T> &&other) noexcept {
+            mono& operator=(mono<T, logIncrPromise> &&other) noexcept {
                 std::cout << "&&=" << std::endl;
                 swap(order, other.order);
                 swap(t, other.t);
