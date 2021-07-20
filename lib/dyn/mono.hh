@@ -2,29 +2,51 @@
 
 #include"../cls/coord.hh"
 #include"../concepts/nonDim.hh"
+#include<iostream>
 #include <type_traits>
+#include<cassert>
 #define di long unsigned int
 #define ull unsigned long long int
 
 namespace d::dyn {
     template<typename T, bool logIncrPromise=false>
         struct mono {
-            const int order=2;
+            di order;
             double t;
             mono* log=nullptr;
-            coord<T> *d=new coord<T>[3];
-            coord<T> &pos=d[0], &vel=d[1], &acc=d[2];
-            mono(): t(0), pos(1, (T)0), vel(1, (T)0), acc(1, (T)0) {}
-            mono(di d): order(2), t(0), pos(d, (T)0), vel(d, (T)0), acc(d, (T)0) {}
-            mono(di d, initializer_list<coord<T>> l) {}
-            mono(initializer_list<coord<T>> l) {}
-            // change to variadic template?
-            // And auto add empty d::coord<T>(dim) if variadic length<dim
-            // remember d[order+1];
-            template<typename X> requires d::nonDim<X> mono(X it, initializer_list<coord<T>> l) {}
-            template<typename X> requires d::nonDim<X> mono(X it, di d, initializer_list<coord<T>> l) {}
-            template<typename X> requires d::nonDim<X> mono(di d, X it, initializer_list<coord<T>> l): mono(it, d, l) {}
+            coord<T> *d=nullptr;
+            //coord<T> &pos=d[0], &vel=d[1], &acc=d[2];
+            template<typename...Ts>
+                requires std::same_as<coord<T>, typename std::common_type<Ts...>::type>
+                mono(di ord, Ts...args): order(ord), t(0) {
+                    std::cout << "Standard init d::dyn::mono" << std::endl;
+                    d=new coord<T>[order+1];
+                    assert(sizeof...(Ts)<=(order+1)&& "d::dyn::mono initialization error, too many arguments");
+                    di i=0;
+                    (...,void(d[i++] = args)); // https://stackoverflow.com/a/34569679/8460574
+                    for(di i=sizeof...(Ts); i<=order; ++i)
+                        d[i]=d::coord<T>(d[0].dim);
+                    for(di i=0; i<=order; i++)
+                        std::cout << d[i].d << std::endl;
+                }
+            mono(): mono(1, coord<T>(1)) {
+                std::cout << "empty mono" << std::endl;
+            }
+            mono(di dimension): mono(2, coord<T>(dimension)) {}
+//            template<typename...Ts>
+//                requires std::same_as<coord<T>, typename std::common_type<Ts...>::type>
+//                mono(Ts...args): mono(sizeof...(Ts)-1, args..., 0.) {}
+//            template<typename X, typename...Ts> 
+//                requires std::same_as<coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
+//                mono(X it, Ts...args): mono(sizeof...(Ts)-1, args..., it) {}
+//            template<typename X, typename...Ts> 
+//                requires std::same_as<coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
+//                mono(X it, di ord, Ts...args): mono(ord, args..., it) {}
+//            template<typename X, typename...Ts> 
+//                requires std::same_as<coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
+//                mono(di ord, X it, Ts...args): mono(ord, args..., it) {}
             ~mono() {
+                std::cout << "------------" << std::endl;
                 delete[]log;
                 delete[]d;
             }
@@ -32,62 +54,62 @@ namespace d::dyn {
 
 
 
-            mono(coord<T> p): t(0), pos(p), vel(p.dim, (T)0), acc(p.dim, (T)0) {}
-            mono(coord<T> p, coord<T> v): t(0), pos(p), vel(v), acc(v.dim, (T)0) {
-                static_assert(p.dim==v.dim, "d::dyn::mono's position and velocity coord has different dimension");
-            }
-            mono(coord<T> p, coord<T> v, coord<T> a): t(0), pos(p), vel(v), acc(a) {
-                static_assert(p.dim==v.dim, "d::dyn::mono's position and velocity coord has different dimension");
-                static_assert(v.dim==a.dim, "d::dyn::mono's velocity and acceleration coord has different dimension");
-            }
-            template<typename X> requires std::integral<X> mono(X it, coord<T> p, coord<T> v, coord<T> a): pos(p), vel(v), t(it), acc(a) {
-                static_assert(p.dim==v.dim, "d::dyn::mono's position and velocity coord has different dimension");
-                static_assert(v.dim==a.dim, "d::dyn::mono's velocity and acceleration coord has different dimension");
-            }
 
+            mono(const mono<T> &other): order(other.order), t(other.t) {
+                std::cout << "&()" << std::endl;
+                d=new coord<T>[order+1];
+                if constexpr(other.d!=nullptr) memcpy(d, other.d, sizeof(coord<T>)*(order+1));
+            }
+            mono(mono<T> &&other) noexcept: d(std::exchange(other.d, nullptr)), order(std::exchange(other.order, 0)), t(std::exchange(other.t, 0)), log(std::exchange(other.log, nullptr)) {
+                std::cout << "&&()" << std::endl;
+            }
             mono& operator=(const mono<T> &other) {
+                std::cout << "&=" << std::endl;
                 if(this==&other) return *this;
                 // Basically we aren't replacing logs
                 // Only copying t, pos, vel
                 t=other.t; // As order in array are only relative to the log[0]
-                pos=other.pos;
-                vel=other.vel;
+                order=other.order;
+                d=new coord<T>[order+1];
+                memcpy(d, other.d, sizeof(coord<T>)*(order+1));
                 return *this;
             }
             mono& operator=(mono<T> &&other) noexcept {
+                std::cout << "&&=" << std::endl;
+                swap(order, other.order);
                 swap(t, other.t);
                 swap(log, other.log);
-                swap(pos, other.pos);
-                swap(vel, other.vel);
+                swap(d, other.d);
                 return *this;
             }
-            inline mono& operator[](const int& i) {
-                if (i==0) return pos;
-                if (i==1) return vel;
-                if (i==2) return acc;
-                // return d::coord<T>(pos.dim);
+            coord<T>& operator[](int i) {
+                return this->d[i];
             }
-            mono& operator()(double t) { // This preforms check if t matches, if failed it'll be followed by binary search
-                double dt=this->log[1]-(this->log[0]);
-                t-=this->log[0];
-                int id=t/dt;
-                if constexpr(logIncrPromise) { return this->log[id]; }
-                else {
-                    if((this->log[id]).t==t) {
-                        return this->log[id];
-                    } else {
-                        while((this->log[id]).t!=t) {
-                            id-=((this->log[id]).t)>t?id/2:-1;
-                        }
-                        return this->log[id];
-                    }
-                }
+            coord<T> operator[](int i) const {
+                return this->d[i];
             }
+//            mono& operator()(double t) { // This preforms check if t matches, if failed it'll be followed by binary search
+//                double dt=this->log[1]-(this->log[0]);
+//                t-=this->log[0];
+//                int id=t/dt;
+//                if constexpr(logIncrPromise) { return this->log[id]; }
+//                else {
+//                    if((this->log[id]).t==t) {
+//                        return this->log[id];
+//                    } else {
+//                        while((this->log[id]).t!=t) {
+//                            id-=((this->log[id]).t)>t?id/2:-1;
+//                        }
+//                        return this->log[id];
+//                    }
+//                }
+//            }
             friend ostream& operator<<(ostream& os, const mono& x) {
-                os << "t="<<x.t<<"; pos="<<x.pos<<"; vel="<<x.vel;
+                os << "t="<<x.t<<"; pos="<<x[0]<<"; vel="<<x[1];
                 return os;
             }
-            template<typename C> operator d::coord<C>() const { return pos; }
+            //template<typename C> operator d::coord<C>() const { return pos; }
+            template<typename C> operator d::coord<C>() const { return this->d[0]; }
         };
 
     template<typename C>
