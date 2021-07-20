@@ -12,10 +12,10 @@
 using namespace std;
 namespace d {
     template<typename T> struct coord {
-        T *d;
+        T *d=nullptr;
         long unsigned int dim;
         //coord(int dim, T val=0.0): d(dim, val), dim(dim) {}
-        coord(di dim, T val=0.0): dim(dim) {
+        coord(di dim, T val=0): dim(dim) {
             d=new T[dim];
             for(di i=0;i<dim;i++) {
                 d[i]=val;
