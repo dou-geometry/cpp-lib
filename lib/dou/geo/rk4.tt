@@ -6,16 +6,14 @@ namespace d::dou::geo::rk4 {
     template<bool runForever=false, typename R, typename F>
         requires x<R, F>
         R run(R cur, const F &f, const double tt) {
-            d::coord<double> &pos, &vel, &acc;
-            if constexpr(tracksTime<R>) {
-                pos=cur.pos;
-                vel=cur.vel;
-                acc=cur.acc;
-            } else {
-                pos=new d::coord<double>(cur.dim);
-                vel=cur;
-                acc=new d::coord<double>(cur.dim);
-            }
+            auto setParam=[&cur]() {
+                if constexpr(tracksTime<decltype(cur)>) {
+                    return std::make_tuple<cur[0], cur[1], cur[2]>;
+                } else {
+                    return std::make_tuple<d::coord<double>(cur.dim), cur, d::coord<double>(cur.dim)>;
+                }
+            };
+            auto [pos, vel, acc] = setParam();
             assert(f(pos).dim==pos.dim &&
                     "Slope function within d::numerical::rk4::run() doesn't return d::coord with correct dimension");
             // Since d::coord is VLA and dim isn't const
@@ -37,7 +35,7 @@ namespace d::dou::geo::rk4 {
                 if constexpr(!runForever) {
                     if(++i>=loopTimes)
                         break;
-                        //goto rtrn;
+                    //goto rtrn;
                 }
                 if constexpr(runForever)
                     std::cout << "Notice: Infinite loop of d::numerical::rk4, logging is disable.\n\n";
@@ -47,6 +45,8 @@ namespace d::dou::geo::rk4 {
                     k3=f(acc+d::coord<double>({hh*k2})),
                     k4=f(acc+d::coord<double>({hh*k3}));
                 if constexpr(tracksTime<R>) cur.t+=h;
+                pos=vel;
+                vel=acc;
                 acc+=(k1+2*k2+2*k3+k4)/6*h;
                 if constexpr(log) cur.log[i]=cur;
                 if constexpr(runForever) std::cout << cur << std::endl;
