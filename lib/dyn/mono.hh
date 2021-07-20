@@ -57,7 +57,7 @@ namespace d::dyn {
             mono(const mono<T, logIncrPromise> &other): order(other.order), t(other.t) {
                 std::cout << "&()" << std::endl;
                 d=new d::coord<T>[order+1];
-                if constexpr(other.d!=nullptr) memcpy(d, other.d, sizeof(d::coord<T>)*(order+1));
+                memcpy(d, other.d, sizeof(d::coord<T>)*(order+1));
             }
             mono(mono<T, logIncrPromise> &&other) noexcept: d(std::exchange(other.d, nullptr)), order(std::exchange(other.order, 0)), t(std::exchange(other.t, 0)), log(std::exchange(other.log, nullptr)) {
                 std::cout << "&&()" << std::endl;
