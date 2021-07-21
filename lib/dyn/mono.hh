@@ -111,7 +111,10 @@ namespace d::dyn {
 //                }
 //            }
             friend ostream& operator<<(ostream& os, const mono& x) {
-                os << "t="<<x.t<<"; pos="<<x[0]<<"; vel="<<x[1];
+                os<<"============\n";
+                for(di i=0; i<=x.order; ++i)
+                    os<<x.d[i]<<"\n";
+                os<<"============";
                 return os;
             }
             //template<typename C> operator d::d::coord<C>() const { return pos; }
