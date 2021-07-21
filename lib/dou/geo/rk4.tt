@@ -40,10 +40,10 @@ namespace d::dou::geo::rk4 {
                 if constexpr(runForever)
                     std::cout << "Notice: Infinite loop of d::numerical::rk4, logging is disable.\n\n";
 
-                d::coord<double>   k1=f(acc),
-                    k2=f(acc+d::coord<double>({hh*k1})),
-                    k3=f(acc+d::coord<double>({hh*k2})),
-                    k4=f(acc+d::coord<double>({hh*k3}));
+                auto   k1=f(acc),
+                       k2=f(acc+hh*k1),
+                       k3=f(acc+hh*k2),
+                       k4=f(acc+hh*k3);
                 if constexpr(tracksTime<R>) cur.t+=h;
                 pos=vel;
                 vel=acc;
