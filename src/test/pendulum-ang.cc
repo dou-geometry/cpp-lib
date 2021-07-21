@@ -1,4 +1,6 @@
 #include"../lib/dou/geo/rk4.hh"
+#include"../lib/cls/coord.hh"
+#include"../lib/dyn/mono.hh"
 #include <cmath>
 #include<iostream>
 
@@ -17,7 +19,5 @@ int main() {
     d::coord<double> d({1, 2}), b({2, 4}), c({2, 0});
     d::dyn::mono<double, true> m(2, d, b, c);
     test(m);
-    std::cout << ":::" << std::endl;
-    std::cout << m.order << std::endl;
-    std::cout << m[0] << std::endl;
+    std::cout << m << std::endl;
 }
