@@ -34,3 +34,8 @@ std::string d::conn::sage::plot(cov& f, conn::sage::settings::files& info) {
 	info.scriptf.close();
 	return conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
 }
+
+template<typename D>
+std::string d::conn::sage::anime(const d::dyn::mono<D>& m, settings::files& info) {
+    // dot, blue vel, red acc
+}
