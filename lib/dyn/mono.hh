@@ -1,6 +1,7 @@
 #pragma once
 
 #include"../cls/coord.hh"
+#include"../concepts/nonDim.hh"
 #include<iostream>
 #include <type_traits>
 #include<cassert>
@@ -15,9 +16,9 @@ namespace d::dyn {
             mono* log=nullptr;
             d::coord<T> *d=nullptr;
             //d::coord<T> &pos=d[0], &vel=d[1], &acc=d[2];
-            template<typename...Ts>
-                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type>
-                mono(di ord, Ts...args): order(ord), t(0) {
+            template<typename X, typename...Ts>
+                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
+                mono(di ord, X it, Ts...args): order(ord), t(it) {
                     d=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
                     assert(sizeof...(Ts)<=(order+1)&& "d::dyn::mono initialization error, too many arguments");
                     di i=0;
@@ -25,21 +26,20 @@ namespace d::dyn {
                     for(di i=sizeof...(Ts); i<=order; ++i)
                         d[i]=d::coord<T>(d[0].dim);
                 }
-            mono(): mono(1, d::coord<T>(1)) {
-            }
-            mono(di dimension): mono(2, d::coord<T>(dimension)) {}
             template<typename...Ts>
                 requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type>
-                mono(Ts...args): mono(sizeof...(Ts)-1, args..., 0.) {}
+                mono(Ts...args): mono(sizeof...(Ts)-1, 0.0, args...) {}
+            template<typename X, typename...Ts> 
+                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
+                mono(di ord, Ts...args): mono(ord, 0.0, args...) {}
             template<typename X, typename...Ts> 
                 requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
                 mono(X it, Ts...args): mono(sizeof...(Ts)-1, args..., it) {}
             template<typename X, typename...Ts> 
                 requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
                 mono(X it, di ord, Ts...args): mono(ord, args..., it) {}
-            template<typename X, typename...Ts> 
-                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
-                mono(di ord, X it, Ts...args): mono(ord, args..., it) {}
+            mono(): mono(1, d::coord<T>(1)) {}
+            mono(di dimension): mono(2, d::coord<T>(dimension)) {}
             ~mono() {
                 delete[]log;
                 for(di i=0; i<=order; i++)
@@ -96,6 +96,39 @@ namespace d::dyn {
                     }
                 }
             }
+            template<long delta=-1, typename...Ts>
+                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type>
+                mono& shift(Ts...args) {
+                    if constexpr(delta==0) {
+                        return *this;
+                    } else {
+                        assert(sizeof...(Ts)<=std::abs(delta) && 
+                                "Too many arguments in d::dyn::mono::shift<>()");
+                        if constexpr(delta>=0) {
+                            for(di i=order; i>=delta; --i)
+                                d[i]=d[i-delta];
+                            di i=0;
+                            (...,void(d[i++] = args)); // https://stackoverflow.com/a/34569679/8460574
+                            constexpr long mis=(delta)-sizeof...(Ts);
+                            if constexpr(mis) {
+                                for(;i<delta; ++i)
+                                    d[i]=d::coord<T>(d->dim);
+                            }
+                        } else {
+                            for(int i=0; i<=order+delta; ++i)
+                                d[i]=d[i-delta];
+                            int i=order+delta+1;
+                            (...,void(d[i++] = args)); // https://stackoverflow.com/a/34569679/8460574
+                            constexpr long mis=(delta*-1)-sizeof...(Ts);
+                            if constexpr(mis) {
+                                for(;i<=order; ++i)
+                                    d[i]=d::coord<T>(d->dim);
+                            }
+                        }
+                        return *this;
+                    }
+                }
+            template<long delta=-1> mono& shift() { return this->shift<delta>(d::coord<T>(d->dim)); }
             friend ostream& operator<<(ostream& os, const mono& x) {
                 os<<"============\n";
                 for(di i=0; i<=x.order; ++i)
