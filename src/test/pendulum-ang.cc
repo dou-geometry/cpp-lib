@@ -1,4 +1,4 @@
-#include"../lib/dou/geo/rk4.hh"
+#include"../lib/numerical/rk4.hh"
 #include"../lib/cls/coord.hh"
 #include"../lib/dyn/mono.hh"
 #include <cmath>
@@ -12,10 +12,11 @@
  */
 
 int main() {
-    auto a=[](d::coord<double> x) { return d::coord<double>({0, -G/x[0]*std::sin(x[1])}); };
-    d::coord<double> d({1, 2}), b({2, 4}), c({2, 0});
-    d::dyn::mono<double, true> m(2ul, 0.0, d, b, c);
-    std::cout << m << std::endl;
-    m.shift<-1>(c);
-    std::cout << m << std::endl;
+    auto a=[](const d::dyn::mono<double, true>& m) { auto x=m[0]; return d::coord<double>({0, -G/x[0]*std::sin(x[1])}); };
+    d::coord<double> initPos({2, 125.0/180.0*M_PI});
+    d::dyn::mono<double, true> m(2, initPos, d::coord<double>(2), d::coord<double>(2));
+    d::numerical::rk4::run<100, false>(m, a, 1.2);
+    std::cout << "Data: " << m.logSize << std::endl;
+    for(di i=0; i<m.logSize; ++i)
+        std::cout << m.log[i] << std::endl;
 }
