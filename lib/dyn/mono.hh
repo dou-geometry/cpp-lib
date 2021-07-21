@@ -28,18 +28,18 @@ namespace d::dyn {
             mono(): mono(1, d::coord<T>(1)) {
             }
             mono(di dimension): mono(2, d::coord<T>(dimension)) {}
-//            template<typename...Ts>
-//                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type>
-//                mono(Ts...args): mono(sizeof...(Ts)-1, args..., 0.) {}
-//            template<typename X, typename...Ts> 
-//                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
-//                mono(X it, Ts...args): mono(sizeof...(Ts)-1, args..., it) {}
-//            template<typename X, typename...Ts> 
-//                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
-//                mono(X it, di ord, Ts...args): mono(ord, args..., it) {}
-//            template<typename X, typename...Ts> 
-//                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
-//                mono(di ord, X it, Ts...args): mono(ord, args..., it) {}
+            template<typename...Ts>
+                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type>
+                mono(Ts...args): mono(sizeof...(Ts)-1, args..., 0.) {}
+            template<typename X, typename...Ts> 
+                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
+                mono(X it, Ts...args): mono(sizeof...(Ts)-1, args..., it) {}
+            template<typename X, typename...Ts> 
+                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
+                mono(X it, di ord, Ts...args): mono(ord, args..., it) {}
+            template<typename X, typename...Ts> 
+                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
+                mono(di ord, X it, Ts...args): mono(ord, args..., it) {}
             ~mono() {
                 delete[]log;
                 for(di i=0; i<=order; i++)
@@ -49,11 +49,6 @@ namespace d::dyn {
                     d[i].~coord();
                 free(d);
             }
-
-
-
-
-
             mono(const mono<T, logIncrPromise> &other): order(other.order), t(other.t) {
                 d=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
                 for(di i=0; i<=order; ++i)
@@ -85,22 +80,22 @@ namespace d::dyn {
             d::coord<T> operator[](int i) const {
                 return this->d[i];
             }
-//            mono& operator()(double t) { // This preforms check if t matches, if failed it'll be followed by binary search
-//                double dt=this->log[1]-(this->log[0]);
-//                t-=this->log[0];
-//                int id=t/dt;
-//                if constexpr(logIncrPromise) { return this->log[id]; }
-//                else {
-//                    if((this->log[id]).t==t) {
-//                        return this->log[id];
-//                    } else {
-//                        while((this->log[id]).t!=t) {
-//                            id-=((this->log[id]).t)>t?id/2:-1;
-//                        }
-//                        return this->log[id];
-//                    }
-//                }
-//            }
+            mono& operator()(double t) { // This preforms check if t matches, if failed it'll be followed by binary search
+                double dt=this->log[1]-(this->log[0]);
+                t-=this->log[0];
+                int id=t/dt;
+                if constexpr(logIncrPromise) { return this->log[id]; }
+                else {
+                    if((this->log[id]).t==t) {
+                        return this->log[id];
+                    } else {
+                        while((this->log[id]).t!=t) {
+                            id-=((this->log[id]).t)>t?id/2:-1;
+                        }
+                        return this->log[id];
+                    }
+                }
+            }
             friend ostream& operator<<(ostream& os, const mono& x) {
                 os<<"============\n";
                 for(di i=0; i<=x.order; ++i)
