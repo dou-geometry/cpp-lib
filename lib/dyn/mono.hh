@@ -19,7 +19,7 @@ namespace d::dyn {
                 requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type>
                 mono(di ord, Ts...args): order(ord), t(0) {
                     std::cout << "Standard init d::dyn::mono" << std::endl;
-                    d=new d::coord<T>[order+1];
+                    d=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
                     assert(sizeof...(Ts)<=(order+1)&& "d::dyn::mono initialization error, too many arguments");
                     di i=0;
                     (...,void(d[i++] = args)); // https://stackoverflow.com/a/34569679/8460574
@@ -47,7 +47,12 @@ namespace d::dyn {
             ~mono() {
                 std::cout << "------------" << std::endl;
                 delete[]log;
-                delete[]d;
+                for(di i=0; i<=order; i++)
+                    // this supposed, as all existing constructors behaves,
+                    // you couldn't create a d::dyn::mono without fully initializing the d::dyn:::mono::d
+                    // use malloc is just saving time as it doesn't require constructor to be called twice
+                    d[i].~coord();
+                free(d);
             }
 
 
@@ -56,8 +61,9 @@ namespace d::dyn {
 
             mono(const mono<T, logIncrPromise> &other): order(other.order), t(other.t) {
                 std::cout << "&()" << std::endl;
-                d=new d::coord<T>[order+1];
-                memcpy(d, other.d, sizeof(d::coord<T>)*(order+1));
+                d=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
+                for(di i=0; i<=order; ++i)
+                    d[i]=other.d[i];
             }
             mono(mono<T, logIncrPromise> &&other) noexcept: d(std::exchange(other.d, nullptr)), order(std::exchange(other.order, 0)), t(std::exchange(other.t, 0)), log(std::exchange(other.log, nullptr)) {
                 std::cout << "&&()" << std::endl;
@@ -69,8 +75,9 @@ namespace d::dyn {
                 // Only copying t, pos, vel
                 t=other.t; // As order in array are only relative to the log[0]
                 order=other.order;
-                d=new d::coord<T>[order+1];
-                memcpy(d, other.d, sizeof(d::coord<T>)*(order+1));
+                d=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
+                for(di i=0; i<=order; ++i)
+                    d[i]=other.d[i];
                 return *this;
             }
             mono& operator=(mono<T, logIncrPromise> &&other) noexcept {
