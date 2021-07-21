@@ -4,6 +4,8 @@
 #define ull unsigned long long int
 #define ll long long int
 #define deg unsigned short
+#include"../concepts/nonDim.hh"
+#include<concepts>
 #include <initializer_list>
 #include <iostream>
 #include<cmath>
@@ -190,11 +192,13 @@ namespace d {
             cout << "Please enter coordinate with each parameter seperated by space: ";
             x.input();
         }
-        operator T() const {
-            T res=1;
-            for(di i=0; i<dim; i++) res*=this->d[i];
-            return res;
-        }
+        template<typename Z>
+            requires (d::nonDim<Z>)
+            operator Z() const {
+                Z res=1;
+                for(di i=0; i<dim; i++) res*=this->d[i];
+                return res;
+            }
         template<typename Z>operator coord<Z>() const {
             coord<Z> res(this->dim);
             for(di i=0; i<dim; i++) res[i]=(Z)d[i];
