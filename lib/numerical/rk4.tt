@@ -2,14 +2,12 @@
 #include <cassert>
 #include<concepts>
 
-namespace d::numerical::rk4 {
-    template<bool runForever=false, typename R, typename F>
-        requires x<R, F>
-        R run(R cur, const F &f, const double tt) {
-            if constexpr(tracksTime<R>) assert(f(cur.pos).dim==cur.pos.dim &&
-                    "Slope function within d::numerical::rk4::run() doesn't return d::coord with correct dimension");
-            else assert(f(cur).dim==cur.dim &&
-                    "Slope function within d::numerical::rk4::run() doesn't return d::coord with correct dimension");
+namespace d::numerical::rk4 { // Arbitary-Order ODE version
+    template<int logTrigger=1, bool runForever=false, typename R, typename F>
+        requires dynMono<R, F>
+        R run(R& cur, const F &f, const double tt) {
+            assert(f(cur).dim==cur[0].dim &&
+                    "Slope function within d::numerical::rk4::run() doesn't return d::dyn::mono with correct dimension");
             // Since d::coord is VLA and dim isn't const
             assert((tt==0)==runForever && 
                     "(tt==0)!=runForever");
@@ -20,50 +18,36 @@ namespace d::numerical::rk4 {
             if constexpr(log) {
                 assert(cur.log==nullptr&&
                         "Log of d::dyn::mono in d::numerical::rk4::run() isn't empty");
-                cur.log=(R*)malloc(sizeof(R)*(loopTimes+1));
+                di mlcNum=std::ceil(loopTimes/logTrigger);
+                std::cout << "Malloc: "<<mlcNum<<std::endl;
+                cur.log=(R*)malloc(sizeof(R)*(mlcNum));
+                *(cur.log)=cur;
             }
 
             double h=tt/((double)loopTimes), hh=h/2;
-            if constexpr(!runForever) {
-                for(int i=0; i<loopTimes; i++) { // WHy < not <= ?
-                    if constexpr(tracksTime<R>) {
-                        d::coord<double>   k1=f(cur.pos),
-                            k2=f(cur.pos+d::coord<double>({hh*k1})),
-                            k3=f(cur.pos+d::coord<double>({hh*k2})),
-                            k4=f(cur.pos+d::coord<double>({hh*k3}));
-                        cur.t+=h;
-                        cur.pos+=(k1+2*k2+2*k3+k4)/6*h;
-                        cur.log[i]=cur;
-                    } else {
-                        d::coord<double>   k1=f(cur),
-                            k2=f(cur+d::coord<double>({hh*k1})),
-                            k3=f(cur+d::coord<double>({hh*k2})),
-                            k4=f(cur+d::coord<double>({hh*k3}));
-                        cur+=(k1+2*k2+2*k3+k4)/6*h;
-                    }
+            di i=0;
+            while(true) { // WHy < not <= ?
+                if constexpr(!runForever) {
+                    if(++i>=loopTimes)
+                        goto rtrn;
                 }
-                return cur;
-            } else {
-                std::cout << "Notice: Infinite loop of d::numerical::rk4, logging is disable.\n\n";
-                while(true) {
-                    if constexpr(tracksTime<R>) {
-                        d::coord<double>   k1=f(cur.pos),
-                            k2=f(cur.pos+d::coord<double>({hh*k1})),
-                            k3=f(cur.pos+d::coord<double>({hh*k2})),
-                            k4=f(cur.pos+d::coord<double>({hh*k3}));
-                        cur.t+=h;
-                        cur.pos+=(k1+2*k2+2*k3+k4)/6*h;
-                    } else {
-                        d::coord<double>   k1=f(cur),
-                            k2=f(cur+d::coord<double>({hh*k1})),
-                            k3=f(cur+d::coord<double>({hh*k2})),
-                            k4=f(cur+d::coord<double>({hh*k3}));
-                        cur+=(k1+2*k2+2*k3+k4)/6*h;
-                    }
-                    std::cout << cur << std::endl;
-                }
-                return cur;
+                if constexpr(runForever)
+                    std::cout << "Notice: Infinite loop of d::numerical::rk4, logging is disable.\n\n";
+
+                auto   k1=cur.shift(f(cur)),
+                       k2=(cur+hh*k1).shift(f),
+                       k3=(cur+hh*k2).shift(f),
+                       k4=(cur+h*k3).shift(f);
+                if constexpr(tracksTime<R>) cur.t+=h;
+                cur+=(k1+2.*k2+2.*k3+k4)/6.*h;
+                if constexpr(log) if(i%logTrigger==0)
+                    cur.log[++(cur.logSize)]=cur;
+                if constexpr(runForever) if(i%logTrigger==0) std::cout << cur << std::endl;
             }
+rtrn:
+            std::cout << "Ran with: "<<loopTimes<<", "<<runForever<<std::endl;
+            //if constexpr(log) cur.log->d->d[0]=i;
+            return cur;
         }
     template<typename C> d::dyn::mono<C> run(const d::dyn::mono<C>& x0, const std::function<C(C)> &f, const double s, const double t) { return run(x0, f, t-s); }
     template<typename C> C run(const C& x0, const std::function<C(C)> &f, const double s, const double t) { return run(x0, f, t-s); }
