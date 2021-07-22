@@ -10,7 +10,7 @@
 #define ll long long int
 namespace d::conn::sage {
     std::string plot(cov&, settings::files&);
-    std::string anime(const d::dyn::mono<double, true>& m, settings::files& info, di shadowFrames=0) {
+    std::string anime(const d::dyn::mono<double, true>& m, settings::files<"gif">& info, di shadowFrames=0) {
         std::cout << "Plotting" << std::endl;
         info.scriptf<<"#!/usr/bin/env sage\n";
         info.scriptf<<"import sys\n";
