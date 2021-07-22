@@ -24,7 +24,7 @@ namespace d::conn::sage::settings {
                 d=d.substr(0, d.size()-1);
             }
             if(RGFC>0) {
-                s=conn::bash::exec("mktemp");
+                s=conn::bash::exec("mktemp --suffix=.sage");
                 s=s.substr(0, s.size()-1);
             }
             this->script=s;
