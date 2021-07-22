@@ -15,14 +15,20 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
             int loopTimes=(int)std::ceil(tt/h);
 
             constexpr bool log=(d::dyn::Loggable<R>&&!runForever);
-            if constexpr(log) {
-                assert(cur.log==nullptr&&
-                        "Log of d::dyn::mono in d::numerical::rk4::run() isn't empty");
-                di mlcNum=std::ceil(loopTimes/logTrigger);
-                std::cout << "Malloc: "<<mlcNum<<std::endl;
-                cur.log=(R*)malloc(sizeof(R)*(mlcNum));
-                *(cur.log)=cur;
-            }
+            auto mlc=[&log, &cur, &loopTimes](){
+                if constexpr(log) {
+                    assert(cur.log==nullptr&&
+                            "Log of d::dyn::mono in d::numerical::rk4::run() isn't empty");
+                    di mlcNum=std::ceil(loopTimes/logTrigger);
+                    std::cout << "Malloc: "<<mlcNum<<std::endl;
+                    cur.log=(R*)malloc(sizeof(R)*(mlcNum+1));
+                    assert(cur.log!=nullptr);
+                    new(cur.log)R(cur);
+                    cur.logSize=0;
+                    return mlcNum;
+                }
+            };
+            di logItems=mlc();
 
             h=tt/((double)loopTimes);
             double hh=h/2;
@@ -41,11 +47,17 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
                        k4=(cur+h*k3).shift(f);
                 if constexpr(d::tracksTime<R>) cur.t+=h;
                 cur+=(k1+2.*k2+2.*k3+k4)/6.*h;
-                if constexpr(log) if(i%logTrigger==0)
-                    cur.log[++(cur.logSize)]=cur;
+                if constexpr(log) {
+                    if(i%logTrigger==0) {
+                        ++(cur.logSize);
+                        std::cout<<cur.logSize<<std::endl;
+                        new(cur.log+cur.logSize)R(cur);
+                    }
+                }
                 if constexpr(runForever) if(i%logTrigger==0) std::cout << cur << std::endl;
             }
 rtrn:
+            if constexpr(log) assert(cur.logSize==logItems);
             std::cout << "Ran with: "<<loopTimes<<", "<<runForever<<std::endl;
             //if constexpr(log) cur.log->d->d[0]=i;
             return cur;
