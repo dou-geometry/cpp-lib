@@ -24,7 +24,8 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
                 *(cur.log)=cur;
             }
 
-            double h=tt/((double)loopTimes), hh=h/2;
+            h=tt/((double)loopTimes);
+            double hh=h/2;
             di i=0;
             while(true) { // WHy < not <= ?
                 if constexpr(!runForever) {
