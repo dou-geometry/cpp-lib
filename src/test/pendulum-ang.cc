@@ -20,10 +20,8 @@ int main() {
     d::dyn::mono<double, true> m(2, initPos, d::coord<double>(2), d::coord<double>(2));
     d::numerical::rk4::run<10, false>(m, a, 1.2);
     std::cout << "Data: " << m.logSize << std::endl;
-    d::conn::sage::settings::files sett("/tmp/animate.gif");
+    d::conn::sage::settings::files<"gif"> sett("/tmp/animate.gif");
     std::cout << sett << std::endl;
-    std::string x;
     std::cout << d::conn::sage::anime(m, sett);
-    std::cin>>x;
     return 0;
 }
