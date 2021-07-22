@@ -53,7 +53,7 @@ namespace d::conn::sage::settings {
             this->dataf.close();
         }
 	friend ostream& operator<<(ostream& os, files &f) {
-		os << "Plot: " << f.plot << "\nData: " << f.data << "\nScript: " << f.script;
+		os << "Plot: " << f.plot << "\nData: " << f.data << (f.rmData?"(deleted)":"") << "\nScript: " << f.script << (f.rmScript?"(deleted)":"");
 		return os;
 	}
     };
