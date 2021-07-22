@@ -35,14 +35,14 @@ namespace d::conn::sage {
         info.scriptf<<"        else:\n";
         info.scriptf<<"            if(cc==0):\n";
         info.scriptf<<"                vct=vector(sage_eval(ln))\n";
-        info.scriptf<<"                npt=vct[0]*e^(i*vct[1])\n";
+        info.scriptf<<"                npt=vct[0]*e^(i*(vct[1]-pi/2))\n";
         info.scriptf<<"                frames[fn]+=point(npt)\n";
         info.scriptf<<"            if(cc==1):\n";
         info.scriptf<<"                x=sage_eval(ln)\n";
-        info.scriptf<<"                frames[fn]+=line([npt, x[0]*e^(i*x[1])], color=\"blue\")\n";
+        info.scriptf<<"                frames[fn]+=line([npt, x[0]*e^(i*(x[1]-pi/2))], color=\"blue\")\n";
         info.scriptf<<"            if(cc==2):\n";
         info.scriptf<<"                x=sage_eval(ln)\n";
-        info.scriptf<<"                frames[fn]+=line([npt, x[0]*e^(i*x[1])], color=\"red\")\n";
+        info.scriptf<<"                frames[fn]+=line([npt, x[0]*e^(i*(x[1]-pi/2))], color=\"red\")\n";
         info.scriptf<<"            cc+=1\n";
         info.scriptf<<"    return frames\n";
         info.scriptf<<"def main():\n";
