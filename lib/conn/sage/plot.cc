@@ -2,7 +2,7 @@
 #include"./plot.hh"
 #include<bits/stdc++.h>
 
-std::string d::conn::sage::plot(cov& f, conn::sage::settings::files& info) {
+std::string d::conn::sage::plot(cov& f, conn::sage::settings::files<d::conn::sage::settings::png>& info) {
     info.scriptf<<"#!/usr/bin/env sage\n";
     info.scriptf<<"import sys\n";
     info.scriptf<<"from sage.all import *\n";
@@ -35,6 +35,6 @@ std::string d::conn::sage::plot(cov& f, conn::sage::settings::files& info) {
     return conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
 }
 
-template std::string anime(const d::dyn::mono<float, true>&, settings::files<"gif">&, di);
-template std::string anime(const d::dyn::mono<double, true>&, settings::files<"gif">&, di);
-template std::string anime(const d::dyn::mono<long double, true>&, settings::files<"gif">&, di);
+template std::string d::conn::sage::anime(const d::dyn::mono<float, true>&, d::conn::sage::settings::files<d::conn::sage::settings::gif>&, di shadowFrames=0);
+template std::string d::conn::sage::anime(const d::dyn::mono<double, true>&, d::conn::sage::settings::files<d::conn::sage::settings::gif>&, di shadowFrames=0);
+template std::string d::conn::sage::anime(const d::dyn::mono<long double, true>&, d::conn::sage::settings::files<d::conn::sage::settings::gif>&, di shadowFrames=0);
