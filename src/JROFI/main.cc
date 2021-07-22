@@ -16,6 +16,6 @@ int main() {
     //d::dyn::mono<double, true> m(2);
     d::coord<double> m(2);
     std::function<d::coord<double>(d::coord<double>)> cf=f;
-    m=d::numerical::rk4::run(m, f, 10.0);
+    //m=d::numerical::rk4::run(m, f, 10.0);
     std::cout << m << std::endl;
 }
