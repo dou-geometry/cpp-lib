@@ -11,13 +11,12 @@ namespace d::conn::sage::settings {
         files():rmScript(true), rmData(true), rmPlot(true) {
             this->init(3);
         }
-        files(std::string pExt): rmScript(true), rmData(true) { this->init(2, pExt); }
-        //files(std::string pl): rmScript(true), rmData(true) { this->init(2, pl); }
-        //files(std::string pl, std::string da): rmScript(true) { this->init(1, pl, da); }
-        //files(std::string pl, std::string da, std::string sc) {this->init(0, pl, da, sc);}
-        void init(di RGFC=3, std::string pExt="png", std::string p="", std::string d="", std::string s="") {
+        files(std::string pl): rmScript(true), rmData(true) { this->init(2, pl); }
+        files(std::string pl, std::string da): rmScript(true) { this->init(1, pl, da); }
+        files(std::string pl, std::string da, std::string sc) {this->init(0, pl, da, sc);}
+        void init(di RGFC=3, std::string p="", std::string d="", std::string s="") {
             if(RGFC>2) {
-                p=conn::bash::exec("mktemp --suffix=."+pExt);
+                p=conn::bash::exec("mktemp");
                 p=p.substr(0, p.size()-1);
             }
             if(RGFC>1) {
