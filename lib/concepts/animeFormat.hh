@@ -1,5 +1,7 @@
 #pragma once
 #include<string>
 
-template<std::string T>
+namespace d {
+template<const char *T>
 concept animeFormat = T=="gif" || T=="apng";
+}

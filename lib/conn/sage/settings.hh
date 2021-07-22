@@ -4,7 +4,13 @@
 #ifndef __CONN_SAGE_SETTINGS__
 #define __CONN_SAGE_SETTINGS__
 namespace d::conn::sage::settings {
-    template<std::string plotExt="png">
+    // file Extensions
+    static const char png[]="png";
+    static const char gif[]="gif";
+    static const char apng[]="apng";
+    static const char jpeg[]="jpeg";
+
+    template<const char *plotExt="png">
     struct files {
         ofstream scriptf, dataf;
         std::string script, plot, data;
@@ -17,7 +23,7 @@ namespace d::conn::sage::settings {
         files(std::string pl, std::string da, std::string sc) {this->init(0, pl, da, sc);}
         void init(di RGFC=3, std::string p="", std::string d="", std::string s="") {
             if(RGFC>2) {
-                p=conn::bash::exec("mktemp --suffix=."+plotExt);
+                p=conn::bash::exec("mktemp --suffix=."+(std::string)plotExt);
                 p=p.substr(0, p.size()-1);
             }
             if(RGFC>1) {

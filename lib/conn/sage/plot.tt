@@ -1,8 +1,7 @@
 template<typename D>
 requires d::logIncrPromise<D> && //currently useless
-        d::tracksTime<D> &&
-        d::animeFormat<M>
-std::string anime(const D& m, settings::files<"gif">& info, di shadowFrames) {
+        d::tracksTime<D>
+std::string d::conn::sage::anime(const D& m, d::conn::sage::settings::files<settings::gif>& info, di shadowFrames=0) {
     std::cout << "Plotting" << std::endl;
     info.scriptf<<"#!/usr/bin/env sage\n";
     info.scriptf<<"import sys\n";
