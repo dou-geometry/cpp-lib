@@ -55,6 +55,7 @@ namespace d {
             //printf("move ro3");
             if (this == &other) return *this;
             dim=other.dim;
+            delete[]d;
             d=new T[dim];
             memcpy(d, other.d, sizeof(T)*dim);
             return *this;
