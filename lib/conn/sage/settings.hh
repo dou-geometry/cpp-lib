@@ -14,8 +14,8 @@ namespace d::conn::sage::settings {
     struct files {
         ofstream scriptf, dataf;
         std::string script, plot, data;
-        const bool rmData=false, rmScript=false, rmPlot=false;
-        files():rmScript(true), rmData(true), rmPlot(true) {
+        const bool rmData=false, rmScript=false;
+        files():rmScript(true), rmData(true) {
             this->init(3);
         }
         files(std::string pl): rmScript(true), rmData(true) { this->init(2, pl); }
@@ -48,7 +48,7 @@ namespace d::conn::sage::settings {
         ~files() {
             if(rmScript) conn::bash::exec(("rm "+this->script).c_str());
             if(rmData) conn::bash::exec(("rm "+this->data).c_str());
-            if(rmPlot) conn::bash::exec(("rm "+this->plot).c_str());
+            //conn::bash::exec(("rm "+this->plot).c_str());
             this->scriptf.close();
             this->dataf.close();
         }
