@@ -5,14 +5,14 @@
 namespace d::numerical::rk4 { // Arbitary-Order ODE version
     template<int logTrigger=1, bool runForever=false, typename R, typename F>
         requires dynMono<R, F>
-        R run(R& cur, const F &f, const double tt) {
+        R run(R& cur, const F &f, const double tt, double h=d::numerical::rk4::h) {
             assert(f(cur).dim==cur[0].dim &&
                     "Slope function within d::numerical::rk4::run() doesn't return d::dyn::mono with correct dimension");
             // Since d::coord is VLA and dim isn't const
             assert((tt==0)==runForever && 
                     "(tt==0)!=runForever");
 
-            int loopTimes=(int)std::ceil(tt/d::numerical::rk4::h);
+            int loopTimes=(int)std::ceil(tt/h);
 
             constexpr bool log=(d::dyn::Loggable<R>&&!runForever);
             if constexpr(log) {

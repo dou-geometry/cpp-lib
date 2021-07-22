@@ -24,12 +24,13 @@ namespace d::dyn {
                 requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
                 mono(di ord, X it, Ts...args): order(ord), t(it) {
                     d=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
+                    assert(d!=NULL);
                     assert(sizeof...(Ts)<=(order+1)&& "d::dyn::mono initialization error, too many arguments");
                     di i=0;
-                    (...,void(d[i++] = args)); // https://stackoverflow.com/a/34569679/8460574
+                    (...,void(new(d+(i++))d::coord<T>(args))); // https://stackoverflow.com/a/34569679/8460574
                     std::cout << "Size: " << sizeof...(Ts) << std::endl;
                     for(di i=sizeof...(Ts); i<=order; ++i)
-                        d[i]=d::coord<T>(d[0].dim);
+                        new(d+i)d::coord<T>(d->dim);
                 }
             template<typename...Ts>
                 requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type>
@@ -48,25 +49,30 @@ namespace d::dyn {
             ~mono() {
                 if(log!=nullptr)
                     for(di i=0; i<=logSize; ++i)
-                        log[i].~mono();
-                free(log);
+                        (log+i)->~mono();
+                //free(log);
                 if (d!=nullptr)
                     for(di i=0; i<=order; i++)
+                        (d+i)->~coord();
                         // this supposed, as all existing constructors behaves,
                         // you couldn't create a d::dyn::mono without fully initializing the d::dyn:::mono::d
                         // use malloc is just saving time as it doesn't require constructor to be called twice
-                        d[i].~coord();
-                free(d);
+                //free(d);
             }
             mono(const mono<T, false> &other): order(other.order), t(other.t) {
-                d=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
+                d::coord<T>* tptr=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
+                assert(tptr!=NULL);
+                d=tptr;
                 for(di i=0; i<=order; ++i)
-                    d[i]=other.d[i];
+                    new(d+i)d::coord<T>(other.d[i]);
             }
             mono(const mono<T, true> &other): order(other.order), t(other.t) {
-                d=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
+                d::coord<T>* tptr=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
+                assert(tptr!=NULL);
+                d=tptr;
                 for(di i=0; i<=order; ++i)
-                    d[i]=other.d[i];
+                    new(d+i)d::coord<T>(other.d[i]);
+                //d[i]=other.d[i];
             }
             mono(mono<T, logIncrPromise> &&other) noexcept: d(std::exchange(other.d, nullptr)), order(std::exchange(other.order, 0)), t(std::exchange(other.t, 0)), log(std::exchange(other.log, nullptr)) {
             }
@@ -74,22 +80,33 @@ namespace d::dyn {
                 if(this==&other) return *this;
                 // Basically we aren't replacing logs
                 // Only copying t, pos, vel
-                t=other.t; // As order in array are only relative to the log[0]
-                order=other.order;
-                d=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
+                this->t=other.t; // As order in array are only relative to the log[0]
+                this->order=other.order;
+                d::coord<T>* tptr=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
+                assert(tptr!=NULL);
+                if(d!=nullptr)
+                    for(di i=0; i<=order; i++)
+                        (d+i)->~coord();
+                d=tptr;
                 for(di i=0; i<=order; ++i)
-                    d[i]=other.d[i];
+                    new(d+i)d::coord<T>(other.d[i]);
                 return *this;
             }
             mono& operator=(const mono<T, true> &other) {
                 if(this==&other) return *this;
                 // Basically we aren't replacing logs
                 // Only copying t, pos, vel
-                t=other.t; // As order in array are only relative to the log[0]
-                order=other.order;
-                d=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
+                this->t=other.t; // As order in array are only relative to the log[0]
+                this->order=other.order;
+                d::coord<T>* tptr=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
+                assert(tptr!=NULL);
+                if(d!=nullptr)
+                    for(di i=0; i<=order; i++)
+                        d[i].~coord();
+                free(d);
+                d=tptr;
                 for(di i=0; i<=order; ++i)
-                    d[i]=other.d[i];
+                    new(d+i)d::coord<T>(other.d[i]);
                 return *this;
             }
             mono<T, logIncrPromise>& operator=(mono<T, logIncrPromise> &&other) noexcept {
