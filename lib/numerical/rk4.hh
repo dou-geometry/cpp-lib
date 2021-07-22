@@ -2,14 +2,13 @@
 
 #include"../cls/coord.hh"
 #include"../dyn/mono.hh"
+#include"../concepts/tracksTime.hh"
 #include<functional>
 
 // RK4 currently only support 2-order ODE
 
 namespace d::numerical::rk4 {
     const double h=1e-4;
-    template<typename R>
-        concept tracksTime = requires(const R &r) { r.t; };
     template<typename R, typename F>
         concept dynMono = requires(const R &r, const F &f) {
             std::convertible_to<F, std::function<typename std::decay<decltype(r[0])>::type(R)>>;
