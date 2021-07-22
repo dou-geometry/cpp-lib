@@ -34,7 +34,7 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
                 if constexpr(runForever)
                     std::cout << "Notice: Infinite loop of d::numerical::rk4, logging is disable.\n\n";
 
-                auto   k1=cur.shift(f(cur)),
+                auto   k1=cur.shift(f),
                        k2=(cur+hh*k1).shift(f),
                        k3=(cur+hh*k2).shift(f),
                        k4=(cur+h*k3).shift(f);
