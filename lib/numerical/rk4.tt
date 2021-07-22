@@ -38,7 +38,7 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
                        k2=(cur+hh*k1).shift(f),
                        k3=(cur+hh*k2).shift(f),
                        k4=(cur+h*k3).shift(f);
-                if constexpr(tracksTime<R>) cur.t+=h;
+                if constexpr(d::tracksTime<R>) cur.t+=h;
                 cur+=(k1+2.*k2+2.*k3+k4)/6.*h;
                 if constexpr(log) if(i%logTrigger==0)
                     cur.log[++(cur.logSize)]=cur;
