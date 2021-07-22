@@ -35,3 +35,6 @@ std::string d::conn::sage::plot(cov& f, conn::sage::settings::files& info) {
     return conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
 }
 
+template std::string anime(const d::dyn::mono<float, true>&, settings::files<"gif">&, di);
+template std::string anime(const d::dyn::mono<double, true>&, settings::files<"gif">&, di);
+template std::string anime(const d::dyn::mono<long double, true>&, settings::files<"gif">&, di);
