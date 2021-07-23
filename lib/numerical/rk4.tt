@@ -14,7 +14,7 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
 
             int loopTimes=(int)std::ceil(tt/h);
 
-            constexpr bool log=(d::dyn::Loggable<R>&&!runForever);
+            constexpr bool log=(d::dyn::Loggable<R>&&!runForever&&false);
             auto mlc=[&log, &cur, &loopTimes](){
                 if constexpr(log) {
                     assert(cur.log==nullptr&&
@@ -26,6 +26,8 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
                     new(cur.log)R(cur);
                     cur.logSize=0;
                     return mlcNum;
+                } else {
+                    return 0;
                 }
             };
             di logItems=mlc();
@@ -34,6 +36,7 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
             double hh=h/2;
             di i=0;
             while(true) { // WHy < not <= ?
+                std::cout << "\nLoop, init time="<<cur.t<<std::endl;
                 if constexpr(!runForever) {
                     if(++i>=loopTimes)
                         goto rtrn;
@@ -45,16 +48,17 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
                        k2=(cur+hh*k1).shift(f),
                        k3=(cur+hh*k2).shift(f),
                        k4=(cur+h*k3).shift(f);
+                std::cout << "k1="<<k1<<"\nk2="<<k2<<"\nk3="<<k3<<"\nk4="<<k4<<std::endl;
                 if constexpr(d::tracksTime<R>) cur.t+=h;
                 cur+=(k1+2.*k2+2.*k3+k4)/6.*h;
                 if constexpr(log) {
                     if(i%logTrigger==0) {
                         ++(cur.logSize);
-                        std::cout<<cur.logSize<<std::endl;
                         new(cur.log+cur.logSize)R(cur);
                     }
                 }
-                if constexpr(runForever) if(i%logTrigger==0) std::cout << cur << std::endl;
+                std::cout << "Result: " << cur << std::endl;
+                if constexpr(runForever&&true) if(i%logTrigger==0) goto rtrn;
             }
 rtrn:
             if constexpr(log) assert(cur.logSize==logItems);
