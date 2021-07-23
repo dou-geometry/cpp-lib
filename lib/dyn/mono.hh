@@ -50,14 +50,14 @@ namespace d::dyn {
                 if(log!=nullptr)
                     for(di i=0; i<=logSize; ++i)
                         (log+i)->~mono();
-                //free(log);
+                free(log);
                 if (d!=nullptr)
                     for(di i=0; i<=order; i++)
                         (d+i)->~coord();
                         // this supposed, as all existing constructors behaves,
                         // you couldn't create a d::dyn::mono without fully initializing the d::dyn:::mono::d
                         // use malloc is just saving time as it doesn't require constructor to be called twice
-                //free(d);
+                free(d);
             }
             mono(const mono<T, false> &other): order(other.order), t(other.t) {
                 d::coord<T>* tptr=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
