@@ -17,7 +17,7 @@
 int main() {
     auto a=[](const d::dyn::mono<double, true>& m) { auto x=m[0]; return d::coord<double>({0, -1*G/x[0]*std::sin(x[1])}); };
     d::coord<double> initPos({2, 125.0/180.0*M_PI});
-    d::dyn::mono<double, true> m(2, 0.0, initPos, d::coord<double>(2));
+    d::dyn::mono<double, true> m(2ul, initPos, d::coord<double>(2));
     d::numerical::rk4::run<520, false>(m, a, 4.5);
     std::cout << "Data: " << m.logSize << std::endl;
     std::cout <<std::fixed<<std::setprecision(14);
