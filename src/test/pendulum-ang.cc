@@ -20,10 +20,11 @@ int main() {
     d::dyn::mono<double, true> m(2, initPos, d::coord<double>(2), d::coord<double>(2));
     d::numerical::rk4::run<520, false>(m, a, 1224);
     std::cout << "Data: " << m.logSize << std::endl;
+    std::cout <<std::fixed<<std::setprecision(14);
     d::conn::sage::settings::files<d::conn::sage::settings::gif> anim;
     d::conn::sage::settings::files<d::conn::sage::settings::png> gph("/tmp/plot.png", "/tmp/data");
     //std::cout << d::conn::sage::anime(m, anim);
-    std::cout << d::conn::sage::plot(m, gph);
-    std::cout << "Animation:\n"<<anim<<"\nPlot:\n"<<gph<<std::endl;
+    //std::cout << d::conn::sage::plot(m, gph);
+    //std::cout << "Animation:\n"<<anim<<"\nPlot:\n"<<gph<<std::endl;
     return 0;
 }
