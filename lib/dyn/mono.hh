@@ -15,7 +15,7 @@ namespace d::dyn {
     template<typename T, bool logIncrPromise=false>
         struct mono {
             di order;
-            double t;
+            double t=0;
             mono* log=nullptr;
             di logSize=0;
             d::coord<T> *d=nullptr;
