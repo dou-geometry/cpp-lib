@@ -26,7 +26,7 @@ namespace d::dou::geo::rk4 {
         concept x = (dynMono<R, F> || nurCoord<R, F>);
     template<bool runForever=false, typename R, typename F>
         requires x<R, F>
-        R run(R cur, const F &f, const double tt=0);
+        R run(R& cur, const F &f, const double tt=0);
     template<typename C> d::dyn::mono<C> next();
 }
 
