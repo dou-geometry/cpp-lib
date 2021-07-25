@@ -18,7 +18,7 @@ int main() {
     std::cout <<std::fixed<<std::setprecision(14);
     auto a=[](const d::dyn::mono<double, true>& m) { return d::coord<double>({-2*m[2][0]-m[0][0]}); };
     d::coord<double> initPos({2.});
-    d::dyn::mono<double, true> m(3, 0.0, d::coord<double>(1), d::coord<double>(1), initPos, d::coord<double>(1));
+    d::dyn::mono<double, true> m(4, 0.0, d::coord<double>(1), d::coord<double>(1), initPos, d::coord<double>(1));
     d::numerical::rk4::run<0, false>(m, a, 10., 0.01);
     std::cout << "End t="<<m.t<<std::endl;
     std::cout << "Compare: "<<m.t*std::sin(m.t)<<std::endl;
