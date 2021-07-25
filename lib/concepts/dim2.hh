@@ -1,18 +1,13 @@
 #pragma once
 #include"../cls/coord.hh"
 #include<concepts>
-#include"./coordCarrier"
+#include"./coordCarrier.hh"
 
 namespace d {
 template<typename T>
-requires d::coordCarrier<T>
 concept dim2 = requires(const T& x) {
-    x[0].dim==2;
-}
-
-template<typename T>
-requires (!(d::coordCarrier<T>))
-concept dim2 = requires(const T& x) {
-    x.dim==2;
-}
+    //((!(d::coordCarrier<T>)) && x.dim==2) || (d::coordCarrier<T> && x[0].dim==2);
+    //d::coordCarrier<T>?x[0].dim==2:x.dim==2;
+    x.dim==2; //weak
+};
 }
