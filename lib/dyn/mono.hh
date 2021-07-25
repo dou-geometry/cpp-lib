@@ -23,13 +23,13 @@ namespace d::dyn {
             template<typename X, typename...Ts>
                 requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
                 mono(di ord, X it, Ts...args): order(ord), t(it) {
-                    d=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
+                    d=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order));
                     assert(d!=NULL);
-                    assert(sizeof...(Ts)<=(order+1)&& "d::dyn::mono initialization error, too many arguments");
+                    assert(sizeof...(Ts)<=(order)&& "d::dyn::mono initialization error, too many arguments");
                     di i=0;
                     (...,void(new(d+(i++))d::coord<T>(args))); // https://stackoverflow.com/a/34569679/8460574
                     std::cout << "Size: " << sizeof...(Ts) << std::endl;
-                    for(di i=sizeof...(Ts); i<=order; ++i)
+                    for(di i=sizeof...(Ts); i<order; ++i)
                         new(d+i)d::coord<T>(d->dim);
                 }
             template<typename...Ts>
@@ -52,7 +52,7 @@ namespace d::dyn {
                         (log+i)->~mono();
                 free(log);
                 if (d!=nullptr)
-                    for(di i=0; i<=order; i++)
+                    for(di i=0; i<order; i++)
                         (d+i)->~coord();
                         // this supposed, as all existing constructors behaves,
                         // you couldn't create a d::dyn::mono without fully initializing the d::dyn:::mono::d
@@ -60,17 +60,17 @@ namespace d::dyn {
                 free(d);
             }
             mono(const mono<T, false> &other): order(other.order), t(other.t) {
-                d::coord<T>* tptr=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
+                d::coord<T>* tptr=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order));
                 assert(tptr!=NULL);
                 d=tptr;
-                for(di i=0; i<=order; ++i)
+                for(di i=0; i<order; ++i)
                     new(d+i)d::coord<T>(other.d[i]);
             }
             mono(const mono<T, true> &other): order(other.order), t(other.t) {
-                d::coord<T>* tptr=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
+                d::coord<T>* tptr=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order));
                 assert(tptr!=NULL);
                 d=tptr;
-                for(di i=0; i<=order; ++i)
+                for(di i=0; i<order; ++i)
                     new(d+i)d::coord<T>(other.d[i]);
                 //d[i]=other.d[i];
             }
@@ -82,13 +82,13 @@ namespace d::dyn {
                 // Only copying t, pos, vel
                 this->t=other.t; // As order in array are only relative to the log[0]
                 this->order=other.order;
-                d::coord<T>* tptr=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
+                d::coord<T>* tptr=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order));
                 assert(tptr!=NULL);
                 if(d!=nullptr)
-                    for(di i=0; i<=order; i++)
+                    for(di i=0; i<order; i++)
                         (d+i)->~coord();
                 d=tptr;
-                for(di i=0; i<=order; ++i)
+                for(di i=0; i<order; ++i)
                     new(d+i)d::coord<T>(other.d[i]);
                 return *this;
             }
@@ -98,14 +98,14 @@ namespace d::dyn {
                 // Only copying t, pos, vel
                 this->t=other.t; // As order in array are only relative to the log[0]
                 this->order=other.order;
-                d::coord<T>* tptr=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
+                d::coord<T>* tptr=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order));
                 assert(tptr!=NULL);
                 if(d!=nullptr)
-                    for(di i=0; i<=order; i++)
+                    for(di i=0; i<order; i++)
                         d[i].~coord();
                 free(d);
                 d=tptr;
-                for(di i=0; i<=order; ++i)
+                for(di i=0; i<order; ++i)
                     new(d+i)d::coord<T>(other.d[i]);
                 return *this;
             }
@@ -113,7 +113,7 @@ namespace d::dyn {
                 if(this==&other) return *this;
                 delete[]log;
                 if(d!=nullptr)
-                    for(di i=0; i<=order; i++)
+                    for(di i=0; i<order; i++)
                         d[i].~coord();
                 free(d);
                 order=other.order;
@@ -158,7 +158,7 @@ namespace d::dyn {
                         assert(sizeof...(Ts)<=std::abs(delta) && 
                                 "Too many arguments in d::dyn::mono::shift<>()");
                         if constexpr(delta>=0) {
-                            for(di i=order; i>=delta; --i)
+                            for(di i=order-1; i>=delta; --i)
                                 res.d[i]=d[i-delta];
                             di i=0;
                             (...,void(res.d[i++] = args)); // https://stackoverflow.com/a/34569679/8460574
@@ -168,13 +168,13 @@ namespace d::dyn {
                                     res.d[i]=d::coord<T>(res.d->dim);
                             }
                         } else {
-                            for(int i=0; i<=order+delta; ++i)
+                            for(int i=0; i<order+delta; ++i)
                                 res.d[i]=d[i-delta];
-                            int i=order+delta+1;
+                            int i=order+delta;  //Sure?
                             (...,void(res.d[i++] = args)); // https://stackoverflow.com/a/34569679/8460574
                             constexpr long mis=(delta*-1)-sizeof...(Ts);
                             if constexpr(mis) {
-                                for(;i<=order; ++i)
+                                for(;i<order; ++i)
                                     res.d[i]=d::coord<T>(res.d->dim);
                             }
                         }
@@ -191,28 +191,28 @@ namespace d::dyn {
             template<long delta=-1> mono shift() const { return this->shift<delta>(d::coord<T>(d->dim)); }
             friend ostream& operator<<(ostream& os, const mono& x) {
                 os<<"============\n";
-                for(di i=0; i<=x.order; ++i)
+                for(di i=0; i<x.order; ++i)
                     os<<x.d[i]<<"\n";
                 os<<"============";
                 return os;
             }
             template<typename X> mono<T, logIncrPromise>& operator*=(const X& r) {
-                for(di i=0; i<=order; ++i)
+                for(di i=0; i<order; ++i)
                     d[i]*=r;
                 return *this;
             }
             template<typename X> mono<T, logIncrPromise>& operator/=(const X& r) {
-                for(di i=0; i<=order; ++i)
+                for(di i=0; i<order; ++i)
                     d[i]/=r;
                 return *this;
             }
             template<bool B> mono<T, logIncrPromise>& operator+=(const mono<T, B>& r) {
-                for(di i=0; i<=order; ++i)
+                for(di i=0; i<order; ++i)
                     d[i]+=r[i];
                 return *this;
             }
             template<bool B> mono<T, logIncrPromise>& operator-=(const mono<T, B>& r) {
-                for(di i=0; i<=order; --i)
+                for(di i=0; i<order; --i)
                     d[i]-=r[i];
                 return *this;
             }
@@ -234,8 +234,8 @@ namespace d::dyn {
             //                mono<T, false> res(this->order, this->d->dim);
             //                res.t=this->t; // As order in array are only relative to the log[0]
             //                res.order=this->order;
-            //                res.d=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order+1));
-            //                for(di i=0; i<=order; ++i)
+            //                res.d=(d::coord<T>*)malloc(sizeof(d::coord<T>)*(order));
+            //                for(di i=0; i<order; ++i)
             //                    res.d[i]=this->d[i];
             //                return res;
             //            }
