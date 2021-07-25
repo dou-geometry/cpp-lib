@@ -14,7 +14,7 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
 
             int loopTimes=(int)std::ceil(tt/h);
 
-            constexpr bool log=(d::dyn::Loggable<R>&&!runForever&&false);
+            constexpr bool log=(d::dyn::Loggable<R>&&!runForever&&logTrigger);
             auto mlc=[&log, &cur, &loopTimes](){
                 if constexpr(log) {
                     assert(cur.log==nullptr&&
