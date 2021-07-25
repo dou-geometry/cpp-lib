@@ -40,6 +40,7 @@ namespace d {
             memcpy(d, l.begin(), sizeof(T)*dim);
             //std::copy(l.begin(), l.end(), d);
         }
+        coord(std::complex<T> z): coord({z.real(), z.imag()}) {}
         coord(): coord(2, (T)0){}
         ~coord() {
             delete[]d;
