@@ -7,5 +7,8 @@ namespace d {
     struct suu {
         bool hoka=false;
         T d;
+        suu(): d(0.) {}
+        suu(bool h, T x=0.): hoka(h), d(x) {}
+        operator T() { return hoka?d:0; }
     };
 }
