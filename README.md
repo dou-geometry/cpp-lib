@@ -28,8 +28,8 @@ This project is mainly to maintain a general-physics-oriented C++ library. Follo
 - [x] Coordination/Vectors Carrier
 - [x] Linear Algebra
 - [x] Plotting (though SageMath)
-- [ ] Dynamic Systems
-  - [ ] RK4
+- [x] Dynamic Systems
+  - [x] RK4
 - [ ] Numerical Integration
 - [ ] boxCounting
 
