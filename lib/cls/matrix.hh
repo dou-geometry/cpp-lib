@@ -67,7 +67,7 @@ namespace d {
                 }
                 return;
             }
-            friend matrix<M> operator*(matrix<M> lhs, matrix<M> rhs) {
+            friend matrix<M> operator*(matrix<M> lhs, const matrix<M>& rhs) {
                 matrix<double> res(rhs.x, lhs.y);
                 for(di r=0; r<rhs.x; r++) {
                     for(di c=0; c<lhs.y; c++) {
@@ -83,13 +83,20 @@ namespace d {
                 for(di i=0; i<y; i++) res[i]=d[0][i];
                 return res;
             }
-            friend coord<M> operator*(const matrix<M> lhs, coord<M> rhs) {
+            friend coord<M> operator*(matrix<M> lhs, const coord<M>& rhs) {
                 coord<M> res(lhs.y, (M)0);
                 for(di i=0; i<res.dim; i++) {
                     for(di j=0; j<res.dim; j++) res[i]+=lhs[j][i]*rhs[j];
                 }
                 return res;
             }
+            template<typename H>
+                requires d::coordCarrier<H>
+                inline friend H operator*(matrix<M> lhs, H rhs) {
+                    for(di i=0; i<rhs.dim; ++i)
+                        rhs[i]=lhs*rhs[i];
+                    return rhs;
+                }
             static matrix<M> I(di s) {
                 matrix<M> res(s, s);
                 for(di i=0; i<s; i++) res[i][i]=1;
