@@ -10,7 +10,12 @@ First download the tarball of branch [`gnu-prod-env`](https://github.com/dou-geo
 
 Or you could download any branch's tarball by `https://www.github.com/dou-geometry/cpp-lib/tarball/<branch>` then run `./setupAutotools.sh` follow by `./configure && make`. But notice not all branch's state is guarantee to be run-able.
 
-## ブランチ Branch
+## プログラム Programs
+
+- `bin/JROFI`
+- `bin/CMF`
+
+# ブランチ Branch
 
 - [`main`](https://github.com/dou-geometry/cpp-lib/tree/main)：gnu++20 code, using quadruple-precision floating-point format
 - [`C++17`](https://github.com/dou-geometry/cpp-lib/tree/C++17)：stdc++17 compatible code
