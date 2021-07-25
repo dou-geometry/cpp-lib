@@ -1,0 +1,14 @@
+namespace d::dyn {
+    template<typename A, bool B, typename X>
+        mono<A, B> operator*(mono<A, B> lhs, const X& r) { lhs*=r; return lhs; }
+    template<typename A, bool B, typename X>
+        mono<A, B> operator*(X r, mono<A, B> lhs) { lhs*=r; return lhs; }
+    template<typename A, bool B, typename X>
+        mono<A, B> operator/(mono<A, B> lhs, const X& r) { lhs/=r; return lhs; }
+    template<typename A, bool B, typename X>
+        mono<A, B> operator/(X r, mono<A, B> lhs) { lhs/=r; return lhs; }
+    template<typename A, bool B, bool C>
+        mono<A, B> operator+(mono<A, B> lhs, const mono<A, C>& r) { lhs+=r; return lhs; }
+    template<typename A, bool B, bool C>
+        mono<A, B> operator-(mono<A, B> lhs, const mono<A, C>& r) { lhs-=r; return lhs; }
+}

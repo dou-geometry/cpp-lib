@@ -1,1 +1,3 @@
-SUBDIRS = conn boxCounting numerical dyn
+include_HEADERS = cls.hh
+
+SUBDIRS = concepts conn boxCounting numerical dyn dou
