@@ -36,7 +36,6 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
             double hh=h/2;
             di i=0;
             while(true) { // WHy < not <= ?
-                std::cout << "\nLoop, init time="<<cur.t<<std::endl;
                 if constexpr(!runForever) {
                     if(++i>=loopTimes)
                         goto rtrn;
@@ -48,7 +47,6 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
                        k2=(cur+hh*k1).shift(f),
                        k3=(cur+hh*k2).shift(f),
                        k4=(cur+h*k3).shift(f);
-                std::cout << "k1="<<k1<<"\nk2="<<k2<<"\nk3="<<k3<<"\nk4="<<k4<<std::endl;
                 if constexpr(d::tracksTime<R>) cur.t+=h;
                 cur+=(k1+2.*k2+2.*k3+k4)/6.*h;
                 if constexpr(log) {
@@ -57,7 +55,6 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
                         new(cur.log+cur.logSize)R(cur);
                     }
                 }
-                std::cout << "Result: " << cur << std::endl;
                 if constexpr(runForever&&true) if(i%logTrigger==0) goto rtrn;
             }
 rtrn:
