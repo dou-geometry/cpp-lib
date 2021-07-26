@@ -28,7 +28,7 @@ namespace d::dyn {
                     assert(sizeof...(Ts)<=(order)&& "d::dyn::mono initialization error, too many arguments");
                     di i=0;
                     (...,void(new(d+(i++))d::coord<T>(args))); // https://stackoverflow.com/a/34569679/8460574
-                    std::cout << "Size: " << sizeof...(Ts) << std::endl;
+                    //std::cout << "Size: " << sizeof...(Ts) << std::endl;
                     for(di i=sizeof...(Ts); i<order; ++i)
                         new(d+i)d::coord<T>(d->dim);
                 }
