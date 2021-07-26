@@ -34,13 +34,13 @@ namespace d::dyn {
                 }
             template<typename...Ts>
                 requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type>
-                mono(Ts...args): mono(sizeof...(Ts)-1, 0.0, args...) {}
-            template<typename X, typename...Ts> 
-                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
+                mono(Ts...args): mono(sizeof...(Ts), 0.0, args...) {}
+            template<typename...Ts> 
+                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type>
                 mono(di ord, Ts...args): mono(ord, 0.0, args...) {}
             template<typename X, typename...Ts> 
                 requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
-                mono(X it, Ts...args): mono(sizeof...(Ts)-1, it, args...) {}
+                mono(X it, Ts...args): mono(sizeof...(Ts), it, args...) {}
             template<typename X, typename...Ts> 
                 requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
                 mono(X it, di ord, Ts...args): mono(ord, it, args...) {}
