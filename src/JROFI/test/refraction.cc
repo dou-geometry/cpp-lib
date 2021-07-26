@@ -1,5 +1,5 @@
 #include"../../../lib/cls/coord.hh"
-#include"../../../lib/dou/geo/rk4.hh"
+#include"../../../lib/numerical/rk4.hh"
 #include"../../../lib/manip/translate.hh"
 #include"../../../lib/conn/sage/settings.hh"
 #include <complex>
@@ -43,7 +43,7 @@ int main() {
         std::cout << "Initial Position: "<<initPos<<std::endl;
         d::dyn::mono<double, true> m((di)2, initPos, initPos*-1);
         std::cout << "Setup: \n"<<m<<std::endl;
-        d::dou::geo::rk4::run(m, a, terminTime);
+        d::numerical::rk4::run(m, a, terminTime);
         // Graph path
         d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
         std::cout << "Graphing:\n"<<gph<<std::endl;
