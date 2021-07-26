@@ -8,26 +8,53 @@
 
 // User variable
 
-#define inboundDist         2.
-#define outboundDist        2.
-#define singleSideThickness 1.
+#define inboundDist         4.
+//#define outboundDist        2.
+//#define singleSideThickness 1.
 
-#define dTheta 0.1
+#define dTheta 0.00001
 
 #define terminTime 12.25
 
+void plotScript(d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
+    // Load script
+    info.scriptf<<"#!/usr/bin/env sage\n";
+    info.scriptf<<"import sys\n";
+    info.scriptf<<"from sage.all import *\n";
+    info.scriptf<<"def parseFrame():\n";
+    info.scriptf<<"    cc=0\n";
+    info.scriptf<<"    inFrame=False\n";
+    info.scriptf<<"    pts=[]\n";
+    info.scriptf<<"    vct=vector((0,0))\n";
+    info.scriptf<<"    for ln in sys.stdin:\n";
+    info.scriptf<<"        ln=ln.rstrip()\n";
+    info.scriptf<<"        if(ln==\"============\"):\n";
+    info.scriptf<<"            if(inFrame):\n";
+    info.scriptf<<"                inFrame=False\n";
+    info.scriptf<<"            else:\n";
+    info.scriptf<<"                inFrame=True\n";
+    info.scriptf<<"                cc=0\n";
+    info.scriptf<<"        else:\n";
+    info.scriptf<<"            if(cc==0):\n";
+    info.scriptf<<"                vct=vector(sage_eval(ln))\n";
+    info.scriptf<<"                pts.append(vct)\n";
+    info.scriptf<<"            cc+=1\n";
+    info.scriptf<<"    return pts\n";
+    info.scriptf<<"def main():\n";
+    info.scriptf<<"    Gph=line(parseFrame())\n";
+    info.scriptf<<"    Gph.save(filename=sys.argv[1], xmin=-2, xmax=2, ymin=-2, ymax=2, aspect_ratio=1)\n";
+    info.scriptf<<"main()\n";
+    info.scriptf.close();
+}
+
 std::string plot(const d::dyn::mono<double, true>& m, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
     // Load data
-    //if constexpr(d::logIncrPromise && false)
-        for(di i=0; i<m.logSize; ++i)
-            info.dataf << m.log[i] << std::endl;
-    //else
-    //    for(di i=0; i<m.logSize; ++i)
-    //        info.dataf << "t="<<m.log[i].t<<";" << m.log[i] << std::endl;
-    // Load script
-    // Execute
+    info.newplot();
+    info.newdata();
+    for(di i=0; i<m.logSize; ++i)
+        info.dataf << m.log[i] << std::endl;
     info.dataf.close();
-    info.scriptf.close();
+    // Execute
     return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
 }
 
@@ -44,24 +71,23 @@ int main() {
     auto a=[](d::dyn::mono<double> m) {
         return d::coord<double>({gaussianFunc(m[0][0]), 0})*(m[1].norm());
     };
+    std::vector<double> angles;
+    d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
+    d::conn::bash::exec("rm "+gph.plot);
+    plotScript(gph);
     do {
         theta+=dTheta;
-        theta=M_PI;
         d::coord<double> initPos(std::exp(i*theta)*inboundDist);
-        std::cout << "Initial Position: "<<initPos<<std::endl;
         d::dyn::mono<double, true> m((di)2, initPos, initPos*-1);
-        std::cout << "Setup: \n"<<m<<std::endl;
         d::numerical::rk4::run<12, false>(m, a, terminTime);
         // Graph path
-        d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
-        std::cout << "Graphing:\n"<<gph<<std::endl;
-        std::cout << plot(m, gph);
+        plot(m, gph);
         assert(m.logSize>5);
-        std::cout << m.log[m.logSize-1] << std::endl;
         d::line<double> inbound(m.log[4][0], m.log[5][0]),
-                        outbound(m.log[m.logSize-5][0], m.log[m.logSize-4][0]);
-        std::cout << "Intersecting angle: " << d::line<double>::ang(inbound, outbound)/M_PI*180. << std::endl;
-        break;
+            outbound(m.log[m.logSize-5][0], m.log[m.logSize-4][0]);
+        angles.emplace_back(d::line<double>::ang(inbound, outbound)/M_PI*180.);
     } while(theta<M_PI*1.5);
+    for(auto &i:angles)
+        std::cout << i << std::endl;
     return 0;
 }
