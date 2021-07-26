@@ -15,6 +15,11 @@ namespace d::numerical::rk4 {
             {f(r)}->std::same_as<typename std::decay<decltype(r[0])>::type>;
             std::convertible_to<R, typename std::decay<decltype(r[0])>::type>;
         };
+    /*
+    template<int logTrigger=1, bool runForever=false, typename R, typename F, typename T>
+        requires dynMono<R, F> && std::convertible_to<T, std::function<bool(R)>>
+        R runTill(R& cur, const F &f, const T& t, double h=d::numerical::rk4::h);
+        */
     template<int logTrigger=1, bool runForever=false, typename R, typename F>
         requires dynMono<R, F>
         R run(R& cur, const F &f, const double tt=0, double h=d::numerical::rk4::h);

@@ -58,11 +58,69 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
                 if constexpr(runForever&&true) if(i%logTrigger==0) goto rtrn;
             }
 rtrn:
+            //std::cout << cur.logSize << std::endl << logItems<<std::endl;
+            if constexpr(log) assert(cur.logSize==logItems);
+            //std::cout << "Ran with: "<<loopTimes<<", "<<runForever<<std::endl;
+            //if constexpr(log) cur.log->d->d[0]=i;
+            return cur;
+        }
+        /*
+    template<int logTrigger=1, bool runForever=false, typename R, typename F, typename T>
+        requires dynMono<R, F> && std::convertible_to<T, std::function<bool(R)>>
+        R runTill(R& cur, const F &f, const T& t, double h) {
+            assert(f(cur).dim==cur[0].dim &&
+                    "Slope function within d::numerical::rk4::run() doesn't return d::dyn::mono with correct dimension");
+            // Since d::coord is VLA and dim isn't const
+
+            constexpr bool log=(d::dyn::Loggable<R>&&!runForever&&logTrigger);
+            auto mlc=[&log, &cur, &loopTimes](){
+                if constexpr(log) {
+                    assert(cur.log==nullptr&&
+                            "Log of d::dyn::mono in d::numerical::rk4::run() isn't empty");
+                    di mlcNum=std::ceil(loopTimes/logTrigger);
+                    std::cout << "Malloc: "<<mlcNum<<std::endl;
+                    cur.log=(R*)malloc(sizeof(R)*(mlcNum+1));
+                    assert(cur.log!=nullptr);
+                    new(cur.log)R(cur);
+                    cur.logSize=0;
+                    return mlcNum;
+                } else {
+                    return 0;
+                }
+            };
+            di logItems=mlc();
+
+            double hh=h/2;
+            di i=0;
+            while(true) { // WHy < not <= ?
+                if constexpr(!runForever) {
+                    if(t(cur))
+                        goto rtrn;
+                }
+                if constexpr(runForever)
+                    std::cout << "Notice: Infinite loop of d::numerical::rk4, logging is disable.\n\n";
+
+                auto   k1=cur.shift(f),
+                       k2=(cur+hh*k1).shift(f),
+                       k3=(cur+hh*k2).shift(f),
+                       k4=(cur+h*k3).shift(f);
+                if constexpr(d::tracksTime<R>) cur.t+=h;
+                cur+=(k1+2.*k2+2.*k3+k4)/6.*h;
+                if constexpr(log) {
+                    if(i%logTrigger==0) {
+                        ++(cur.logSize);
+                        new(cur.log+cur.logSize)R(cur);
+                    }
+                }
+                if constexpr(runForever&&true) if(i%logTrigger==0) goto rtrn;
+            }
+rtrn:
             std::cout << cur.logSize << std::endl << logItems<<std::endl;
             if constexpr(log) assert(cur.logSize==logItems);
             //if constexpr(log) cur.log->d->d[0]=i;
             return cur;
         }
+    */
     template<typename C> d::dyn::mono<C> run(const d::dyn::mono<C>& x0, const std::function<C(C)> &f, const double s, const double t) { return run(x0, f, t-s); }
     template<typename C> C run(const C& x0, const std::function<C(C)> &f, const double s, const double t) { return run(x0, f, t-s); }
     // Perhaps a duplicated version of the loop in run() could be made seperately.
