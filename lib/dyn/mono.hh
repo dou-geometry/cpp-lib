@@ -46,11 +46,16 @@ namespace d::dyn {
                 mono(X it, di ord, Ts...args): mono(ord, it, args...) {}
             mono(): mono(1ul, 0.0, d::coord<T>(1)) {}
             mono(di order, di dimension=1): mono(order, 0.0, d::coord<T>(dimension)) {}
-            ~mono() {
+            inline mono& rmLog() {
                 if(log!=nullptr)
                     for(di i=0; i<=logSize; ++i)
                         (log+i)->~mono();
                 free(log);
+                log=nullptr;
+                return *this;
+            }
+            ~mono() {
+                this->rmLog();
                 if (d!=nullptr)
                     for(di i=0; i<order; i++)
                         (d+i)->~coord();
