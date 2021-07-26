@@ -1,57 +1,73 @@
 #include<iostream>
 #include <cassert>
 #include<concepts>
+#include"../../concepts/tracksTime.hh"
 
 namespace d::dou::geo::rk4 {
-    template<bool runForever=false, typename R, typename F>
+    template<int logTrigger=1, bool runForever=false, typename R, typename F>
         requires x<R, F>
-        R run(R cur, const F &f, const double tt) {
-            auto setParam=[&cur]() {
-                if constexpr(tracksTime<decltype(cur)>) {
-                    return std::make_tuple<cur[0], cur[1], cur[2]>;
-                } else {
-                    return std::make_tuple<d::coord<double>(cur.dim), cur, d::coord<double>(cur.dim)>;
-                }
+        R run(R& inVar, const F &f, const double tt, double h=d::dou::geo::rk4::h) {
+            auto setParam=[&inVar]() -> decltype(auto) {
+                if constexpr(tracksTime<decltype(inVar)>)
+                    return inVar;
+                else
+                    return d::dyn::mono<double>(d::coord<double>(inVar.dim), inVar);
             };
-            auto [pos, vel, acc] = setParam();
-            assert(f(pos).dim==pos.dim &&
-                    "Slope function within d::numerical::rk4::run() doesn't return d::coord with correct dimension");
+            auto cur = setParam();
+            assert(f(cur).dim==cur[0].dim &&
+                    "Slope function within d::dou::geo::rk4::run() doesn't return d::coord with correct dimension");
             // Since d::coord is VLA and dim isn't const
             assert((tt==0)==runForever && 
                     "(tt==0)!=runForever");
 
-            int loopTimes=(int)std::ceil(tt/d::dou::geo::rk4::h);
+            int loopTimes=(int)std::ceil(tt/h);
 
-            constexpr bool log=(d::dyn::Loggable<R>&&!runForever);
-            if constexpr(log) {
-                assert(cur.log==nullptr&&
-                        "Log of d::dyn::mono in d::numerical::rk4::run() isn't empty");
-                cur.log=(R*)malloc(sizeof(R)*(loopTimes+1));
-            }
+            constexpr bool log=(d::dyn::Loggable<R>&&!runForever&&logTrigger);
+            auto mlc=[&log, &cur, &loopTimes](){
+                if constexpr(log) {
+                    assert(cur.log==nullptr&&
+                            "Log of d::dyn::mono in d::dou::geo::rk4::run() isn't empty");
+                    di mlcNum=std::ceil(loopTimes/logTrigger);
+                    std::cout << "Malloc: "<<mlcNum<<std::endl;
+                    cur.log=(R*)malloc(sizeof(R)*(mlcNum+1));
+                    assert(cur.log!=nullptr);
+                    new(cur.log)R(cur);
+                    cur.logSize=0;
+                    return mlcNum;
+                } else {
+                    return 0;
+                }
+            };
+            di logItems=mlc();
 
-            double h=tt/((double)loopTimes), hh=h/2;
+            h=tt/((double)loopTimes);
+            double hh=h/2;
+            di i=0;
             while(true) { // WHy < not <= ?
-                int i=0;
                 if constexpr(!runForever) {
                     if(++i>=loopTimes)
-                        break;
-                    //goto rtrn;
+                        goto rtrn;
                 }
                 if constexpr(runForever)
-                    std::cout << "Notice: Infinite loop of d::numerical::rk4, logging is disable.\n\n";
+                    std::cout << "Notice: Infinite loop of d::dou::geo::rk4, logging is disable.\n\n";
 
-                auto   k1=f(acc),
-                       k2=f(acc+hh*k1),
-                       k3=f(acc+hh*k2),
-                       k4=f(acc+hh*k3);
-                if constexpr(tracksTime<R>) cur.t+=h;
-                pos=vel;
-                vel=acc;
-                acc+=(k1+2*k2+2*k3+k4)/6*h;
-                if constexpr(log) cur.log[i]=cur;
-                if constexpr(runForever) std::cout << cur << std::endl;
+                auto   k1=cur.shift(f),
+                       k2=(cur+hh*k1).shift(f),
+                       k3=(cur+hh*k2).shift(f),
+                       k4=(cur+h*k3).shift(f);
+                if constexpr(d::tracksTime<R>) cur.t+=h;
+                cur+=(k1+2.*k2+2.*k3+k4)/6.*h;
+                if constexpr(log) {
+                    if(i%logTrigger==0) {
+                        ++(cur.logSize);
+                        new(cur.log+cur.logSize)R(cur);
+                    }
+                }
+                if constexpr(runForever&&true) if(i%logTrigger==0) goto rtrn;
             }
 rtrn:
+            if constexpr(log) assert(cur.logSize==logItems);
+            std::cout << "Ran with: "<<loopTimes<<", "<<runForever<<std::endl;
             return cur;
         }
     template<typename C> d::dyn::mono<C> run(const d::dyn::mono<C>& x0, const std::function<C(C)> &f, const double s, const double t) { return run(x0, f, t-s); }
