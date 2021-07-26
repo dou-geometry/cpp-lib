@@ -12,7 +12,7 @@
 //#define outboundDist        2.
 //#define singleSideThickness 1.
 
-#define dTheta 0.00001
+#define dTheta 1e-2
 
 #define terminTime 12.25
 
