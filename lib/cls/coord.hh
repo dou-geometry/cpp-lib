@@ -131,7 +131,7 @@ namespace d {
             auto res=*this;
             for(di i=0; i<r.dim; i++) { res.d[i]*=r[i]; };
             double ans=0;
-            for(di i=0; i<r.dim; i++) ans+=d[i];
+            for(di i=0; i<r.dim; i++) ans+=res.d[i];
             return ans;
         }
         coord<T>& operator+=(const coord<T> &r) {
