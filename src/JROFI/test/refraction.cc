@@ -75,17 +75,19 @@ int main() {
     d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
     d::conn::bash::exec("rm "+gph.plot);
     plotScript(gph);
+    int ranTime=0;
     do {
+        ++ranTime;
         theta+=dTheta;
         d::coord<double> initPos(std::exp(i*theta)*inboundDist);
         d::dyn::mono<double, true> m((di)2, initPos, initPos*-1);
         d::numerical::rk4::run<12, false>(m, a, terminTime);
         // Graph path
-        plot(m, gph);
+        if(ranTime%1224==0) plot(m, gph);
         assert(m.logSize>5);
         d::line<double> inbound(m.log[4][0], m.log[5][0]),
             outbound(m.log[m.logSize-5][0], m.log[m.logSize-4][0]);
-        angles.emplace_back(d::line<double>::ang(inbound, outbound)/M_PI*180.);
+        std::cout << d::line<double>::ang(inbound, outbound)/M_PI*180.<<std::endl;
     } while(theta<M_PI*1.5);
     for(auto &i:angles)
         std::cout << i << std::endl;
