@@ -3,15 +3,23 @@
 #include"../../../lib/manip/translate.hh"
 #include <complex>
 
+// User variable
+
+#define inboundDist         2
+#define outboundDist        2
+#define singleSideThickness 1
+
+#define dTheta 0.00001
+
+#define terminTime 12.24
+
 int main() {
     /* Setup:
      * crossing point: (0, 0)
      * initial position: e^(i*theta), theta\in(pi/2, 3pi/2)
      */
-    double dTheta=1e-4;
     double theta=M_PI/2.;
     const std::complex<double> i(0,1);
-    const double terminTime=12.24;
     do {
         theta+=dTheta;
         d::coord<double> initPos(std::exp(i*theta));
