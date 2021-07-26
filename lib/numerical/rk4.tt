@@ -5,7 +5,7 @@
 namespace d::numerical::rk4 { // Arbitary-Order ODE version
     template<int logTrigger=1, bool runForever=false, typename R, typename F>
         requires dynMono<R, F>
-        R run(R& cur, const F &f, const double tt, double h=d::numerical::rk4::h) {
+        R run(R& cur, const F &f, const double tt, double h) {
             assert(f(cur).dim==cur[0].dim &&
                     "Slope function within d::numerical::rk4::run() doesn't return d::dyn::mono with correct dimension");
             // Since d::coord is VLA and dim isn't const
@@ -21,7 +21,7 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
                             "Log of d::dyn::mono in d::numerical::rk4::run() isn't empty");
                     di mlcNum=std::ceil(loopTimes/logTrigger);
                     std::cout << "Malloc: "<<mlcNum<<std::endl;
-                    cur.log=(R*)malloc(sizeof(R)*(mlcNum+1));
+                    cur.log=(R*)malloc(sizeof(R)*(mlcNum));
                     assert(cur.log!=nullptr);
                     new(cur.log)R(cur);
                     cur.logSize=0;
@@ -58,6 +58,7 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
                 if constexpr(runForever&&true) if(i%logTrigger==0) goto rtrn;
             }
 rtrn:
+            std::cout << cur.logSize << std::endl << logItems<<std::endl;
             if constexpr(log) assert(cur.logSize==logItems);
             std::cout << "Ran with: "<<loopTimes<<", "<<runForever<<std::endl;
             //if constexpr(log) cur.log->d->d[0]=i;
