@@ -39,7 +39,7 @@ struct line {
     friend double angcos(const d::line<L>& a, const d::line<L>& b) {
         return a.angcos(b);
     }
-    double ang(const d::line<L>& ln) const {
+    inline double ang(const d::line<L>& ln) const {
         //return arccos(this->angcos(ln));
         //auto [a, b]=this->standard();
         //auto [c, d]=ln.standard();
@@ -51,7 +51,7 @@ struct line {
         //return std::acos(pdq/p.norm()/q.norm());
         return std::acos(this->d.dot(ln.d));
     }
-    static double ang(const d::line<L>& a, const d::line<L>& b) {
+    static inline double ang(const d::line<L>& a, const d::line<L>& b) {
         return a.ang(b);
     }
 };
