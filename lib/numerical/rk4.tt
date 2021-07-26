@@ -21,7 +21,7 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
                             "Log of d::dyn::mono in d::numerical::rk4::run() isn't empty");
                     di mlcNum=std::ceil(loopTimes/logTrigger);
                     std::cout << "Malloc: "<<mlcNum<<std::endl;
-                    cur.log=(R*)malloc(sizeof(R)*(mlcNum));
+                    cur.log=(R*)malloc(sizeof(R)*(mlcNum+1));
                     assert(cur.log!=nullptr);
                     new(cur.log)R(cur);
                     cur.logSize=0;
