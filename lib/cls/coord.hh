@@ -127,7 +127,7 @@ namespace d {
             }
             return crd;
         }
-        T dot(coord<T> &r) const {
+        T dot(const coord<T> &r) const {
             auto res=*this;
             for(di i=0; i<r.dim; i++) { res.d[i]*=r[i]; };
             double ans=0;
