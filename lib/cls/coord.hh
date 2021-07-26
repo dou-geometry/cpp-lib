@@ -11,6 +11,7 @@
 #include<cmath>
 #include <utility>
 #include <cstring>
+#include<complex>
 using namespace std;
 namespace d {
     template<typename T> struct coord {
