@@ -46,16 +46,31 @@ namespace d::conn::sage::settings {
         files& operator=(const files &other) =delete;
         files& operator=(files &&other) noexcept =delete;
         ~files() {
-            if(rmScript) conn::bash::exec(("rm "+this->script).c_str());
-            if(rmData) conn::bash::exec(("rm "+this->data).c_str());
             //conn::bash::exec(("rm "+this->plot).c_str());
             this->scriptf.close();
             this->dataf.close();
+            if(rmScript) { conn::bash::exec(("rm "+this->script).c_str()); conn::bash::exec(("rm "+this->script+".py").c_str()); }
+            if(rmData) conn::bash::exec(("rm "+this->data).c_str());
         }
-	friend ostream& operator<<(ostream& os, files &f) {
-		os << "Plot: " << f.plot << "\nData: " << f.data << (f.rmData?" (deleted)":"") << "\nScript: " << f.script << (f.rmScript?" (deleted)":"");
-		return os;
-	}
+        files& newplot() {
+            std::string p=conn::bash::exec("mktemp --suffix=."+(std::string)plotExt);
+            p=p.substr(0, p.size()-1);
+            this->plot=p;
+            return *this;
+        }
+        files& newdata() {
+            this->dataf.close();
+            if(rmData) conn::bash::exec(("rm "+this->data).c_str());
+            std::string d=conn::bash::exec("mktemp");
+            d=d.substr(0, d.size()-1);
+            this->data=d;
+            this->dataf.open(this->data);
+            return *this;
+        }
+        friend ostream& operator<<(ostream& os, files &f) {
+            os << "Plot: " << f.plot << "\nData: " << f.data << (f.rmData?" (deleted)":"") << "\nScript: " << f.script << (f.rmScript?" (deleted)":"");
+            return os;
+        }
     };
 
 };
