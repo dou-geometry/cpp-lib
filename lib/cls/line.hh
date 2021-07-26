@@ -41,14 +41,15 @@ struct line {
     }
     double ang(const d::line<L>& ln) const {
         //return arccos(this->angcos(ln));
-        auto [a, b]=this->standard();
-        auto [c, d]=ln.standard();
+        //auto [a, b]=this->standard();
+        //auto [c, d]=ln.standard();
         // ax+b==cx+d
-        double x=(d-b)/(a-c), y=a*x+b;
-        d::coord<double> intersect({x, y});
-        auto p=this->s-intersect, q=ln.s-intersect;
-        double pdq=p.dot(q);
-        return std::acos(pdq/p.norm()/q.norm());
+        //double x=(d-b)/(a-c), y=a*x+b;
+        //d::coord<double> intersect({x, y});
+        //auto p=this->s-intersect, q=ln.s-intersect;
+        //double pdq=p.dot(q);
+        //return std::acos(pdq/p.norm()/q.norm());
+        return std::acos(this->d.dot(ln.d));
     }
     static double ang(const d::line<L>& a, const d::line<L>& b) {
         return a.ang(b);
