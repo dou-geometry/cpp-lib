@@ -15,9 +15,9 @@ namespace d::numerical::rk4 {
             {f(r)}->std::same_as<typename std::decay<decltype(r[0])>::type>;
             std::convertible_to<R, typename std::decay<decltype(r[0])>::type>;
         };
-    template<bool runForever=false, typename R, typename F>
+    template<int logTrigger=1, bool runForever=false, typename R, typename F>
         requires dynMono<R, F>
-        R run(R& cur, const F &f, const double tt=0);
+        R run(R& cur, const F &f, const double tt=0, double h=d::numerical::rk4::h);
     template<typename C> d::dyn::mono<C> next();
 }
 
