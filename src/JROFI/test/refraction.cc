@@ -66,7 +66,7 @@ std::string plot(const d::dyn::mono<double, true>& m, d::conn::sage::settings::f
 inline double gaussianFunc(double x) { return std::exp(-1*pow(x,2)); }
 //inline double gaussianFunc(double x) { return 1./std::sqrt(2.*M_PI)/singleSideThickness/5./std::sqrt(2*std::log(2))*std::exp(-1.*pow(x,2)/2./std::pow(singleSideThickness/5./std::sqrt(2*std::log(2)), 2)); }
 
-int main() {
+int main(int argc, char** argv) {
     std::cout << std::fixed << std::setprecision(12);
     /* Setup:
      * crossing point: (0, 0)
@@ -74,8 +74,9 @@ int main() {
      */
     double theta=M_PI/2.;
     const std::complex<double> i(0,1);
-    auto a=[](d::dyn::mono<double> m) {
-        return d::coord<double>({gaussianFunc(m[0][0]), 0})*(m[1].norm());
+    double amp=(argc<2?1.:std::atof(argv[1]));
+    auto a=[amp](d::dyn::mono<double> m) {
+        return d::coord<double>({gaussianFunc(m[0][0]), 0})*(m[1].norm())*amp;
     };
     std::vector<double> angles;
     d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
