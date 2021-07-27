@@ -59,6 +59,7 @@ std::string plot(const d::dyn::mono<double, true>& m, d::conn::sage::settings::f
 }
 
 inline double gaussianFunc(double x) { return std::exp(-1*pow(x,2)); }
+//inline double gaussianFunc(double x) { return 1./std::sqrt(2.*M_PI)/singleSideThickness/5./std::sqrt(2*std::log(2))*std::exp(-1.*pow(x,2)/2./std::pow(singleSideThickness/5./std::sqrt(2*std::log(2)), 2)); }
 
 int main() {
     std::cout << std::fixed << std::setprecision(12);
