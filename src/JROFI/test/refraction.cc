@@ -5,6 +5,7 @@
 #include"../../../lib/conn/sage/settings.hh"
 #include"../../../lib/conn/bash/stdout.hh"
 #include <complex>
+#include <cstdlib>
 
 // User variable
 
@@ -61,7 +62,10 @@ std::string plot(const d::dyn::mono<double, true>& m, d::conn::sage::settings::f
         info.dataf << m.log[i] << std::endl;
     info.dataf.close();
     // Execute
-    return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
+    //return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
+    std::cout << std::flush;
+    std::system(("sage "+info.script+" "+info.plot+" < "+info.data+" &").c_str());
+    return "Sent to background";
 }
 
 inline double gaussianFunc(double x) { return std::exp(-1*pow(x,2)); }
@@ -90,7 +94,8 @@ int main(int argc, char** argv) {
         d::dyn::mono<double, true> m((di)2, initPos, initPos*-1);
         d::numerical::rk4::run<12, false>(m, a, terminTime);
         // Graph path
-        if(ranTime%1224==0) plot(m, gph);
+        std::cout << "Wait\n"<<d::conn::bash::exec("wait");
+        if(ranTime%1==0) plot(m, gph);
         assert(m.logSize>5);
         d::line<double> inbound(m.log[4][0], m.log[5][0]),
             outbound(m.log[m.logSize-5][0], m.log[m.logSize-4][0]);
