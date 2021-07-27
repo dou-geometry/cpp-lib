@@ -41,8 +41,13 @@ void plotScript(d::conn::sage::settings::files<d::conn::sage::settings::png>& in
     info.scriptf<<"            cc+=1\n";
     info.scriptf<<"    return pts\n";
     info.scriptf<<"def main():\n";
-    info.scriptf<<"    Gph=line(parseFrame())\n";
-    info.scriptf<<"    Gph.save(filename=sys.argv[1], xmin=-4, xmax=4, ymin=-4, ymax=4, aspect_ratio=1)\n";
+    info.scriptf<<"    pts=parseFrame()\n";
+    info.scriptf<<"    a=(pts[1][1]-pts[0][1])/(pts[1][0]-pts[0][0])\n";
+    info.scriptf<<"    b=pts[1][1]-a*pts[1][0]\n";
+    info.scriptf<<"    c=(pts[-1][1]-pts[-2][1])/(pts[-1][0]-pts[-2][0])\n";
+    info.scriptf<<"    d=pts[-2][1]-c*pts[-2][0]\n";
+    info.scriptf<<"    Gph=line(pts, color=\"purple\")+plot(a*x+b, (x,-4,0.12), color=\"red\")+plot(c*x+d, (x, -0.12, 4), color=\"blue\")\n";
+    info.scriptf<<"    Gph.save(filename=sys.argv[1], xmin=-4, xmax=4, ymin=-4, ymax=4, aspect_ratio=1, dpi=300)\n";
     info.scriptf<<"main()\n";
     info.scriptf.close();
 }
