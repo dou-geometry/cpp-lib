@@ -78,7 +78,6 @@ int main(int argc, char** argv) {
     auto a=[amp](d::dyn::mono<double> m) {
         return d::coord<double>({gaussianFunc(m[0][0]), 0})*(m[1].norm())*amp;
     };
-    std::vector<double> angles;
     d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
     d::conn::bash::exec("rm "+gph.plot);
     plotScript(gph);
@@ -96,7 +95,5 @@ int main(int argc, char** argv) {
             outbound(m.log[m.logSize-5][0], m.log[m.logSize-4][0]);
         std::cout << theta << ", " << d::line<double>::ang(inbound, outbound)/M_PI*180.<<std::endl;
     } while(theta<M_PI);
-    for(auto &i:angles)
-        std::cout << i << std::endl;
     return 0;
 }
