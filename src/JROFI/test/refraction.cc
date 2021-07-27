@@ -88,7 +88,7 @@ int main() {
         assert(m.logSize>5);
         d::line<double> inbound(m.log[4][0], m.log[5][0]),
             outbound(m.log[m.logSize-5][0], m.log[m.logSize-4][0]);
-        std::cout << d::line<double>::ang(inbound, outbound)/M_PI*180.<<std::endl;
+        std::cout << theta << ", " << d::line<double>::ang(inbound, outbound)/M_PI*180.<<std::endl;
     } while(theta<M_PI);
     for(auto &i:angles)
         std::cout << i << std::endl;
