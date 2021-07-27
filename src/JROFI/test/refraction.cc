@@ -37,6 +37,7 @@ void plotScript(d::conn::sage::settings::files<d::conn::sage::settings::png>& in
     info.scriptf<<"        else:\n";
     info.scriptf<<"            if(cc==0):\n";
     info.scriptf<<"                vct=vector(sage_eval(ln))\n";
+    info.scriptf<<"                if(vct[0]>4.2): break\n";
     info.scriptf<<"                pts.append(vct)\n";
     info.scriptf<<"            cc+=1\n";
     info.scriptf<<"    return pts\n";
