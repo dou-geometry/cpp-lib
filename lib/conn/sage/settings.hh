@@ -49,7 +49,7 @@ namespace d::conn::sage::settings {
             //conn::bash::exec(("rm "+this->plot).c_str());
             this->scriptf.close();
             this->dataf.close();
-            if(rmScript) { conn::bash::exec(("rm "+this->script).c_str()); conn::bash::exec(("rm "+this->script+".py").c_str()); }
+            if(rmScript) { conn::bash::exec(("rm "+this->script).c_str()); conn::bash::exec(("[-e "+this->script+" ] && rm -- "+this->script+".py").c_str()); }
             if(rmData) conn::bash::exec(("rm "+this->data).c_str());
         }
         files& newplot() {
