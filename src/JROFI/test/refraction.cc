@@ -42,7 +42,7 @@ void plotScript(d::conn::sage::settings::files<d::conn::sage::settings::png>& in
     info.scriptf<<"    return pts\n";
     info.scriptf<<"def main():\n";
     info.scriptf<<"    Gph=line(parseFrame())\n";
-    info.scriptf<<"    Gph.save(filename=sys.argv[1], xmin=-2, xmax=2, ymin=-2, ymax=2, aspect_ratio=1)\n";
+    info.scriptf<<"    Gph.save(filename=sys.argv[1], xmin=-4, xmax=4, ymin=-4, ymax=4, aspect_ratio=1)\n";
     info.scriptf<<"main()\n";
     info.scriptf.close();
 }
