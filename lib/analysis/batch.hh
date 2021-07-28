@@ -1,20 +1,31 @@
 #pragma once
+#include"../concepts/returnSame.hh"
 
 namespace d::analysis {
     template<typename T>
         struct batch {
-            T* d;
+            T* d=nullptr;
             const di dim;
             batch() = delete;
             batch(di d): dim(d) {
                 d=new T[dim];
             }
             ~batch() {
-                delete[]d;
+                for(di i=0; i<dim; ++i)
+                    (d+i)->~T();
+                free(d);
             }
             batch(const batch& other): dim(other.dim) {
-                d=new T[dim];
-                memcpy(d, other.d, sizeof(T)*dim);
+                d=(T*)malloc(sizeof(T)*dim);
+                assert(d!=nullptr);
+                for(di i=0; i<dim; ++i)
+                    new(d+i)T(other.d[i]);
+            }
+            T operator[](int i) const {
+                return d[i];
+            }
+            T& operator[](int i) {
+                return d[i];
             }
             batch& pow(double p) {
                 for(di i=0; i<dim; i++)
@@ -36,6 +47,13 @@ namespace d::analysis {
             double distTo(const batch& target) const {
                 auto res=target-(*this);
                 return res.pow(2);
+            }
+            template<typename F> batch requires d::returnSameWithin<F, decltype(*this)> operator()(const F& f) {
+                batch res(*this);
+                for(di i=0; i<dim; ++i)
+                    res[i]=f(res[i]);
+                return res;
+            }
             }
         };
 }

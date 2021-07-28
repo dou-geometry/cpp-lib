@@ -11,6 +11,7 @@
 #include<cmath>
 #include <utility>
 #include <cstring>
+#include<complex>
 using namespace std;
 namespace d {
     template<typename T> struct coord {
@@ -40,6 +41,7 @@ namespace d {
             memcpy(d, l.begin(), sizeof(T)*dim);
             //std::copy(l.begin(), l.end(), d);
         }
+        coord(std::complex<T> z): coord({z.real(), z.imag()}) {}
         coord(): coord(2, (T)0){}
         ~coord() {
             delete[]d;
@@ -125,11 +127,11 @@ namespace d {
             }
             return crd;
         }
-        T dot(coord<T> &r) const {
+        T dot(const coord<T> &r) const {
             auto res=*this;
             for(di i=0; i<r.dim; i++) { res.d[i]*=r[i]; };
             double ans=0;
-            for(di i=0; i<r.dim; i++) ans+=d[i];
+            for(di i=0; i<r.dim; i++) ans+=res.d[i];
             return ans;
         }
         coord<T>& operator+=(const coord<T> &r) {

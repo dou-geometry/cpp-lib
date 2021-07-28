@@ -28,29 +28,34 @@ namespace d::dyn {
                     assert(sizeof...(Ts)<=(order)&& "d::dyn::mono initialization error, too many arguments");
                     di i=0;
                     (...,void(new(d+(i++))d::coord<T>(args))); // https://stackoverflow.com/a/34569679/8460574
-                    std::cout << "Size: " << sizeof...(Ts) << std::endl;
+                    //std::cout << "Size: " << sizeof...(Ts) << std::endl;
                     for(di i=sizeof...(Ts); i<order; ++i)
                         new(d+i)d::coord<T>(d->dim);
                 }
             template<typename...Ts>
                 requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type>
-                mono(Ts...args): mono(sizeof...(Ts)-1, 0.0, args...) {}
-            template<typename X, typename...Ts> 
-                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
+                mono(Ts...args): mono(sizeof...(Ts), 0.0, args...) {}
+            template<typename...Ts> 
+                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type>
                 mono(di ord, Ts...args): mono(ord, 0.0, args...) {}
             template<typename X, typename...Ts> 
                 requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
-                mono(X it, Ts...args): mono(sizeof...(Ts)-1, it, args...) {}
+                mono(X it, Ts...args): mono(sizeof...(Ts), it, args...) {}
             template<typename X, typename...Ts> 
                 requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
                 mono(X it, di ord, Ts...args): mono(ord, it, args...) {}
             mono(): mono(1ul, 0.0, d::coord<T>(1)) {}
             mono(di order, di dimension=1): mono(order, 0.0, d::coord<T>(dimension)) {}
-            ~mono() {
+            inline mono& rmLog() {
                 if(log!=nullptr)
                     for(di i=0; i<=logSize; ++i)
                         (log+i)->~mono();
                 free(log);
+                log=nullptr;
+                return *this;
+            }
+            ~mono() {
+                this->rmLog();
                 if (d!=nullptr)
                     for(di i=0; i<order; i++)
                         (d+i)->~coord();
