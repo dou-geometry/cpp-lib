@@ -19,7 +19,7 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
                 if constexpr(log) {
                     assert(cur.log==nullptr&&
                             "Log of d::dyn::mono in d::numerical::rk4::run() isn't empty");
-                    di mlcNum=std::ceil(loopTimes/logTrigger);
+                    di mlcNum=std::floor(loopTimes/logTrigger);
                     //std::cout << "Malloc: "<<mlcNum<<std::endl;
                     cur.log=(R*)malloc(sizeof(R)*(mlcNum+1));
                     assert(cur.log!=nullptr);
@@ -37,7 +37,7 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
             di i=0;
             while(true) { // WHy < not <= ?
                 if constexpr(!runForever) {
-                    if(++i>=loopTimes)
+                    if(++i>loopTimes)
                         goto rtrn;
                 }
                 if constexpr(runForever)
