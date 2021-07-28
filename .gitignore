@@ -69,4 +69,3 @@ bin/*
 */.deps/*
 .dirstamp
 *.sage
-data/*
