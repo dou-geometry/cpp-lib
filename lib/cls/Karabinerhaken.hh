@@ -14,11 +14,14 @@ namespace d{
                 d.~C();
                 delete tugi;
             }
+            Karabinerhaken& operator=(const Karabinerhaken& x)=delete;
+            Karabinerhaken& operator=(const Karabinerhaken&& x)=delete;
+            Karabinerhaken(const Karabinerhaken& x)=delete;
             template<typename I> Karabinerhaken* after(I);
             inline Karabinerhaken* insertAfter(Karabinerhaken* mae) {
                 tugi=(*mae).tugi;
                 (*mae).tugi=this;
-                return *this;
+                return this;
             }
             inline Karabinerhaken* insert(Karabinerhaken* mae) {
                 return this->insertAfter(mae);
