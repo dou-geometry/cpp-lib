@@ -12,12 +12,12 @@ namespace d{
                 delete tugi;
             }
             template<typename I> Karabinerhaken* after(I);
-            void insertAfter(Karabinerhaken* mae) {
+            inline Karabinerhaken* insertAfter(Karabinerhaken* mae) {
                 tugi=(*mae).tugi;
                 (*mae).tugi=this;
-                return;
+                return *this;
             }
-            void insert(Karabinerhaken* mae) {
+            inline Karabinerhaken* insert(Karabinerhaken* mae) {
                 return this->insertAfter(mae);
             }
             void insert(Karabinerhaken* ptr1, Karabinerhaken* ptr2) {
