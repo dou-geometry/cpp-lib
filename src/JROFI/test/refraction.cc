@@ -28,7 +28,7 @@ void got_signal(int)
 //#define outboundDist        2.
 //#define singleSideThickness 1.
 
-#define dTheta 1e-2
+#define dTheta 1e-4
 
 #define terminTime 12.25
 
