@@ -87,6 +87,12 @@ inline double gaussianFunc(double x) { return std::exp(-1*pow(x,2)); }
 //inline double gaussianFunc(double x) { return 1./std::sqrt(2.*M_PI)/singleSideThickness/5./std::sqrt(2*std::log(2))*std::exp(-1.*pow(x,2)/2./std::pow(singleSideThickness/5./std::sqrt(2*std::log(2)), 2)); }
 
 int main(int argc, char** argv) {
+    struct sigaction sa;
+    memset( &sa, 0, sizeof(sa) );
+    sa.sa_handler = got_signal;
+    sigfillset(&sa.sa_mask);
+    sigaction(SIGINT,&sa,NULL);
+
     std::cout << std::fixed << std::setprecision(12);
     std::cout << "Inbound,  Outbound, AngB.t.\n";
     /* Setup:
