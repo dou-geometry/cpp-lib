@@ -1,6 +1,7 @@
 #ifndef __STRUCT_KARABINERHAKEN_HPP
 #define __STRUCT_KARABINERHAKEN_HPP
 #define di long unsigned int
+#include<iostream>
 namespace d{
 
     template<typename C> //Carrier type
@@ -42,6 +43,16 @@ namespace d{
                 return cur;
             }
             static inline Karabinerhaken* end(const Karabinerhaken* x) { return x->end(); }
+            inline friend std::ostream& operator<<(std::ostream& os, const Karabinerhaken& x) {
+                os << x.d << "\n";
+                if(x->tugi!=nullptr) os << x->tugi;
+                return os;
+            }
+            inline friend std::ostream& operator<<(std::ostream& os, const Karabinerhaken* ptr) {
+                os << ptr->d << "\n";
+                if(ptr->tugi!=nullptr) os << ptr->tugi;
+                return os;
+            }
         };
 }
 #include"./Karabinerhaken.tt"
