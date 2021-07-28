@@ -73,6 +73,7 @@ inline double gaussianFunc(double x) { return std::exp(-1*pow(x,2)); }
 
 int main(int argc, char** argv) {
     std::cout << std::fixed << std::setprecision(12);
+    std::cout << "Inbound,  Outbound, AngB.t.\n";
     /* Setup:
      * crossing point: (0, 0)
      * initial position: e^(i*theta), theta\in(pi/2, 3pi/2)
@@ -99,7 +100,7 @@ int main(int argc, char** argv) {
         assert(m.logSize>5);
         d::line<double> inbound(m.log[4][0], m.log[5][0]),
             outbound(m.log[m.logSize-5][0], m.log[m.logSize-4][0]);
-        std::cout << (theta-M_PI)/M_PI*-180. << ", " << d::line<double>::ang(inbound, outbound)/M_PI*180.<<std::endl;
+        std::cout << (theta-M_PI)/M_PI*-180. << ", " << outbound.ang()/M_PI*180. << ", " << d::line<double>::ang(inbound, outbound)/M_PI*180.<<std::endl;
     } while(theta<M_PI);
     return 0;
 }
