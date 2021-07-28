@@ -49,12 +49,9 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
                        k4=(cur+h*k3).shift(f);
                 if constexpr(d::tracksTime<R>) cur.t+=h;
                 cur+=(k1+2.*k2+2.*k3+k4)/6.*h;
-                if constexpr(log) {
-                    if(i%logTrigger==0) {
-                        ++(cur.logSize);
-                        new(cur.log+cur.logSize)R(cur);
-                    }
-                }
+                if constexpr(log)
+                    if(i%logTrigger==0)
+                        new(cur.log+(++cur.logSize))R(cur);
                 if constexpr(runForever&&true) if(i%logTrigger==0) goto rtrn;
             }
 rtrn:
