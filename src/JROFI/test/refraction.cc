@@ -116,8 +116,7 @@ int main(int argc, char** argv) {
         d::dyn::mono<double, true> m((di)2, initPos, initPos*-1);
         d::numerical::rk4::run<12, false>(m, a, terminTime);
         // Graph path
-        std::cout << "Wait\n"<<d::conn::bash::exec("wait");
-        if(ranTime%1==0) plot(m, gph);
+        if(ranTime%1224==0) plot(m, gph);
         assert(m.logSize>5);
         d::line<double> inbound(m.log[4][0], m.log[5][0]),
             outbound(m.log[m.logSize-5][0], m.log[m.logSize-4][0]);
