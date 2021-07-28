@@ -66,13 +66,14 @@ rtrn:
         }
     template<int logTrigger=1, bool runForever=false, typename R, typename F, typename T>
         requires dynMono<R, F> && std::convertible_to<T, std::function<bool(R)>>
-        d::Karabinerhaken<R> run(R& cur, const F &f, const T& t, double h) {
+        d::Karabinerhaken<R>* run(R& cur, const F &f, const T& t, double h) {
             assert(f(cur).dim==cur[0].dim &&
                     "Slope function within d::numerical::rk4::run() doesn't return d::dyn::mono with correct dimension");
             // Since d::coord is VLA and dim isn't const
 
             constexpr bool log=(d::dyn::Loggable<R>&&!runForever&&logTrigger);
             d::Karabinerhaken<R> *curLog=new d::Karabinerhaken<R>(cur);
+            d::Karabinerhaken<R> *logStart=curLog;
 
             double hh=h/2;
             di i=0;
@@ -102,7 +103,7 @@ rtrn:
 rtrn:
             //if constexpr(log) assert(cur.logSize==logItems);
             //if constexpr(log) cur.log->d->d[0]=i;
-            return curLog;
+            return logStart;
         }
     template<typename C> d::dyn::mono<C> run(const d::dyn::mono<C>& x0, const std::function<C(C)> &f, const double s, const double t) { return run(x0, f, t-s); }
     template<typename C> C run(const C& x0, const std::function<C(C)> &f, const double s, const double t) { return run(x0, f, t-s); }
