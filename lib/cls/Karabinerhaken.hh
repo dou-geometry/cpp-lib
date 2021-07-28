@@ -1,5 +1,6 @@
 #ifndef __STRUCT_KARABINERHAKEN_HPP
 #define __STRUCT_KARABINERHAKEN_HPP
+#define di long unsigned int
 namespace d{
 
     template<typename C> //Carrier type
