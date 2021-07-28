@@ -10,7 +10,12 @@ First download the tarball of branch [`gnu-prod-env`](https://github.com/dou-geo
 
 Or you could download any branch's tarball by `https://www.github.com/dou-geometry/cpp-lib/tarball/<branch>` then run `./setupAutotools.sh` follow by `./configure && make`. But notice not all branch's state is guarantee to be run-able.
 
-## ブランチ Branch
+## プログラム Programs
+
+- `bin/JROFI`
+- `bin/CMF`
+
+# ブランチ Branch
 
 - [`main`](https://github.com/dou-geometry/cpp-lib/tree/main)：gnu++20 code, using quadruple-precision floating-point format
 - [`C++17`](https://github.com/dou-geometry/cpp-lib/tree/C++17)：stdc++17 compatible code
@@ -35,7 +40,8 @@ This project is mainly to maintain a general-physics-oriented C++ library. Follo
 
 # Development Team
 
-- [math-dev](https://github.com/dou-geometry/cpp-lib/tree/math-dev) (Active)
-- [rk4-dev](https://github.com/dou-geometry/cpp-lib/tree/rk4-dev) (Finished)
+- [`math-dev`](https://github.com/dou-geometry/cpp-lib/tree/math-dev) (Active)
+- [`rk4-dev`](https://github.com/dou-geometry/cpp-lib/tree/rk4-dev) (Finished)
+- [`phys-dev`](https://github.com/dou-geometry/cpp-lib/tree/phys-dev) (Active)
 
 Please initialize group via a new branch, or (if wanted to resume a dev-team) by creating pull request from [`main`](https://github.com/dou-geometry/cpp-lib/tree/main) to corresponding branch.
