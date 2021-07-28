@@ -54,6 +54,9 @@ struct line {
     static inline double ang(const d::line<L>& a, const d::line<L>& b) {
         return a.ang(b);
     }
+    inline double ang() const {
+        return std::atan(d[1]/d[0]);
+    }
 };
 
 }
