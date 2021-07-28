@@ -8,7 +8,7 @@ namespace d{
             C d;
             Karabinerhaken(C x, Karabinerhaken* n=nullptr): d(x), tugi(n){}
             ~Karabinerhaken() {
-                delete d;
+                d.~C();
                 delete tugi;
             }
             template<typename I> Karabinerhaken* after(I);
