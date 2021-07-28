@@ -64,7 +64,6 @@ rtrn:
             //if constexpr(log) cur.log->d->d[0]=i;
             return cur;
         }
-        /*
     template<int logTrigger=1, bool runForever=false, typename R, typename F, typename T>
         requires dynMono<R, F> && std::convertible_to<T, std::function<bool(R)>>
         R runTill(R& cur, const F &f, const T& t, double h) {
@@ -120,7 +119,6 @@ rtrn:
             //if constexpr(log) cur.log->d->d[0]=i;
             return cur;
         }
-    */
     template<typename C> d::dyn::mono<C> run(const d::dyn::mono<C>& x0, const std::function<C(C)> &f, const double s, const double t) { return run(x0, f, t-s); }
     template<typename C> C run(const C& x0, const std::function<C(C)> &f, const double s, const double t) { return run(x0, f, t-s); }
     // Perhaps a duplicated version of the loop in run() could be made seperately.
