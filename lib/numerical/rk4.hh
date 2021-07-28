@@ -1,6 +1,7 @@
 #pragma once
 
 #include"../cls/coord.hh"
+#include"../cls/Karabinerhaken.hh"
 #include"../dyn/mono.hh"
 #include"../concepts/tracksTime.hh"
 #include<functional>
@@ -17,10 +18,10 @@ namespace d::numerical::rk4 {
         };
     template<int logTrigger=1, bool runForever=false, typename R, typename F, typename T>
         requires dynMono<R, F> && std::convertible_to<T, std::function<bool(R)>>
-        R runTill(R& cur, const F &f, const T& t, double h=d::numerical::rk4::h);
-    template<int logTrigger=1, bool runForever=false, typename R, typename F>
-        requires dynMono<R, F>
-        R run(R& cur, const F &f, const double tt=0, double h=d::numerical::rk4::h);
+        d::Karabinerhaken<R> run(R& cur, const F &f, const T& t, double h=d::numerical::rk4::h);
+    template<int logTrigger=1, bool runForever=false, typename R, typename F, typename T>
+        requires dynMono<R, F> && (!(std::convertible_to<T, std::function<bool(R)>>))
+        R run(R& cur, const F &f, const T tt=0, double h=d::numerical::rk4::h);
     template<typename C> d::dyn::mono<C> next();
 }
 
