@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
     auto a=[amp](d::dyn::mono<double> m) {
         return d::coord<double>({gaussianFunc(m[0][0]), 0})*(m[1].norm())*amp;
     };
-    d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
+    d::conn::sage::settings::files<d::conn::sage::settings::png> gph(false);
     d::conn::bash::exec("rm "+gph.plot);
     plotScript(gph);
     int ranTime=0;
