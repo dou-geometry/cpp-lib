@@ -24,6 +24,22 @@ namespace d{
                 if((*ptr2).tugi==ptr1) return (*this).insertAfter(ptr2);
                 return (*this).insertAfter(ptr2);
             }
+            inline di size() {
+                di i=1;
+                Karabinerhaken* cur=this;
+                while(cur->tugi!=nullptr) {
+                    ++i;
+                    cur=cur->tugi;
+                }
+                return i;
+            }
+            static inline di size(const Karabinerhaken* x) { return x->size(); }
+            inline Karabinerhaken* end() {
+                Karabinerhaken* cur=this;
+                for(; cur->tugi!=nullptr; cur=cur->tugi) {}
+                return cur;
+            }
+            static inline Karabinerhaken* end(const Karabinerhaken* x) { return x->end(); }
         };
 }
 #include"./Karabinerhaken.tt"
