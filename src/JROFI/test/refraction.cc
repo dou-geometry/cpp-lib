@@ -1,3 +1,18 @@
+#include <signal.h>
+#include <unistd.h>
+#include <cstring>
+#include <atomic>
+
+std::atomic<bool> quit(false);    // signal flag
+
+void got_signal(int)
+{
+    quit.store(true);
+}
+// Safely handle SIGINT
+// By: https://stackoverflow.com/a/4250601/8460574
+
+
 #include"../../../lib/cls/coord.hh"
 #include"../../../lib/cls/line.hh"
 #include"../../../lib/numerical/rk4.hh"
@@ -101,6 +116,7 @@ int main(int argc, char** argv) {
         d::line<double> inbound(m.log[4][0], m.log[5][0]),
             outbound(m.log[m.logSize-5][0], m.log[m.logSize-4][0]);
         std::cout << (theta-M_PI)/M_PI*-180. << ", " << outbound.ang()/M_PI*180. << ", " << d::line<double>::ang(inbound, outbound)/M_PI*180.<<std::endl;
+        if( quit.load() ) break; //Safely handle SIGINT
     } while(theta<M_PI);
     return 0;
 }
