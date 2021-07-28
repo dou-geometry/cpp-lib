@@ -52,7 +52,8 @@ namespace d::conn::sage::settings {
             //conn::bash::exec(("rm "+this->plot).c_str());
             this->scriptf.close();
             this->dataf.close();
-            if(rmScript) { conn::bash::exec(("rm "+this->script).c_str()); conn::bash::exec(("[ -e "+this->script+" ] && rm -- "+this->script+".py").c_str()); }
+            if(rmScript) conn::bash::exec(("rm "+this->script).c_str());
+            conn::bash::exec(("[ -e "+this->script+" ] && rm -- "+this->script+".py").c_str());
             if(rmData) conn::bash::exec(("rm "+this->data).c_str());
         }
         files& newplot() {
@@ -64,7 +65,7 @@ namespace d::conn::sage::settings {
         files& newdata() {
             this->dataf.close();
             if(rmData) conn::bash::exec(("rm "+this->data).c_str());
-            std::string d=conn::bash::exec("mktemp");
+            std::string d=conn::bash::exec("mktemp --suffix=.data");
             d=d.substr(0, d.size()-1);
             this->data=d;
             this->dataf.open(this->data);
