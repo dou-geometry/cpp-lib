@@ -18,6 +18,9 @@ namespace d::conn::sage::settings {
         files():rmScript(true), rmData(true) {
             this->init(3);
         }
+        files(bool rD, bool rS=true): rmData(rD), rmScript(rS) {
+            this->init(3);
+        }
         files(std::string pl): rmScript(true), rmData(true) { this->init(2, pl); }
         files(std::string pl, std::string da): rmScript(true) { this->init(1, pl, da); }
         files(std::string pl, std::string da, std::string sc) {this->init(0, pl, da, sc);}
@@ -27,7 +30,7 @@ namespace d::conn::sage::settings {
                 p=p.substr(0, p.size()-1);
             }
             if(RGFC>1) {
-                d=conn::bash::exec("mktemp");
+                d=conn::bash::exec("mktemp --suffix=.data");
                 d=d.substr(0, d.size()-1);
             }
             if(RGFC>0) {
