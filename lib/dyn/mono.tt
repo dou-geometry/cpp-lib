@@ -12,3 +12,18 @@ namespace d::dyn {
     template<typename A, bool B, bool C>
         mono<A, B> operator-(mono<A, B> lhs, const mono<A, C>& r) { lhs-=r; return lhs; }
 }
+
+namespace d::dyn::compact {
+            template<typename A, di O, di D, bool B, typename X>
+                friend mono<A, O, D, B> operator*(mono<A, O, D, B> lhs, const X& r) { lhs*=r; return lhs; }
+            template<typename A, di O, di D, bool B, typename X>
+                friend mono<A, O, D, B> operator*(X r, mono<A, O, D, B> lhs) { lhs*=r; return lhs; }
+            template<typename A, di O, di D, bool B, typename X>
+                friend mono<A, O, D, B> operator/(mono<A, O, D, B> lhs, const X& r) { lhs/=r; return lhs; }
+            template<typename A, di O, di D, bool B, typename X>
+                friend mono<A, O, D, B> operator/(X r, mono<A, O, D, B> lhs) { lhs/=r; return lhs; }
+            template<typename A, di O, di D, bool B, bool C>
+                friend mono<A, O, D, B> operator+(mono<A, O, D, B> lhs, const mono<A, O, D, C>& r) { lhs+=r; return lhs; }
+            template<typename A, di O, di D, bool B, bool C>
+                friend mono<A, O, D, B> operator-(mono<A, O, D, B> lhs, const mono<A, O, D, C>& r) { lhs-=r; return lhs; }
+}
