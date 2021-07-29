@@ -70,3 +70,4 @@ bin/*
 .dirstamp
 *.sage
 src/test/test-suite.log
+test-driver
