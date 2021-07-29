@@ -29,7 +29,7 @@ AC_C_INLINE
 
 # Checks for library functions.
 AC_FUNC_MALLOC
-AC_CHECK_FUNCS([floor pow sqrt])
+AC_CHECK_FUNCS([floor memset pow sqrt])
 
 AC_CONFIG_FILES([Makefile
                  lib/Makefile
@@ -42,6 +42,8 @@ AC_CONFIG_FILES([Makefile
                  lib/dou/Makefile
                  lib/dou/geo/Makefile
                  lib/dyn/Makefile
+                 lib/manip/Makefile
                  lib/numerical/Makefile
-                 src/Makefile])
+                 src/Makefile
+                 src/test/Makefile])
 AC_OUTPUT
