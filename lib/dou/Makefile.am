@@ -1,7 +1,8 @@
 SUBDIRS = geo
 
-include_HEADERS = sys.hh
+include_HEADERS = mono.hh sys.hh
 
-noinst_LIBRARIES = libdousys.a
+noinst_LIBRARIES = libdoumono.a libdousys.a
 
+libdoumono_a_SOURCES = mono.cc
 libdousys_a_SOURCES = sys.cc
