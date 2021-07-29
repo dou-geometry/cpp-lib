@@ -1,3 +1,7 @@
+# ToC
+
+- [`compact/`](./compact), a version of the classes in this directory, but uses standard array instead of VLA.
+
 ```cpp
 // structure
 // structure/chain.hpp
