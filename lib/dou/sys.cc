@@ -18,6 +18,26 @@ namespace d::dou::compact {
             }
         }
     }
+    d::dou::compact::mono<double, 2ul, dimension, true>& sys::operator()(const d::compact::coord<double, dimension>& i) {
+    }
+    d::dou::compact::mono<double, 2ul, dimension, true> sys::operator()(const d::compact::coord<double, dimension>& i) const {
+    }
+    d::compact::coord<double, dimension> sys::existence(int id) const {
+        d::compact::coord<double, dimension> force;
+        for(di i=0; i<particles; ++i) { // Accelerate toward high existence
+        }
+        return force;
+    }
     bool sys::stable() {
+        for(di i=0; i<particles; ++i)
+            if(this->existence(i).norm2()!=0)
+                return false;
+        return true;
+    }
+    bool sys::confined() {
+        d::compact::coord<double, dimension> force(0.);
+        for(di i=0; i<particles; ++i)
+            force+=this->existence(i);
+        return (force.norm2())<1e-12;
     }
 }
