@@ -1,1 +1,1 @@
-SUBDIRS = geo
+SUBDIRS = geo sys
