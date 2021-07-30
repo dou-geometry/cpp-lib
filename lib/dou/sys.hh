@@ -1,7 +1,11 @@
 #pragma once
 #define di long unsigned int
 #include<random>
+#include"../conn/sage/settings.hh"
+#include"./mono.hh"
+#include<iostream>
 
+/*
 namespace d::dou {
     struct sys2d { //VLA version
         d::dou::mono<double>* d;
@@ -31,12 +35,13 @@ namespace d::dou {
         }
     };
 }
+*/
 
 namespace d::dou::compact { // Focus
     template<di dimension=2, di particles=1224>
     struct sys {
         d::dou::compact::mono<double, 2ul, dimension, true> d[particles];
-        constexpr di amount=particles;
+        static constexpr di amount=particles;
         sys(double leftBoundary=-2., double rightBoundary=2.); //bl, tr as template?
         ~sys() {}
         d::dou::compact::mono<double, 2ul, dimension, true> operator[](int i) const { return this->d[i]; }
@@ -44,12 +49,18 @@ namespace d::dou::compact { // Focus
         d::dou::compact::mono<double, 2ul, dimension, true>& operator()(const d::compact::coord<double, dimension>&);
         d::dou::compact::mono<double, 2ul, dimension, true> operator()(const d::compact::coord<double, dimension>&) const;
         d::compact::coord<double, dimension> existence(int i) const;
-        d::compact::coord<double, dimensoin> existence(const d::compact::coord<double, dimension>& i) { return this->existence((*this)(i)); }
+        d::compact::coord<double, dimension> existence(const d::compact::coord<double, dimension>& i) { return this->existence((*this)(i)); }
         bool stable();
         bool confined();
+        template<bool background=false> std::string plot(d::conn::sage::settings::files<d::conn::sage::settings::gif>&);
+        friend std::ostream& operator<<(std::ostream& os, const d::dou::compact::sys<dimension, particles>& s) {
+            for(di i=0; i<particles; ++i)
+                os<<s.d[i]<<"\n";
+            return os;
+        }
     };
 }
-
+/*
 namespace d::dou::linked {
     struct sys {
         d::Karabinerhaken<d::dou::mono<double>>* d;
@@ -97,3 +108,6 @@ namespace d::dou::linked::compact {
         }
     };
 }
+*/
+
+#include"./sys.tt"
