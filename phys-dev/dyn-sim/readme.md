@@ -16,6 +16,8 @@ A discrete jump from 0 to 1 at fluid interface.
 
 ### Constant velocity (no force acting)
 
+Given $v$, for any space with existence エ, it means traveling $vエ$ per unit time.
+
 ## Components
 
 ### Consumption
