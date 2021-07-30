@@ -37,5 +37,12 @@ namespace d::analysis {
                 auto res=target-(*this);
                 return res.pow(2);
             }
+            template<typename F>
+                requires std::convertible_to<F, std::function<T(T)>>
+            inline batch& apply(const F& f) {
+                for(di i=0; i<dim; ++i)
+                    d[i]=f(d[i]);
+                return *this;
+            }
         };
 }
