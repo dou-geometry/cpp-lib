@@ -1,18 +1,33 @@
 #pragma once
 
+#include"../cls/coord.hh"
+#include"../cls/compact/coord.hh"
+#include"../concepts/nonDim.hh"
+#include<iostream>
+#include <type_traits>
+#include<cassert>
+#include<functional>
+#define di long unsigned int
+#define ull unsigned long long int
+
+namespace d::dou {
+    struct mono {
+    };
+}
+
 namespace d::dou::compact {
-    template<typename T, di DEDEorder=2, di dimension=2, bool logIncrPromise=false>
+    template<typename T, di DEorder=2, di dimension=2, bool logIncrPromise=false>
         struct mono {
             double t=0;
             mono* log=nullptr;
-            constexpr di order=DEorder;
+            static constexpr di order=DEorder;
             di logSize=0;
             d::compact::coord<T, 2> d[DEorder];
             double existence=1;
             //d::compact::coord<T> &pos=d[0], &vel=d[1], &acc=d[2];
             template<typename X, typename...Ts>
-                requires std::same_as<d::compact::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
-                mono(double exist, X it, Ts...args): DEorder(ord), t(it), existence(exist) {
+                requires std::same_as<d::compact::coord<T, dimension>, typename std::common_type<Ts...>::type> && d::nonDim<X>
+                mono(double exist, X it, Ts...args): t(it), existence(exist) {
                     static_assert(sizeof...(Ts)<=DEorder, "d::dyn::mono initialization error, too many arguments");
                     di i=0;
                     (...,void(d[(i++)]=args)); // https://stackoverflow.com/a/34569679/8460574
@@ -27,7 +42,7 @@ namespace d::dou::compact {
             template<typename X, typename...Ts> 
                 requires std::same_as<d::compact::coord<T>, typename std::common_type<Ts...>::type> && std::signed_integral<X>
                 mono(X it, Ts...args): mono(1.0, it, args...) {}
-            mono(): mono(1.0, 0.0, d::compact::coord<T>((T)0)) {}
+            mono(): mono(1.0, 0.0, d::compact::coord<T, dimension>((T)0)) {}
             inline mono& rmLog() {
                 if(log!=nullptr)
                     for(di i=0; i<=logSize; ++i)
@@ -47,7 +62,7 @@ namespace d::dou::compact {
                 for(di i=0; i<DEorder; ++i)
                     d[i]=other.d[i];
             }
-            mono(mono<T, logIncrPromise> &&other) noexcept: d(std::exchange(other.d, nullptr)), DEorder(std::exchange(other.DEorder, 0)), t(std::exchange(other.t, 0)), log(std::exchange(other.log, nullptr)) {
+            mono(mono<T, logIncrPromise> &&other) noexcept: d(std::exchange(other.d, nullptr)), t(std::exchange(other.t, 0)), log(std::exchange(other.log, nullptr)) {
             }
             mono& operator=(const mono<T, DEorder, dimension, false> &other) {
                 if(this==&other) return *this;
@@ -117,7 +132,7 @@ namespace d::dou::compact {
                             constexpr long mis=(delta)-sizeof...(Ts);
                             if constexpr(mis) {
                                 for(;i<delta; ++i)
-                                    res.d[i]=d::compact::coord<T>(res.d->dim);
+                                    res.d[i]=d::compact::coord<T, dimension>(res.d->dim);
                             }
                         } else {
                             for(int i=0; i<DEorder+delta; ++i)
@@ -127,7 +142,7 @@ namespace d::dou::compact {
                             constexpr long mis=(delta*-1)-sizeof...(Ts);
                             if constexpr(mis) {
                                 for(;i<DEorder; ++i)
-                                    res.d[i]=d::compact::coord<T>(res.d->dim);
+                                    res.d[i]=d::compact::coord<T, dimension>(res.d->dim);
                             }
                         }
                         return res;
