@@ -10,7 +10,7 @@ namespace d::compact {
                     d[i]=val;
             }
             coord(std::initializer_list<T> l) {
-                static_assert(l.size()<=dimension);
+                //assert(l.size()<=dimension);
                 memcpy(d, l.begin(), sizeof(T)*dimension);
             }
             ~coord() {//Not VLA so no need to destruct?
@@ -39,7 +39,7 @@ namespace d::compact {
             double norm2() const {
                 double res=0;
                 for(di i=0; i<dimension; i++) {
-                    res+=pow(this->d[i],2.0);
+                    res+=std::pow(this->d[i],2.0);
                 }
                 return (res);
             }
