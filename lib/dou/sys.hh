@@ -106,6 +106,7 @@ namespace d::dou::linked::compact {
         ~sys() {
             d.~Karabinerhaken();
         }
+        summon(d::compact::coord<double, dimension>)
     };
 }
 */
