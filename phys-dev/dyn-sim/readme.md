@@ -20,12 +20,14 @@ Given $v$, for any space with existence エ, it means traveling $vエ$ per unit 
 
 ## Components
 
-### Consumption
+### Degradation
+
+This part decides given two point (A, B) seperate by distance $D$, given A's original existence エ, how much will B perceive?
 
 - Time-dependent linear consumption
 - Spatial-dependent linear consumption
 
-### Radiation
+- Ratio-based radiation
 
 ### Spaton
 
