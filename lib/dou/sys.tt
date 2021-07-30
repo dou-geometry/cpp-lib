@@ -18,7 +18,7 @@ namespace d::dou::compact {
         }
     }
     template<di dimension, di particles>
-    d::dou::compact::mono<double, 2ul, dimension, true>& sys<dimension, particles>::operator()(const d::compact::coord<double, dimension>& x) {
+    inline d::dou::compact::mono<double, 2ul, dimension, true>& sys<dimension, particles>::operator()(const d::compact::coord<double, dimension>& x) {
         // search operator
         di id=0;
         for(di i=1; i<particles; ++i)
@@ -27,7 +27,7 @@ namespace d::dou::compact {
         return d[id];
     }
     template<di dimension, di particles>
-    d::dou::compact::mono<double, 2ul, dimension, true> sys<dimension, particles>::operator()(const d::compact::coord<double, dimension>& x) const {
+    inline d::dou::compact::mono<double, 2ul, dimension, true> sys<dimension, particles>::operator()(const d::compact::coord<double, dimension>& x) const {
         di id=0;
         for(di i=1; i<particles; ++i)
             if((d[i][0]-x).norm2()<(d[id][0]-x).norm())
@@ -49,7 +49,7 @@ namespace d::dou::compact {
         return true;
     }
     template<di dimension, di particles>
-    bool sys<dimension, particles>::confined() {
+    inline bool sys<dimension, particles>::confined() {
         d::compact::coord<double, dimension> force(0.);
         for(di i=0; i<particles; ++i)
             force+=this->existence(i);

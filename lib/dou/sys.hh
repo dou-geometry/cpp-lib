@@ -46,12 +46,12 @@ namespace d::dou::compact { // Focus
         ~sys() {}
         d::dou::compact::mono<double, 2ul, dimension, true> operator[](int i) const { return this->d[i]; }
         d::dou::compact::mono<double, 2ul, dimension, true>& operator[](int i) { return this->d[i]; }
-        d::dou::compact::mono<double, 2ul, dimension, true>& operator()(const d::compact::coord<double, dimension>&);
-        d::dou::compact::mono<double, 2ul, dimension, true> operator()(const d::compact::coord<double, dimension>&) const;
+        inline d::dou::compact::mono<double, 2ul, dimension, true>& operator()(const d::compact::coord<double, dimension>&);
+        inline d::dou::compact::mono<double, 2ul, dimension, true> operator()(const d::compact::coord<double, dimension>&) const;
         d::compact::coord<double, dimension> existence(int i) const;
         d::compact::coord<double, dimension> existence(const d::compact::coord<double, dimension>& i) { return this->existence((*this)(i)); }
-        bool stable();
-        bool confined();
+        bool stable(); // Not marking inline as not sure if such function fits
+        inline bool confined();
         template<bool background=false> std::string plot(d::conn::sage::settings::files<d::conn::sage::settings::gif>&);
         friend std::ostream& operator<<(std::ostream& os, const d::dou::compact::sys<dimension, particles>& s) {
             for(di i=0; i<particles; ++i)
