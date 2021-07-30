@@ -4,29 +4,28 @@ namespace d::compact {
     template<typename T, di dimension=1>
         struct coord {
             T d[dimension];
-            constexpr di dim=dimension;
+            //static constexpr di dim=dimension;
             coord(T val=0) {
-                for(di i=0; i<dim; ++i)
+                for(di i=0; i<dimension; ++i)
                     d[i]=val;
             }
             coord(std::initializer_list<T> l) {
                 static_assert(l.size()<=dimension);
-                memcpy(d, l.begin(), sizeof(T)*dim);
+                memcpy(d, l.begin(), sizeof(T)*dimension);
             }
             ~coord() {//Not VLA so no need to destruct?
             }
             coord(const coord<T, dimension> &other) {
-                memcpy(d, other.d, sizeof(T)*dim);
+                memcpy(d, other.d, sizeof(T)*dimension);
             }
-            coord(coord<T, dimension> &&other) noexcept: d(exchange(other.d, nullptr)), dim(exchange(other.dim,(di)0)) {}
+            coord(coord<T, dimension> &&other) noexcept: d(exchange(other.d, nullptr)) {}
             coord& operator=(const coord<T, dimension> &other) {
                 //printf("move ro3");
                 if (this == &other) return *this;
-                memcpy(d, other.d, sizeof(T)*dim);
+                memcpy(d, other.d, sizeof(T)*dimension);
                 return *this;
             }
-            coord& operator=(coord<T> &&other) noexcept {
-                swap(dim, other.dim);
+            coord& operator=(coord<T, dimension> &&other) noexcept {
                 swap(d, other.d);
                 return *this;
             }
@@ -108,13 +107,13 @@ namespace d::compact {
             coord<T, dimension>& operator*=(const coord<T, dimension> &rhs) {
                 static_assert(dimension!=3 && dimension!=7 && dimension!=2, "Dimension doesn't have cross product operation");
                 // 2-D cross product is acheived by little trick that's implemented at operator[], which gives 0 when you read out of range
-                if constexpr(dim==7) throw "7-D cross product isn't implemented yet";
-                if constexpr(dim==3) (*this)=coord<T>({
+                if constexpr(dimension==7) throw "7-D cross product isn't implemented yet";
+                if constexpr(dimension==3) (*this)=coord<T>({
                         (*this)[1]*(rhs[2])-(*this)[2]*(rhs[1]),
                         (*this)[2]*(rhs[0])-(*this)[0]*(rhs[2]),
                         (*this)[0]*(rhs[1])-(*this)[1]*(rhs[0])
                         });
-                if constexpr(dim==2) (*this)=coord<T>({(*this)[0]*(rhs[1])-(*this)[1]*(rhs[0]), 0});
+                if constexpr(dimension==2) (*this)=coord<T>({(*this)[0]*(rhs[1])-(*this)[1]*(rhs[0]), 0});
                 return *this;
             }
             T& operator[](int i) {
