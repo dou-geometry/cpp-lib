@@ -3,6 +3,7 @@
 #define __LIB_DYN_MONO__
 
 #include"../cls/coord.hh"
+#include"../cls/compact/coord.hh"
 #include"../concepts/nonDim.hh"
 #include<iostream>
 #include <type_traits>
@@ -259,30 +260,26 @@ namespace d::dyn {
 
 
 namespace d::dyn::compact {
-    template<typename T, di DEDEorder=2, di dimension=2, bool logIncrPromise=false>
+    template<typename T, di DEorder=2, di dimension=2, bool logIncrPromise=false>
         struct mono {
             double t=0;
             mono* log=nullptr;
-            constexpr di order=DEorder;
+            static constexpr di order=DEorder;
             di logSize=0;
             d::compact::coord<T, 2> d[DEorder];
             //d::coord<T> &pos=d[0], &vel=d[1], &acc=d[2];
             template<typename X, typename...Ts>
                 requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
-                mono(X it, Ts...args): DEorder(ord), t(it) {
+                mono(X it, Ts...args): t(it) {
                     static_assert(sizeof...(Ts)<=DEorder, "d::dyn::mono initialization error, too many arguments");
                     di i=0;
-                    (...,void(d[(i++)]=args)); // https://stackoverflow.com/a/34569679/8460574
+                    (...,(void)(d[(i++)]=args)); // https://stackoverflow.com/a/34569679/8460574
                     // **This is unsure if it is compact**
                 }
             template<typename...Ts>
                 requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type>
                 mono(Ts...args): mono(0.0, args...) {}
-            template<typename X, typename...Ts> 
-                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
-                mono(X it, Ts...args): mono(it, args...) {}
-            mono(): mono(0.0, d::coord<T>(1)) {}
-            mono(di dimension=1): mono(0.0, d::coord<T>(dimension)) {}
+            mono(): mono(0.0, d::coord<T>(dimension)) {}
             inline mono& rmLog() {
                 if(log!=nullptr)
                     for(di i=0; i<=logSize; ++i)
@@ -302,7 +299,7 @@ namespace d::dyn::compact {
                 for(di i=0; i<DEorder; ++i)
                     d[i]=other.d[i];
             }
-            mono(mono<T, logIncrPromise> &&other) noexcept: d(std::exchange(other.d, nullptr)), DEorder(std::exchange(other.DEorder, 0)), t(std::exchange(other.t, 0)), log(std::exchange(other.log, nullptr)) {
+            mono(mono<T, logIncrPromise> &&other) noexcept: d(std::exchange(other.d, nullptr)), t(std::exchange(other.t, 0)), log(std::exchange(other.log, nullptr)) {
             }
             mono& operator=(const mono<T, DEorder, dimension, false> &other) {
                 if(this==&other) return *this;
