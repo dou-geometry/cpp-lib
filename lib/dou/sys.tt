@@ -9,7 +9,7 @@ namespace d::dou::compact {
         // 一様実数分布
         // [-1.0, 1.0)の値の範囲で、等確率に実数を生成する
         std::uniform_real_distribution<> dist1(leftBoundary, rightBoundary);
-        for(di i=0; i<amount; ++i) {
+        for(di i=0; i<particles; ++i) {
             //d[i].t=0.0;
             for(di j=0; j<dimension; ++j) {
                 d[i][0][j]=dist1(engine); // Position

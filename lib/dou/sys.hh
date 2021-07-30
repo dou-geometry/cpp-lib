@@ -41,7 +41,7 @@ namespace d::dou::compact { // Focus
     template<di dimension=2, di particles=1224>
     struct sys {
         d::dou::compact::mono<double, 2ul, dimension, true> d[particles];
-        static constexpr di amount=particles;
+        //static constexpr di amount=particles;
         sys(double leftBoundary=-2., double rightBoundary=2.); //bl, tr as template?
         ~sys() {}
         d::dou::compact::mono<double, 2ul, dimension, true> operator[](int i) const { return this->d[i]; }
