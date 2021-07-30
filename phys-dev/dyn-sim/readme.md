@@ -27,6 +27,11 @@ Given $v$, for any space with existence エ, it means traveling $vエ$ per unit 
 
 ### Radiation
 
+### Spaton
+
+- Finite Spaton => resulting infinite range of gravitational effect (and perhaps preserving conservation of energy?)
+- Infinite Spaton
+
 ### How traveling is experienced
 
 ### Weight (for integration)
