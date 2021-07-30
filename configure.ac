@@ -42,6 +42,7 @@ AC_CONFIG_FILES([Makefile
                  lib/dou/Makefile
                  lib/dou/geo/Makefile
                  lib/dyn/Makefile
+                 lib/manip/Makefile
                  lib/numerical/Makefile
                  src/Makefile])
 AC_OUTPUT
