@@ -37,3 +37,6 @@ buildLog
 
 # Testing files
 test*
+phys-dev/dyn-sim/latex/newlogo-eps-converted-to.pdf
+*.aux
+*.log
