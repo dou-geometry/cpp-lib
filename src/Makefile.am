@@ -10,8 +10,8 @@ bin_PROGRAMS = $(top_builddir)/bin/main \
 __top_builddir__bin_main_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/numerical/libnumintegration.a
 __top_builddir__bin_main_SOURCES = main.cc
 
-__top_builddir__bin_JROFI_MAIN_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/numerical/libnumintegration.a
-__top_builddir__bin_JROFI_MAIN_SOURCES = JROFI/main.cc
+__top_builddir__bin_JROFI_main_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/numerical/libnumintegration.a
+__top_builddir__bin_JROFI_main_SOURCES = JROFI/main.cc
 __top_builddir__bin_OelWasser_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/numerical/libnumintegration.a
 __top_builddir__bin_OelWasser_SOURCES = JROFI/OelWasser.cc
 
