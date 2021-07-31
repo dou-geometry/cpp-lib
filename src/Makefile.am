@@ -3,14 +3,17 @@ AUTOMAKE_OPTIONS = subdir-objects foreign
 SUBDIRS = test
 
 bin_PROGRAMS = $(top_builddir)/bin/main \
-			   $(top_builddir)/bin/JROFI \
+			   $(top_builddir)/bin/JROFI/main \
 			   $(top_builddir)/bin/test/refraction \
-			   $(top_builddir)/bin/CMF
+			   $(top_builddir)/bin/CMF \
+			   $(top_builddir)/bin/OelWasser
 __top_builddir__bin_main_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/numerical/libnumintegration.a
 __top_builddir__bin_main_SOURCES = main.cc
 
-__top_builddir__bin_JROFI_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/numerical/libnumintegration.a
-__top_builddir__bin_JROFI_SOURCES = JROFI/main.cc
+__top_builddir__bin_JROFI_MAIN_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/numerical/libnumintegration.a
+__top_builddir__bin_JROFI_MAIN_SOURCES = JROFI/main.cc
+__top_builddir__bin_OelWasser_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/numerical/libnumintegration.a
+__top_builddir__bin_OelWasser_SOURCES = JROFI/OelWasser.cc
 
 __top_builddir__bin_test_refraction_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/numerical/libnumintegration.a
 __top_builddir__bin_test_refraction_SOURCES = JROFI/test/refraction.cc
