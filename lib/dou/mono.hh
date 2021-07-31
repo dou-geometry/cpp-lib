@@ -20,7 +20,7 @@ namespace d::dou::compact {
         struct mono {
             double t=0;
             mono* log=nullptr;
-            static constexpr di order=DEorder;
+            //static constexpr di order=DEorder;
             di logSize=0;
             d::compact::coord<T, 2> d[DEorder];
             double existence=1;
@@ -158,7 +158,7 @@ namespace d::dou::compact {
             template<long delta=-1> mono shift() const { return this->shift<delta>(d::compact::coord<T, dimension>(d->dim)); }
             friend ostream& operator<<(ostream& os, const mono& x) {
                 os<<"============\n";
-                for(di i=0; i<x.order; ++i)
+                for(di i=0; i<DEorder; ++i)
                     os<<x.d[i]<<"\n";
                 os<<"============";
                 return os;
