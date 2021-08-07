@@ -52,8 +52,8 @@ struct obj {
     obj(): keys(new Karabinerhaken<KE>()), values(new Karabinerhaken<VE>()) {}
     KE append(KE k, VE v) {
         // top prepending method
-        keys.last()->tugi=new Karabinerhaken<KE>(k);
-        values.last()->tugi=new Karabinerhaken<VE>(v);
+        keys->last()->tugi=new Karabinerhaken<KE>(k);
+        values->last()->tugi=new Karabinerhaken<VE>(v);
         return k;
     }
     KE add(KE k, VE v) { return this->append(k, v); }
