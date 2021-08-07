@@ -4,7 +4,7 @@ volatile sig_atomic_t d::signal::SIGUSR1caught=0;
 volatile sig_atomic_t d::signal::SIGUSR2caught=0;
 volatile sig_atomic_t d::signal::SIGHUPcaught=0;
 volatile sig_atomic_t d::signal::last=0;
-void d::signal::signalHandler(int signum) {
+void d::signal::handler(int signum) {
     d::signal::last=signum;
     switch(signum) {
         case SIGTERM:

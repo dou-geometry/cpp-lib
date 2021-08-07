@@ -19,10 +19,10 @@ std::string pt() {
 }
 
 int main() {
-    signal(SIGTERM, d::signal::signalHandler);
-    signal(SIGUSR1, d::signal::signalHandler);
-    signal(SIGUSR2, d::signal::signalHandler);
-    signal(SIGHUP, d::signal::signalHandler);
+    signal(SIGTERM, d::signal::handler);
+    signal(SIGUSR1, d::signal::handler);
+    signal(SIGUSR2, d::signal::handler);
+    signal(SIGHUP, d::signal::handler);
     std::cout << ::getpid() << std::endl;
     std::cout << pt() << std::endl;
     return 0;
