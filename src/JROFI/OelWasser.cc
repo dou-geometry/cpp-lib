@@ -19,7 +19,7 @@
  *      Öl
  *    Wasser
  *
- * Forces:
+ * Forces: (negative downward, positive upward)
  *   - Gravity   (downward)
  *   - Floataion (upward)
  *   - Existence-Difference Acceleration
@@ -28,5 +28,14 @@
 #include"../../lib/dou/sys.hh"
 
 int main() {
+    auto g=[](const d::dou::compact::mono<double, 2, 2, true>& m) {
+        return -9.80665;
+    };
+    auto buoyant = [](const d::dou::compact::mono<double, 2, 2, true>& m) {
+        return 1;
+    };
+    auto combinedForce = [g, buoyant](const d::dou::compact::mono<double, 2, 2, true>& m) {
+        return g(m)+buoyant(m);
+    };
     return 0;
 }
