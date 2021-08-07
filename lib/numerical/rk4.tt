@@ -58,7 +58,7 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
                     if(i%logTrigger==0)
                         new(cur.log+(++cur.logSize))R(cur);
                 if constexpr(runForever) if(i%logTrigger==0) cb(cur);
-                if(d::signal::SIGTERMcaught) goto rtrn;
+                if(d::signal::SIGHUPcaught) goto rtrn;
             }
 rtrn:
             //std::cout << cur.logSize << std::endl << logItems<<std::endl;
@@ -102,7 +102,7 @@ rtrn:
                     }
                 }
                 if constexpr(runForever) if(i%logTrigger==0) cb(cur);
-                if(d::signal::SIGTERMcaught) goto rtrn;
+                if(d::signal::SIGHUPcaught) goto rtrn;
             }
 rtrn:
             //if constexpr(log) assert(cur.logSize==logItems);
