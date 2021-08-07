@@ -47,8 +47,8 @@ struct obj {
 namespace d {
 template<typename KE, typename VE>
 struct obj {
-    const Karabinerhaken<KE>* keys;
-    const Karabinerhaken<VE>* values;
+    Karabinerhaken<KE>* keys;
+    Karabinerhaken<VE>* values;
     obj(): keys(new Karabinerhaken<KE>()), values(new Karabinerhaken<VE>()) {}
     KE add(KE k, VE v) {
         // top prepending method
@@ -76,6 +76,7 @@ struct obj {
     }
     VE operator()(KE Schluessel) const {
         // unable to implement binary search
+        return values->d;
     }
 };
 }
