@@ -89,12 +89,49 @@ struct obj {
 
 namespace d {
 template<typename KE, typename VE>
+struct prependObj {
+    Karabinerhaken<KE>* keys;
+    Karabinerhaken<VE>* values;
+    prependObj(): keys(new Karabinerhaken<KE>()), values(new Karabinerhaken<VE>()) {}
+    KE add(KE k, VE v) {
+        // top prepending method (fast insertion)
+        keys=new Karabinerhaken<KE>(k, keys);
+        values=new Karabinerhaken<VE>(v, values);
+        return k;
+    }
+    KE rm(KE sk) {
+        auto [k, v] = std::tuple{keys, values};
+        for(; k->tugi!=nullptr && k->tugi->d!=sk; k=k->tugi, v=v->tugi) {}
+        auto toRM=k->tugi;
+        k->tugi=k->tugi->tugi;
+        (*(k->tugi)).~Karabinerhaken();
+        return k->tugi->d;
+    }
+    VE operator[](KE Schluessel) const {
+        auto [k, v] = std::tuple{keys, values};
+        for(; k->d!=Schluessel && k->tugi!=nullptr; k=k->tugi, v=v->tugi) {}
+        return v->d;
+    }
+    VE& operator[](KE Schluessel) {
+        auto [k, v] = std::tuple{keys, values};
+        for(auto [k, v] = std::tuple{keys, values}; k->d!=Schluessel && k->tugi!=nullptr; k=k->tugi, v=v->tugi) {}
+        return v->d;
+    }
+    VE operator()(KE Schluessel) const {
+        // unable to implement binary search
+        return values->d;
+    }
+};
+}
+
+namespace d {
+template<typename KE, typename VE>
     requires d::nonDim<KE>
 struct objfast {
     Karabinerhaken<KE>* keys;
     Karabinerhaken<VE>* values;
     di occupied=0;
-    objfast(): keys(new Karabinerhaken<KE>()), values(new Karabinerhaken<VE>()) {}
+    prependObj(): keys(new Karabinerhaken<KE>()), values(new Karabinerhaken<VE>()) {}
     KE add(KE k, VE v) {
         // top prepending method (fast insertion)
         keys=new Karabinerhaken<KE>(k, keys);
