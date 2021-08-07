@@ -36,6 +36,7 @@ AC_CONFIG_FILES([Makefile
                  lib/Makefile
                  lib/boxCounting/Makefile
                  lib/cls/Makefile
+                 lib/cls/compact/Makefile
                  lib/concepts/Makefile
                  lib/conn/Makefile
                  lib/conn/bash/Makefile
@@ -45,6 +46,7 @@ AC_CONFIG_FILES([Makefile
                  lib/dyn/Makefile
                  lib/manip/Makefile
                  lib/numerical/Makefile
+                 lib/signal/Makefile
                  src/Makefile
                  src/test/Makefile])
 AC_OUTPUT
