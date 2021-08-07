@@ -18,6 +18,8 @@ AC_PROG_CXX
 AC_PROG_RANLIB
 AM_PROG_AR
 
+LT_INIT
+
 # Checks for libraries.
 
 # Checks for header files.
