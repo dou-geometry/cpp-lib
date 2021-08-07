@@ -14,7 +14,15 @@ AC_LANG([C++])
 AX_CHECK_COMPILE_FLAG([-std=gnu++20 -lquadmath -g3], [CXXFLAGS="$CXXFLAGS -std=gnu++20 -lquadmath -g3"])
 AM_CXXFLAGS="-std=gnu++20 -lquadmath -g3"
 AC_PROG_CXX
+
+AC_PROG_AWK
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
 AC_PROG_RANLIB
+
 AM_PROG_AR
 
 LT_INIT
