@@ -1,7 +1,11 @@
 #include"../../lib/dou/sys.hh"
 
 int main() {
-    d::dou::compact::sys<2, 12> s;
-    std::cout << s << std::endl;
+    /* System setup:
+     * whole system: [-2, 2]
+     * inteface: [-1, 1]
+     */
+    d::dou::compact::sys<2, 21224> s(-2., 2.);
+    std::cout << "Search" << s(d::compact::coord<double, 2>({1,2})) << std::endl;
     return 0;
 }
