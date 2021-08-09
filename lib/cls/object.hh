@@ -41,6 +41,12 @@ struct obj {
         for(; *k!=Schluessel && c<size; k++, v++, c++) {}
         return v;
     }
+    friend std::ostream& operator<<(std::ostream& os, const obj& x)
+        requires std::convertible_to<K, double> && std::convertible_to<V, double> {
+            for(di i=0; i<size; ++i)
+                os << "("<<x.keys[i]<<", "<<x.values[i]<<")\n";
+            return os;
+        }
 };
 }
 
@@ -51,7 +57,7 @@ struct obj {
     Karabinerhaken<VE>* values;
     obj(): keys(new Karabinerhaken<KE>()), values(new Karabinerhaken<VE>()) {}
     KE append(KE k, VE v) {
-        // top prepending method
+        // tail appending method
         keys->last()->tugi=new Karabinerhaken<KE>(k);
         values->last()->tugi=new Karabinerhaken<VE>(v);
         return k;
@@ -84,6 +90,12 @@ struct obj {
         // unable to implement binary search
         return values->d;
     }
+    friend std::ostream& operator<<(std::ostream& os, const obj& x)
+        requires std::convertible_to<KE, double> && std::convertible_to<VE, double> {
+            for(di i=0; i<x.keys.size(); ++i)
+                os << "("<<x.keys->after(i)<<", "<<x.values->after(i)<<")\n";
+            return os;
+        }
 };
 }
 
@@ -121,6 +133,12 @@ struct prependObj {
         // unable to implement binary search
         return values->d;
     }
+    friend std::ostream& operator<<(std::ostream& os, const prependObj& x)
+        requires std::convertible_to<KE, double> && std::convertible_to<VE, double> {
+            for(di i=0; i<x.keys->size(); ++i)
+                os << "("<<x.keys->after(i)<<", "<<x.values->after(i)<<")\n";
+            return os;
+        }
 };
 }
 
@@ -167,6 +185,15 @@ struct objfast {
         // unable to implement binary search
         return values->d;
     }
+    friend std::ostream& operator<<(std::ostream& os, const objfast& x)
+        requires std::convertible_to<KE, double> && std::convertible_to<VE, double> {
+            di i=x.occupied;
+            do {
+                --i;
+                os << "("<<x.keys->after(i)<<", "<<x.values->after(i)<<")\n";
+            } while(i!=0);
+            return os;
+        }
 };
 }
 
