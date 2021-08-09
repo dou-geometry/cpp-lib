@@ -131,7 +131,7 @@ struct objfast {
     Karabinerhaken<KE>* keys;
     Karabinerhaken<VE>* values;
     di occupied=0;
-    prependObj(): keys(new Karabinerhaken<KE>()), values(new Karabinerhaken<VE>()) {}
+    objfast(): keys(new Karabinerhaken<KE>()), values(new Karabinerhaken<VE>()) {}
     KE add(KE k, VE v) {
         // top prepending method (fast insertion)
         keys=new Karabinerhaken<KE>(k, keys);
