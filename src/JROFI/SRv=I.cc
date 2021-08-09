@@ -10,6 +10,29 @@
 
 #define pow23(X) pow(sqrt(X), 3)
 
+std::string plot(const d::dyn::mono<double, true>& m, const d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
+    std::cout << "Plotting" << std::endl;
+    info.scriptf<<"#!/bin/usr/env sage\n";
+    info.scriptf<<"import sys\n";
+    info.scriptf<<"from sage.all import *\n";
+    info.scriptf<<"def parseLines():\n";
+    info.scriptf<<"    pts=[]\n";
+    info.scriptf<<"    i=0\n";
+    info.scriptf<<"    for l in sys.stdin:\n";
+    info.scriptf<<"        l=l.rstrip()\n";
+    info.scriptf<<"        l=sage_eval(l)\n";
+    info.scriptf<<"        pts.append(vector((i*0.01, l)))\n";
+    info.scriptf<<"        i+=1\n";
+    info.scriptf<<"    return pts\n";
+    info.scriptf<<"def main():\n";
+    info.scriptf<<"    Gph=points(parseLines())\n";
+    info.scriptf<<"    Gph.save(filename=sys.argv[1])\n";
+    info.scriptf<<"main()\n";
+    for(di i=0; i<m.logSize; ++i) info.dataf << m.log[i][0] << "\n";
+    info.dataf.close();
+    info.scriptf.close();
+    return conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
+}
 
 int main() {
     signal(SIGTERM, d::signal::handler);
