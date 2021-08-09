@@ -10,7 +10,7 @@
 
 #define pow23(X) pow(sqrt(X), 3)
 
-std::string plot(const d::dyn::mono<double, true>& m, const d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
+std::string plot(const d::dyn::mono<double, true>& m, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
     std::cout << "Plotting" << std::endl;
     info.scriptf<<"#!/bin/usr/env sage\n";
     info.scriptf<<"import sys\n";
@@ -29,9 +29,7 @@ std::string plot(const d::dyn::mono<double, true>& m, const d::conn::sage::setti
     info.scriptf<<"    Gph.save(filename=sys.argv[1])\n";
     info.scriptf<<"main()\n";
     for(di i=0; i<m.logSize; ++i) info.dataf << m.log[i][0] << "\n";
-    info.dataf.close();
-    info.scriptf.close();
-    return conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
+    return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
 }
 
 int main() {
