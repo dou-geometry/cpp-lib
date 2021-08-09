@@ -10,27 +10,41 @@
 
 #define pow23(X) pow(sqrt(X), 3)
 
+
 int main() {
+    signal(SIGTERM, d::signal::handler);
+    signal(SIGHUP, d::signal::handler);
+    std::cout <<std::fixed<<std::setprecision(14);
+    auto dv=[](const d::dyn::mono<double, true>& m) {
+        return d::coord<double>({pow(sqrt(1-pow(m[0], 2.)), 3.)});
+    };
+    d::dyn::mono<double, true> m(1ul, d::coord<double>(1));
+    d::obj<double, double> o;
+    d::numerical::rk4::run<1, false>(m, dv, 1224);// [&o](d::dyn::mono<double, true> n){ // Insert result into o
+    //o.add(n.t, n[0]);
+    //});
 
-    d::dyn::mono<double, true> m(2ul, initPos, d::coord<double>(2));
-    d::obj<double, double, true> o;
-    d::numerical::rk4::run<1, true>(m, a, 4.5, [&o](d::dyn::mono<double, true>){ // Insert result into o
-            o->add();
-            });
 
-
-    // When SIGTERM is issued, the generation of database is terminated and enters lookup
-    while(std::cin >> searchKey) {
-    }
+    // When SIGHUP is issued, the generation of database is terminated and enters lookup
+    /*
+       double searchKey;
+       while(std::cin >> searchKey) {
+       std::cout << searchKey << ": " << o(searchKey) << std::endl;
+       if(d::signal::SIGTERMcaught) break;
+       }
+       */
+    // SIGTERM to terminate searching loop
+    // or use EOF
+    //
+    for(di i=0; i<m.logSize; ++i) std::cout << m.log[i][0] << std::endl;
 
 
 
     std::cout << "Data: " << m.logSize << std::endl;
-    std::cout <<std::fixed<<std::setprecision(14);
     d::conn::sage::settings::files<d::conn::sage::settings::gif> anim;
-    d::conn::sage::settings::files<d::conn::sage::settings::png> gph("/tmp/plot.png", "/tmp/data");
+    d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
     //std::cout << d::conn::sage::anime(m, anim);
-    std::cout << d::conn::sage::plot(m, gph);
+    std::cout << plot(m, gph);
     std::cout << "Animation:\n"<<anim<<"\nPlot:\n"<<gph<<std::endl;
     return 0;
 }
