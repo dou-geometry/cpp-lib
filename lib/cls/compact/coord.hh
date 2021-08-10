@@ -18,7 +18,9 @@ namespace d::compact {
             coord(const coord<T, dimension> &other) {
                 memcpy(d, other.d, sizeof(T)*dimension);
             }
-            coord(coord<T, dimension> &&other) noexcept: d(exchange(other.d, nullptr)) {}
+            coord(coord<T, dimension> &&other) noexcept {
+                std::swap(d, other.d);
+            }
             coord& operator=(const coord<T, dimension> &other) {
                 //printf("move ro3");
                 if (this == &other) return *this;
