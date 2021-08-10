@@ -21,8 +21,8 @@ std::string plot(auto* m, d::conn::sage::settings::files<d::conn::sage::settings
     info.scriptf<<"    Gph.save(filename=sys.argv[1])\n";
     info.scriptf<<"main()\n";
     info.dataf <<std::fixed<<std::setprecision(14);
-    //for(; m->tugi!=nullptr; m=m->tugi) info.dataf << m->d.d[0] << "\n";
-    for(di i=0; i<m.logSize; ++i) info.dataf << m.log[i][0] << "\n";
+    for(; m!=nullptr; m=m->tugi) info.dataf << m->d.d[0] << "\n";
+    //for(di i=0; i<m.logSize; ++i) info.dataf << m.log[i][0] << "\n";
     info.scriptf.close();
     info.dataf.close();
     return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
