@@ -51,8 +51,7 @@ int main() {
 
 
 
-    //std::cout << "Data: " << log->size() << std::endl;
-    std::cout << "Data: " << m.logSize << std::endl;
+    std::cout << "Data: " << d::Iv::data()->size() << std::endl;
     d::conn::sage::settings::files<d::conn::sage::settings::gif> anim;
     d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
     //std::cout << d::conn::sage::anime(m, anim);
