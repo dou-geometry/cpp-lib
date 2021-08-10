@@ -24,4 +24,19 @@ namespace d::Iv {
         return (1-m[0][0])<2e-5;
     }
 
+    d::Karabinerhaken<d::dyn::compact::mono<double, 1, 1, true>>* genMoreOnce(bool(*)(const d::dyn::compact::mono<double, 1, 1, true>&)=high, double k=1, double c=1);
+    void genMore(bool(*)(const d::dyn::compact::mono<double, 1, 1, true>&)=high, double k=1, double c=1);
+
+    struct funcPoints {
+        d::Karabinerhaken<d::dyn::compact::mono<double, 1, 1, true>>* dK=nullptr;
+        funcPoints(bool(*cond)(const d::dyn::compact::mono<double, 1, 1, true>&)=medium, double k=1, double c=1);
+    };
+
+    d::Karabinerhaken<d::dyn::compact::mono<double, 1, 1, true>>* const data() {
+        static funcPoints data;
+        return data.dK;
+    }
+
+    //d::dyn::compact::mono<double, 1, 1, true>* shrink(di);
+
 }
