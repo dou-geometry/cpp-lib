@@ -35,8 +35,8 @@ namespace d::Iv {
         funcPoints(bool(*cond)(const d::dyn::compact::mono<double, 1, 1, true>&)=medium, double k=1, double c=1);
     };
 
-    d::Karabinerhaken<d::dyn::compact::mono<double, 1, 1, true>>* const data() {
-        static funcPoints data;
+    d::Karabinerhaken<d::dyn::compact::mono<double, 1, 1, true>>* const data(bool(*cond)(const d::dyn::compact::mono<double, 1, 1, true>&)=medium, double k=1, double c=1) {
+        static funcPoints data(cond, k, c);
         return data.dK;
     }
 
