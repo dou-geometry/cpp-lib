@@ -14,6 +14,9 @@
 
 namespace d::Iv {
 
+    extern std::atomic<double> tMax;
+    std::atomic<double> tMax(0.0);
+
     static bool low(const d::dyn::compact::mono<double, 1, 1, true>& m) {
         return (1-m[0][0])<1e-2;
     }
