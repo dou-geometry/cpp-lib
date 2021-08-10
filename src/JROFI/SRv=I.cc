@@ -29,6 +29,8 @@ std::string plot(const d::dyn::mono<double, true>& m, d::conn::sage::settings::f
     info.scriptf<<"    Gph.save(filename=sys.argv[1])\n";
     info.scriptf<<"main()\n";
     for(di i=0; i<m.logSize; ++i) info.dataf << m.log[i][0] << "\n";
+    info.scriptf.close();
+    info.dataf.close();
     return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
 }
 
@@ -41,7 +43,7 @@ int main() {
     };
     d::dyn::mono<double, true> m(1ul, d::coord<double>(1));
     d::obj<double, double> o;
-    d::numerical::rk4::run<1, false>(m, dv, 1224);// [&o](d::dyn::mono<double, true> n){ // Insert result into o
+    d::numerical::rk4::run<12, false>(m, dv, [](const d::dyn::mono<double, true>& x) { return x.t>1224; });// [&o](d::dyn::mono<double, true> n){ // Insert result into o
     //o.add(n.t, n[0]);
     //});
 
@@ -57,7 +59,7 @@ int main() {
     // SIGTERM to terminate searching loop
     // or use EOF
     //
-    for(di i=0; i<m.logSize; ++i) std::cout << m.log[i][0] << std::endl;
+    //for(di i=0; i<m.logSize; ++i) std::cout << m.log[i][0] << std::endl;
 
 
 
