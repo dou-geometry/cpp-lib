@@ -1,5 +1,10 @@
 AUTOMAKE_OPTIONS = subdir-objects foreign
 
+lib_LTLIBRARIES = JROFI/libdouIv.la
+
+JROFI_libdouIv_la_SOURCES = JROFI/Iv.cc
+include_HEADERS = JROFI/Iv.hh
+
 SUBDIRS = test
 
 bin_PROGRAMS = $(top_builddir)/bin/main \
@@ -15,7 +20,7 @@ __top_builddir__bin_JROFI_main_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/c
 __top_builddir__bin_JROFI_main_SOURCES = JROFI/main.cc
 __top_builddir__bin_JROFI_OelWasser_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/numerical/libnumintegration.a
 __top_builddir__bin_JROFI_OelWasser_SOURCES = JROFI/OelWasser.cc
-__top_builddir__bin_JROFI_SRv_I_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/signal/libsignalhandle.la ../lib/numerical/libnumintegration.a ../lib/numerical/libnumrk4.la
+__top_builddir__bin_JROFI_SRv_I_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/signal/libsignalhandle.la ../lib/numerical/libnumintegration.a ../lib/numerical/libnumrk4.la JROFI/libdouIv.la
 __top_builddir__bin_JROFI_SRv_I_SOURCES = JROFI/SRv=I.cc
 
 __top_builddir__bin_test_refraction_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/signal/libsignalhandle.la ../lib/numerical/libnumintegration.a ../lib/numerical/libnumrk4.la
