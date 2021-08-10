@@ -10,7 +10,7 @@
 
 #define pow23(X) pow(sqrt(X), 3)
 
-std::string plot(const d::dyn::mono<double, true>& m, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
+std::string plot(auto& m, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
     std::cout << "Plotting" << std::endl;
     info.scriptf<<"#!/bin/usr/env sage\n";
     info.scriptf<<"import sys\n";
@@ -21,13 +21,16 @@ std::string plot(const d::dyn::mono<double, true>& m, d::conn::sage::settings::f
     info.scriptf<<"    for l in sys.stdin:\n";
     info.scriptf<<"        l=l.rstrip()\n";
     info.scriptf<<"        l=sage_eval(l)\n";
-    info.scriptf<<"        pts.append(vector((i*0.01, l)))\n";
+    info.scriptf<<"        pts.append(vector((i*0.01, l/(i*0.01))))\n";
+    info.scriptf<<"        if i==0: pts=[]\n";
     info.scriptf<<"        i+=1\n";
     info.scriptf<<"    return pts\n";
     info.scriptf<<"def main():\n";
     info.scriptf<<"    Gph=points(parseLines())\n";
     info.scriptf<<"    Gph.save(filename=sys.argv[1])\n";
     info.scriptf<<"main()\n";
+    info.dataf <<std::fixed<<std::setprecision(14);
+    //for(; m->tugi!=nullptr; m=m->tugi) info.dataf << m->d.d[0] << "\n";
     for(di i=0; i<m.logSize; ++i) info.dataf << m.log[i][0] << "\n";
     info.scriptf.close();
     info.dataf.close();
@@ -43,7 +46,8 @@ int main() {
     };
     d::dyn::mono<double, true> m(1ul, d::coord<double>(1));
     d::obj<double, double> o;
-    d::numerical::rk4::run<12, false>(m, dv, [](const d::dyn::mono<double, true>& x) { return x.t>1224; });// [&o](d::dyn::mono<double, true> n){ // Insert result into o
+    d::numerical::rk4::run<12, false>(m, dv, 1224);
+    //d::Karabinerhaken<d::dyn::mono<double, true>>* log=d::numerical::rk4::run<12, false>(m, dv, [](const d::dyn::mono<double, true>& x) { return std::abs(x[0][0]-1.)<1e-2; });// [&o](d::dyn::mono<double, true> n){ // Insert result into o
     //o.add(n.t, n[0]);
     //});
 
@@ -63,11 +67,14 @@ int main() {
 
 
 
+    //std::cout << "Data: " << log->size() << std::endl;
     std::cout << "Data: " << m.logSize << std::endl;
     d::conn::sage::settings::files<d::conn::sage::settings::gif> anim;
     d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
     //std::cout << d::conn::sage::anime(m, anim);
+    //std::cout << plot(log, gph);
     std::cout << plot(m, gph);
     std::cout << "Animation:\n"<<anim<<"\nPlot:\n"<<gph<<std::endl;
+    double ttt;std::cin>>ttt;
     return 0;
 }
