@@ -1,7 +1,7 @@
 #include"../../lib/conn/sage/settings.hh"
 #include"../../lib/conn/sage/plot.hh"
 
-std::string plot(auto& m, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
+std::string plot(auto* m, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
     std::cout << "Plotting" << std::endl;
     info.scriptf<<"#!/bin/usr/env sage\n";
     info.scriptf<<"import sys\n";
@@ -12,7 +12,7 @@ std::string plot(auto& m, d::conn::sage::settings::files<d::conn::sage::settings
     info.scriptf<<"    for l in sys.stdin:\n";
     info.scriptf<<"        l=l.rstrip()\n";
     info.scriptf<<"        l=sage_eval(l)\n";
-    info.scriptf<<"        pts.append(vector((i*0.01, l/(i*0.01))))\n";
+    info.scriptf<<"        pts.append(vector((i*1e-4, l)))\n";
     info.scriptf<<"        if i==0: pts=[]\n";
     info.scriptf<<"        i+=1\n";
     info.scriptf<<"    return pts\n";
