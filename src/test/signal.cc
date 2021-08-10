@@ -14,6 +14,8 @@ std::string pt() {
                 return "SIGUSR2";
             case SIGHUP:
                 return "SIGHUP";
+            default:
+                return "No Signal Received";
         }
     }
 }
