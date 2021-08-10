@@ -4,16 +4,16 @@ TESTS = $(check_PROGRAMS)
 
 check_PROGRAMS =\
 				$(top_builddir)/bin/test/sys \
-#				$(top_builddir)/bin/test/pendulum \
-#				$(top_builddir)/bin/test/ncku \
-				$(top_builddir)/bin/test/condTerRK4 \
+				$(top_builddir)/bin/test/pendulum \
+				$(top_builddir)/bin/test/ncku \
+				$(top_builddir)/bin/test/condTerRK4
 #				$(top_builddir)/bin/test/compareOutput
 
-#__top_builddir__bin_test_pendulum_LDADD = ../../lib/conn/bash/libbashstdout.a ../../lib/conn/sage/libsageplot.a ../../lib/numerical/libnumintegration.a
-#__top_builddir__bin_test_pendulum_SOURCES = pendulum-ang.cc
-#
-#__top_builddir__bin_test_ncku_LDADD = ../../lib/conn/bash/libbashstdout.a ../../lib/conn/sage/libsageplot.a ../../lib/numerical/libnumintegration.a
-#__top_builddir__bin_test_ncku_SOURCES = ncku.cc
+__top_builddir__bin_test_pendulum_LDADD = ../../lib/conn/bash/libbashstdout.a ../../lib/conn/sage/libsageplot.a ../../lib/numerical/libnumintegration.a ../../lib/signal/libsignalhandle.la
+__top_builddir__bin_test_pendulum_SOURCES = pendulum-ang.cc
+
+__top_builddir__bin_test_ncku_LDADD = ../../lib/conn/bash/libbashstdout.a ../../lib/conn/sage/libsageplot.a ../../lib/numerical/libnumintegration.a ../../lib/signal/libsignalhandle.la
+__top_builddir__bin_test_ncku_SOURCES = ncku.cc
 
 __top_builddir__bin_test_condTerRK4_LDADD = ../../lib/conn/bash/libbashstdout.a ../../lib/conn/sage/libsageplot.a ../../lib/numerical/libnumintegration.a ../../lib/signal/libsignalhandle.la
 __top_builddir__bin_test_condTerRK4_SOURCES = condTerRK4.cc
