@@ -263,13 +263,13 @@ namespace d::dyn::compact {
     template<typename T, di DEorder=2, di dimension=2, bool logIncrPromise=false>
         struct mono {
             double t=0;
-            mono* log=nullptr;
+            mono<T, DEorder, dimension, logIncrPromise>* log=nullptr;
             static constexpr di order=DEorder;
             di logSize=0;
-            d::compact::coord<T, 2> d[DEorder];
+            d::compact::coord<T, dimension> d[DEorder];
             //d::coord<T> &pos=d[0], &vel=d[1], &acc=d[2];
             template<typename X, typename...Ts>
-                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
+                requires std::same_as<d::compact::coord<T, dimension>, typename std::common_type<Ts...>::type> && d::nonDim<X>
                 mono(X it, Ts...args): t(it) {
                     static_assert(sizeof...(Ts)<=DEorder, "d::dyn::mono initialization error, too many arguments");
                     di i=0;
@@ -277,9 +277,9 @@ namespace d::dyn::compact {
                     // **This is unsure if it is compact**
                 }
             template<typename...Ts>
-                requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type>
+                requires std::same_as<d::compact::coord<T, dimension>, typename std::common_type<Ts...>::type>
                 mono(Ts...args): mono(0.0, args...) {}
-            mono(): mono(0.0, d::coord<T>(dimension)) {}
+            mono(): mono(0.0, d::compact::coord<T, dimension>(0)) {}
             inline mono& rmLog() {
                 if(log!=nullptr)
                     for(di i=0; i<=logSize; ++i)
@@ -292,14 +292,17 @@ namespace d::dyn::compact {
                 this->rmLog();
             }
             mono(const mono<T, DEorder, dimension, false> &other) {
+                t=other.t;
                 for(di i=0; i<DEorder; ++i)
                     d[i]=other.d[i];
             }
             mono(const mono<T, DEorder, dimension, true> &other) {
+                t=other.t;
                 for(di i=0; i<DEorder; ++i)
                     d[i]=other.d[i];
             }
-            mono(mono<T, logIncrPromise> &&other) noexcept: d(std::exchange(other.d, nullptr)), t(std::exchange(other.t, 0)), log(std::exchange(other.log, nullptr)) {
+            mono(mono<T, DEorder, dimension, logIncrPromise> &&other) noexcept: t(std::exchange(other.t, 0)), log(std::exchange(other.log, nullptr)) {
+                std::swap(d, other.d);
             }
             mono& operator=(const mono<T, DEorder, dimension, false> &other) {
                 if(this==&other) return *this;
@@ -410,12 +413,12 @@ namespace d::dyn::compact {
                     d[i]/=r;
                 return *this;
             }
-            template<bool B> mono<T, DEorder, dimension, logIncrPromise>& operator+=(const mono<T, B>& r) {
+            template<bool B> mono<T, DEorder, dimension, logIncrPromise>& operator+=(const mono<T, DEorder, dimension, B>& r) {
                 for(di i=0; i<DEorder; ++i)
                     d[i]+=r[i];
                 return *this;
             }
-            template<bool B> mono<T, DEorder, dimension, logIncrPromise>& operator-=(const mono<T, B>& r) {
+            template<bool B> mono<T, DEorder, dimension, logIncrPromise>& operator-=(const mono<T, DEorder, dimension, B>& r) {
                 for(di i=0; i<DEorder; --i)
                     d[i]-=r[i];
                 return *this;
