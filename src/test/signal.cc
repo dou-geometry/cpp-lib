@@ -24,6 +24,7 @@ int main() {
     signal(SIGUSR2, d::signal::handler);
     signal(SIGHUP, d::signal::handler);
     std::cout << ::getpid() << std::endl;
+    sleep(4);
     std::cout << pt() << std::endl;
     return 0;
 }
