@@ -447,6 +447,7 @@ namespace d::dyn::compact {
             //                    res.d[i]=this->d[i];
             //                return res;
             //            }
+            di size() const { return DEorder; }
         };
 
     template<typename C>
