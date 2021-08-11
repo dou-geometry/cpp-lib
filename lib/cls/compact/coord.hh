@@ -160,11 +160,11 @@ namespace d::compact {
             friend coord<T, dimension> operator*(coord<T, dimension> lhs, const coord<T, dimension> &rhs) {return lhs*=rhs;}
             void input() {
                 for(di i=0; i<dimension; i++) {
-                    cin >> d[i];
+                    std::cin >> d[i];
                 }
             }
             static void input(coord<T, dimension> &x) {
-                cout << "Please enter coordinate with each parameter seperated by space: ";
+                std::cout << "Please enter coordinate with each parameter seperated by space: ";
                 x.input();
             }
             template<typename Z>
