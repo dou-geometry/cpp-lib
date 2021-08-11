@@ -18,6 +18,16 @@ namespace d::IvBackend {
     extern std::atomic<double> tMax;
     std::atomic<double> tMax(0.0);
 
+    static bool belowC(const d::dyn::compact::mono<double, 1, 1, true>& m) {
+        return m.t>1.;
+    }
+    static bool aroundC(const d::dyn::compact::mono<double, 1, 1, true>& m) {
+        return m.t>1.2;
+    }
+    static bool aboveC(const d::dyn::compact::mono<double, 1, 1, true>& m) {
+        return m.t>2.4;
+    }
+
     static bool low(const d::dyn::compact::mono<double, 1, 1, true>& m) {
         return (1-m[0][0])<1e-2;
     }
@@ -28,12 +38,12 @@ namespace d::IvBackend {
         return (1-m[0][0])<2e-5;
     }
 
-    d::Karabinerhaken<d::dyn::compact::mono<double, 1, 1, true>>* genMoreOnce(bool(*)(const d::dyn::compact::mono<double, 1, 1, true>&)=high, double k=1, double c=1);
+    d::Karabinerhaken<d::dyn::compact::mono<double, 1, 1, true>>* genMoreOnce(bool(*)(const d::dyn::compact::mono<double, 1, 1, true>&)=aroundC, double k=1, double c=1);
     void genMore(bool(*)(const d::dyn::compact::mono<double, 1, 1, true>&)=high, double k=1, double c=1);
 
     struct funcPoints {
         d::Karabinerhaken<d::dyn::compact::mono<double, 1, 1, true>>* dK=nullptr;
-        funcPoints(bool(*cond)(const d::dyn::compact::mono<double, 1, 1, true>&)=medium, double k=1, double c=1);
+        funcPoints(bool(*cond)(const d::dyn::compact::mono<double, 1, 1, true>&)=belowC, double k=1, double c=1);
     };
 
     d::Karabinerhaken<d::dyn::compact::mono<double, 1, 1, true>>* const data(bool(*cond)(const d::dyn::compact::mono<double, 1, 1, true>&)=medium, double k=1, double c=1) {
