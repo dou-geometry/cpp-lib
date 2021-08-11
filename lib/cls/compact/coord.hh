@@ -1,5 +1,16 @@
 #pragma once
 #define di long unsigned int
+#define ull unsigned long long int
+#define ll long long int
+#define deg unsigned short
+#include"../../concepts/nonDim.hh"
+#include<concepts>
+#include <initializer_list>
+#include <iostream>
+#include<cmath>
+#include <utility>
+#include <cstring>
+#include<complex>
 namespace d::compact {
     template<typename T, di dimension=1>
         struct coord {
