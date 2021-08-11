@@ -15,6 +15,7 @@ d::IvBackend::funcPoints::funcPoints(bool(*cond)(const d::dyn::compact::mono<dou
 }
 
 d::Karabinerhaken<d::dyn::compact::mono<double, 1, 1, true>>* d::IvBackend::genMoreOnce(bool(*cond)(const d::dyn::compact::mono<double, 1, 1, true>&), double k, double c) {
+    d::IvBackend::data();
     auto dv=[](const d::dyn::compact::mono<double, 1, 1, true>& m) {
         return d::compact::coord<double, 1>({pow(sqrt(1-pow(m[0], 2.)), 3.)});
     };
