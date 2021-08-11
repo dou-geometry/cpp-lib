@@ -1,3 +1,3 @@
 include_HEADERS = cls.hh
 
-SUBDIRS = signal concepts conn boxCounting numerical dyn dou
+SUBDIRS = signal concepts cls conn boxCounting numerical dyn dou manip
