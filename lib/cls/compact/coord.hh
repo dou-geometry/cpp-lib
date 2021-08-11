@@ -39,7 +39,7 @@ namespace d::compact {
                 return *this;
             }
             coord& operator=(coord<T, dimension> &&other) noexcept {
-                swap(d, other.d);
+                std::swap(d, other.d);
                 return *this;
             }
             double norm() const {
