@@ -152,10 +152,10 @@ namespace d::compact {
             }
             friend coord<T, dimension> operator+(coord<T, dimension> lhs, const coord<T, dimension> &r) { return lhs+=r; }
             friend coord<T, dimension> operator-(coord<T, dimension> lhs, const coord<T, dimension> &r) { return lhs-=r; }
-            template<typename O> friend coord<T, dimension> operator*(coord<T, dimension> lhs, const O &r) { return lhs*=(T)r; }
-            template<typename O> friend coord<T, dimension> operator*(const O &r, coord<T, dimension> lhs) { return lhs*=(T)r; }
-            template<typename O> friend coord<T, dimension> operator/(coord<T, dimension> lhs, const O &r) { return lhs/=(T)r; }
-            template<typename O> friend coord<T, dimension> operator/(const O &r, coord<T, dimension> lhs) { return lhs/=(T)r; }
+            template<typename O> requires std::convertible_to<O, T> friend coord<T, dimension> operator*(coord<T, dimension> lhs, const O &r) { return lhs*=(T)r; }
+            template<typename O> requires std::convertible_to<O, T> friend coord<T, dimension> operator*(const O &r, coord<T, dimension> lhs) { return lhs*=(T)r; }
+            template<typename O> requires std::convertible_to<O, T> friend coord<T, dimension> operator/(coord<T, dimension> lhs, const O &r) { return lhs/=(T)r; }
+            template<typename O> requires std::convertible_to<O, T> friend coord<T, dimension> operator/(const O &r, coord<T, dimension> lhs) { return lhs/=(T)r; }
             // cross product overload
             friend coord<T, dimension> operator*(coord<T, dimension> lhs, const coord<T, dimension> &rhs) {return lhs*=rhs;}
             void input() {
