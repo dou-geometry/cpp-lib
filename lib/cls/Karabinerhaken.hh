@@ -8,7 +8,11 @@ namespace d{
         struct Karabinerhaken {
             Karabinerhaken* tugi=nullptr;
             C d;
-            Karabinerhaken()=delete;
+            //Karabinerhaken()=delete;
+            Karabinerhaken() {
+                C tmp;
+                d=tmp;
+            }
             Karabinerhaken(C x, Karabinerhaken* n=nullptr): d(x), tugi(n){}
             ~Karabinerhaken() {
                 d.~C();
@@ -40,6 +44,14 @@ namespace d{
                 return i;
             }
             static inline di size(const Karabinerhaken* x) { return x->size(); }
+            inline Karabinerhaken* last() {
+                Karabinerhaken* cur=this;
+                while(cur->tugi!=nullptr) {
+                    cur=cur->tugi;
+                }
+                return cur;
+            }
+            static inline Karabinerhaken* last(const Karabinerhaken* x) { return x->last(); }
             inline Karabinerhaken* end() {
                 Karabinerhaken* cur=this;
                 for(; cur->tugi!=nullptr; cur=cur->tugi) {}

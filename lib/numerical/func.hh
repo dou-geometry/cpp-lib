@@ -32,7 +32,7 @@ struct func:field<T> {
             field<T>::d[i]=f(field<T>::IDzuCoord(i));
         }
     }
-    template<typename...Ts> requires convertible_to<std::common_type_t<Ts...>, di> T& operator[](Ts...) {
+    template<typename...Ts> requires std::convertible_to<std::common_type_t<Ts...>, di> T& operator[](Ts...) {
         constexpr di n = sizeof...(Ts);
     }
     T& operator[](int i) {

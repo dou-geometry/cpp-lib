@@ -8,7 +8,7 @@ namespace d {
             mono(): mono(2) {}
             mono(di dim): x(dim), v(dim) {}
             mono(coord<G> pos, coord<G> vel): x(pos), v(vel) {}
-            friend ostream& operator<<(ostream& os, mono& a) {
+            friend std::ostream& operator<<(std::ostream& os, mono& a) {
                 os << "x="<<a.x<<"; v="<<a.v;
                 return os;
             }

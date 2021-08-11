@@ -71,13 +71,13 @@ namespace d {
             for(di i=0; i<field<bool>::border; i++) field<bool>::d[i]=false;
             return *this;
         }
-        friend ostream& operator<<(ostream& os, const cov &f) {
-            os << (*(f.baseCrd)) << "=>" << f.IDzuCoord(f.border) <<endl;
+        friend std::ostream& operator<<(std::ostream& os, const cov &f) {
+            os << (*(f.baseCrd)) << "=>" << f.IDzuCoord(f.border) <<"\n";
             for(ll i=(*(f.baseCrd))[0]; i<((*(f.baseCrd))[0]+(ll)(f.sL[0])); i++) {
                 for(ll j=(*(f.baseCrd))[1]; j<((*(f.baseCrd))[1]+(ll)(f.sL[1])); j++) {
                     os << f[d::coord<ll>({i, j})];
                 }
-                os << endl;
+                os << "\n";
             }
             return os;
         }

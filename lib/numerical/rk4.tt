@@ -1,13 +1,19 @@
 #include<iostream>
 #include <cassert>
 #include<concepts>
+//#include"../concepts/isCompact.hh"
 
 namespace d::numerical::rk4 { // Arbitary-Order ODE version
-    template<int logTrigger=1, bool runForever=false, typename R, typename F, typename T>
-        requires dynMono<R, F> && (!(std::convertible_to<T, std::function<bool(R)>>))
-        R run(R& cur, const F &f, const T tt, double h) {
-            assert(f(cur).dim==cur[0].dim &&
-                    "Slope function within d::numerical::rk4::run() doesn't return d::dyn::mono with correct dimension");
+    template<typename X>
+    static void logRes(X x) {
+        std::cout << x << std::endl;
+        return;
+    }
+    template<int logTrigger=1, bool runForever=false, typename R, typename F, typename T, typename C>
+        requires dynMono<R, F> && (!(std::convertible_to<T, std::function<bool(R)>>)) && std::convertible_to<C, std::function<void(R)>>
+        R run(R& cur, const F &f, const T tt, double h, C cb) {
+            //assert(f(cur).dim==cur[0].dim &&
+            //        "Slope function within d::numerical::rk4::run() doesn't return d::dyn::mono with correct dimension");
             // Since d::coord is VLA and dim isn't const
             assert((tt==0)==runForever && 
                     "(tt==0)!=runForever");
@@ -52,7 +58,8 @@ namespace d::numerical::rk4 { // Arbitary-Order ODE version
                 if constexpr(log)
                     if(i%logTrigger==0)
                         new(cur.log+(++cur.logSize))R(cur);
-                if constexpr(runForever&&true) if(i%logTrigger==0) goto rtrn;
+                if constexpr(runForever) if(i%logTrigger==0) cb(cur);
+                if(d::signal::SIGHUPcaught || d::signal::SIGTERMcaught) goto rtrn;
             }
 rtrn:
             //std::cout << cur.logSize << std::endl << logItems<<std::endl;
@@ -61,11 +68,11 @@ rtrn:
             //if constexpr(log) cur.log->d->d[0]=i;
             return cur;
         }
-    template<int logTrigger=1, bool runForever=false, typename R, typename F, typename T>
-        requires dynMono<R, F> && std::convertible_to<T, std::function<bool(R)>>
-        d::Karabinerhaken<R>* run(R& cur, const F &f, const T& t, double h) {
-            assert(f(cur).dim==cur[0].dim &&
-                    "Slope function within d::numerical::rk4::run() doesn't return d::dyn::mono with correct dimension");
+    template<int logTrigger=1, bool runForever=false, typename R, typename F, typename T, typename C>
+        requires dynMono<R, F> && std::convertible_to<T, std::function<bool(R)>> && std::convertible_to<C, std::function<void(R)>>
+        d::Karabinerhaken<R>* run(R& cur, const F &f, const T& t, double h, C cb) {
+            //assert(f(cur).dim==cur[0].dim &&
+            //        "Slope function within d::numerical::rk4::run() doesn't return d::dyn::mono with correct dimension");
             // Since d::coord is VLA and dim isn't const
 
             constexpr bool log=(d::dyn::Loggable<R>&&!runForever&&logTrigger);
@@ -95,16 +102,12 @@ rtrn:
                         curLog=(new d::Karabinerhaken<R>(cur))->insert(curLog);
                     }
                 }
-                if constexpr(runForever&&true) if(i%logTrigger==0) goto rtrn;
+                if constexpr(runForever) if(i%logTrigger==0) cb(cur);
+                if(d::signal::SIGHUPcaught || d::signal::SIGTERMcaught) goto rtrn;
             }
 rtrn:
             //if constexpr(log) assert(cur.logSize==logItems);
             //if constexpr(log) cur.log->d->d[0]=i;
             return logStart;
         }
-    */
-    template<typename C> d::dyn::mono<C> run(const d::dyn::mono<C>& x0, const std::function<C(C)> &f, const double s, const double t) { return run(x0, f, t-s); }
-    template<typename C> C run(const C& x0, const std::function<C(C)> &f, const double s, const double t) { return run(x0, f, t-s); }
-    // Perhaps a duplicated version of the loop in run() could be made seperately.
-    template<typename C> d::dyn::mono<C> next(d::dyn::mono<C>) {}
 }

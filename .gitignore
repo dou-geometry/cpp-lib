@@ -12,7 +12,7 @@
 *.pch
 
 # Compiled Dynamic libraries
-*.so
+*.so*
 *.dylib
 *.dll
 
@@ -40,7 +40,6 @@ buildLog
 *test.hh
 *test.tt
 comp
-aclocal.m4
 ar-lib
 autom4te.cache/*
 compile
@@ -69,3 +68,9 @@ bin/*
 */.deps/*
 .dirstamp
 *.sage
+src/test/test-suite.log
+test-driver
+*.Plo
+libtool
+ltmain.sh
+*.m4

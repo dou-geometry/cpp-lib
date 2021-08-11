@@ -1,6 +1,9 @@
-include_HEADERS = coord.hh matrix.hh mono.hh linear.hh Karabinerhaken.hh line.hh field.hh cov.hh ring.hh suu.hh
+SUBDIRS = compact
 
-noinst_LIBRARIES = libinstcoord.a libinstmatrix.a libinstmono.a libinstlinear.a libinstkarabinerhaken.a libinstline.a libinstfield.a libinstcov.a libinstring.a libinstsuu.a
+include_HEADERS = coord.hh matrix.hh mono.hh linear.hh Karabinerhaken.hh line.hh field.hh cov.hh ring.hh suu.hh object.hh
+EXTRA_DIST = coord.tt matrix.tt mono.tt linear.tt Karabinerhaken.tt line.tt field.tt cov.tt object.tt
+
+lib_LIBRARIES = libinstcoord.a libinstmatrix.a libinstmono.a libinstlinear.a libinstkarabinerhaken.a libinstline.a libinstfield.a libinstcov.a libinstring.a libinstsuu.a
 
 libinstcoord_a_SOURCES = coord.cc
 libinstmatrix_a_SOURCES = matrix.cc
