@@ -195,7 +195,7 @@ namespace d::dyn {
                     return shift<delta>(funcs(*this)...);
                 }
             template<long delta=-1> mono shift() const { return this->shift<delta>(d::coord<T>(d->dim)); }
-            friend ostream& operator<<(ostream& os, const mono& x) {
+            friend std::ostream& operator<<(std::ostream& os, const mono& x) {
                 os<<"============\n";
                 for(di i=0; i<x.order; ++i)
                     os<<x.d[i]<<"\n";
@@ -396,7 +396,7 @@ namespace d::dyn::compact {
                     return shift<delta>(funcs(*this)...);
                 }
             template<long delta=-1> mono shift() const { return this->shift<delta>(d::compact::coord<T, dimension>(d->dim)); }
-            friend ostream& operator<<(ostream& os, const mono& x) {
+            friend std::ostream& operator<<(std::ostream& os, const mono& x) {
                 os<<"============\n";
                 for(di i=0; i<x.order; ++i)
                     os<<x.d[i]<<"\n";

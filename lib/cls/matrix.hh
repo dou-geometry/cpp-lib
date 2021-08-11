@@ -31,21 +31,21 @@ namespace d {
                 for(di i=0; i<x; i++) memcpy(d[i], other.d[i], sizeof(M)*y);
             }
             matrix& operator=(matrix<M> &&other) noexcept {
-                swap(x, other.x);
-                swap(y, other.y);
-                swap(d, other.d);
+                std::swap(x, other.x);
+                std::swap(y, other.y);
+                std::swap(d, other.d);
                 return *this;
             }
             template<typename F> M* operator[](F i) { return d[i]; };
             template<typename F> M* operator[](F i) const { return d[i]; };
-            friend ostream& operator<<(ostream& os, matrix<M> &crd) {
+            friend std::ostream& operator<<(std::ostream& os, matrix<M> &crd) {
                 os << "[" << crd[0][0];
                 for(di i=1;i<crd.x;i++) {
                     os << ", " << crd[i][0];
                 }
                 os << "]";
                 for(di r=1; r<crd.y; r++) {
-                    os << endl << "[" << crd[0][r];
+                    os << "\n[" << crd[0][r];
                     for(di i=1;i<crd.x;i++) {
                         os << ", " << crd[i][r];
                     }
