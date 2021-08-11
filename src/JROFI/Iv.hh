@@ -12,7 +12,7 @@
 
 #define pow23(X) pow(sqrt(X), 3.)
 
-namespace d::Iv {
+namespace d::IvBackend {
 
     extern std::atomic<double> tMax;
     std::atomic<double> tMax(0.0);
