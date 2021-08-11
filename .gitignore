@@ -39,3 +39,6 @@ buildLog
 test*
 comp
 bin/*
+Makefile
+*.Plo
+*.Po
