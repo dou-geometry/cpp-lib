@@ -14,6 +14,7 @@
 
 @SET_MAKE@
 
+
 VPATH = @srcdir@
 am__is_gnu_make = { \
   if test -z '$(MAKELEVEL)'; then \
@@ -88,7 +89,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-subdir = lib
+subdir = lib/cls
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_check_compile_flag.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
@@ -102,33 +103,6 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-AM_V_P = $(am__v_P_@AM_V@)
-am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
-am__v_P_0 = false
-am__v_P_1 = :
-AM_V_GEN = $(am__v_GEN_@AM_V@)
-am__v_GEN_ = $(am__v_GEN_@AM_DEFAULT_V@)
-am__v_GEN_0 = @echo "  GEN     " $@;
-am__v_GEN_1 = 
-AM_V_at = $(am__v_at_@AM_V@)
-am__v_at_ = $(am__v_at_@AM_DEFAULT_V@)
-am__v_at_0 = @
-am__v_at_1 = 
-SOURCES =
-DIST_SOURCES =
-RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
-	ctags-recursive dvi-recursive html-recursive info-recursive \
-	install-data-recursive install-dvi-recursive \
-	install-exec-recursive install-html-recursive \
-	install-info-recursive install-pdf-recursive \
-	install-ps-recursive install-recursive installcheck-recursive \
-	installdirs-recursive pdf-recursive ps-recursive \
-	tags-recursive uninstall-recursive
-am__can_run_installinfo = \
-  case $$AM_UPDATE_INFO_DIR in \
-    n|no|NO) false;; \
-    *) (install-info --version) >/dev/null 2>&1;; \
-  esac
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
@@ -156,7 +130,120 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-am__installdirs = "$(DESTDIR)$(includedir)"
+am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(includedir)"
+LIBRARIES = $(lib_LIBRARIES)
+ARFLAGS = cru
+AM_V_AR = $(am__v_AR_@AM_V@)
+am__v_AR_ = $(am__v_AR_@AM_DEFAULT_V@)
+am__v_AR_0 = @echo "  AR      " $@;
+am__v_AR_1 = 
+libinstcoord_a_AR = $(AR) $(ARFLAGS)
+libinstcoord_a_LIBADD =
+am_libinstcoord_a_OBJECTS = coord.$(OBJEXT)
+libinstcoord_a_OBJECTS = $(am_libinstcoord_a_OBJECTS)
+libinstcov_a_AR = $(AR) $(ARFLAGS)
+libinstcov_a_LIBADD =
+am_libinstcov_a_OBJECTS = cov.$(OBJEXT)
+libinstcov_a_OBJECTS = $(am_libinstcov_a_OBJECTS)
+libinstfield_a_AR = $(AR) $(ARFLAGS)
+libinstfield_a_LIBADD =
+am_libinstfield_a_OBJECTS = field.$(OBJEXT)
+libinstfield_a_OBJECTS = $(am_libinstfield_a_OBJECTS)
+libinstkarabinerhaken_a_AR = $(AR) $(ARFLAGS)
+libinstkarabinerhaken_a_LIBADD =
+am_libinstkarabinerhaken_a_OBJECTS = Karabinerhaken.$(OBJEXT)
+libinstkarabinerhaken_a_OBJECTS =  \
+	$(am_libinstkarabinerhaken_a_OBJECTS)
+libinstline_a_AR = $(AR) $(ARFLAGS)
+libinstline_a_LIBADD =
+am_libinstline_a_OBJECTS = line.$(OBJEXT)
+libinstline_a_OBJECTS = $(am_libinstline_a_OBJECTS)
+libinstlinear_a_AR = $(AR) $(ARFLAGS)
+libinstlinear_a_LIBADD =
+am_libinstlinear_a_OBJECTS = linear.$(OBJEXT)
+libinstlinear_a_OBJECTS = $(am_libinstlinear_a_OBJECTS)
+libinstmatrix_a_AR = $(AR) $(ARFLAGS)
+libinstmatrix_a_LIBADD =
+am_libinstmatrix_a_OBJECTS = matrix.$(OBJEXT)
+libinstmatrix_a_OBJECTS = $(am_libinstmatrix_a_OBJECTS)
+libinstmono_a_AR = $(AR) $(ARFLAGS)
+libinstmono_a_LIBADD =
+am_libinstmono_a_OBJECTS = mono.$(OBJEXT)
+libinstmono_a_OBJECTS = $(am_libinstmono_a_OBJECTS)
+libinstring_a_AR = $(AR) $(ARFLAGS)
+libinstring_a_LIBADD =
+am_libinstring_a_OBJECTS = ring.$(OBJEXT)
+libinstring_a_OBJECTS = $(am_libinstring_a_OBJECTS)
+libinstsuu_a_AR = $(AR) $(ARFLAGS)
+libinstsuu_a_LIBADD =
+am_libinstsuu_a_OBJECTS = suu.$(OBJEXT)
+libinstsuu_a_OBJECTS = $(am_libinstsuu_a_OBJECTS)
+AM_V_P = $(am__v_P_@AM_V@)
+am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
+am__v_P_0 = false
+am__v_P_1 = :
+AM_V_GEN = $(am__v_GEN_@AM_V@)
+am__v_GEN_ = $(am__v_GEN_@AM_DEFAULT_V@)
+am__v_GEN_0 = @echo "  GEN     " $@;
+am__v_GEN_1 = 
+AM_V_at = $(am__v_at_@AM_V@)
+am__v_at_ = $(am__v_at_@AM_DEFAULT_V@)
+am__v_at_0 = @
+am__v_at_1 = 
+DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
+depcomp = $(SHELL) $(top_srcdir)/depcomp
+am__maybe_remake_depfiles = depfiles
+am__depfiles_remade = ./$(DEPDIR)/Karabinerhaken.Po \
+	./$(DEPDIR)/coord.Po ./$(DEPDIR)/cov.Po ./$(DEPDIR)/field.Po \
+	./$(DEPDIR)/line.Po ./$(DEPDIR)/linear.Po \
+	./$(DEPDIR)/matrix.Po ./$(DEPDIR)/mono.Po ./$(DEPDIR)/ring.Po \
+	./$(DEPDIR)/suu.Po
+am__mv = mv -f
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+AM_V_lt = $(am__v_lt_@AM_V@)
+am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
+am__v_lt_0 = --silent
+am__v_lt_1 = 
+LTCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CXXFLAGS) $(CXXFLAGS)
+AM_V_CXX = $(am__v_CXX_@AM_V@)
+am__v_CXX_ = $(am__v_CXX_@AM_DEFAULT_V@)
+am__v_CXX_0 = @echo "  CXX     " $@;
+am__v_CXX_1 = 
+CXXLD = $(CXX)
+CXXLINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
+am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
+am__v_CXXLD_0 = @echo "  CXXLD   " $@;
+am__v_CXXLD_1 = 
+SOURCES = $(libinstcoord_a_SOURCES) $(libinstcov_a_SOURCES) \
+	$(libinstfield_a_SOURCES) $(libinstkarabinerhaken_a_SOURCES) \
+	$(libinstline_a_SOURCES) $(libinstlinear_a_SOURCES) \
+	$(libinstmatrix_a_SOURCES) $(libinstmono_a_SOURCES) \
+	$(libinstring_a_SOURCES) $(libinstsuu_a_SOURCES)
+DIST_SOURCES = $(libinstcoord_a_SOURCES) $(libinstcov_a_SOURCES) \
+	$(libinstfield_a_SOURCES) $(libinstkarabinerhaken_a_SOURCES) \
+	$(libinstline_a_SOURCES) $(libinstlinear_a_SOURCES) \
+	$(libinstmatrix_a_SOURCES) $(libinstmono_a_SOURCES) \
+	$(libinstring_a_SOURCES) $(libinstsuu_a_SOURCES)
+RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
+	ctags-recursive dvi-recursive html-recursive info-recursive \
+	install-data-recursive install-dvi-recursive \
+	install-exec-recursive install-html-recursive \
+	install-info-recursive install-pdf-recursive \
+	install-ps-recursive install-recursive installcheck-recursive \
+	installdirs-recursive pdf-recursive ps-recursive \
+	tags-recursive uninstall-recursive
+am__can_run_installinfo = \
+  case $$AM_UPDATE_INFO_DIR in \
+    n|no|NO) false;; \
+    *) (install-info --version) >/dev/null 2>&1;; \
+  esac
 HEADERS = $(include_HEADERS)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
@@ -186,7 +273,7 @@ am__define_uniq_tagged_files = \
 ETAGS = etags
 CTAGS = ctags
 DIST_SUBDIRS = $(SUBDIRS)
-am__DIST_COMMON = $(srcdir)/Makefile.in
+am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/depcomp
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 am__relativize = \
   dir0=`pwd`; \
@@ -334,11 +421,24 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-include_HEADERS = cls.hh
-SUBDIRS = signal concepts cls conn boxCounting numerical dyn dou manip
+SUBDIRS = compact
+include_HEADERS = coord.hh matrix.hh mono.hh linear.hh Karabinerhaken.hh line.hh field.hh cov.hh ring.hh suu.hh object.hh
+EXTRA_DIST = coord.tt matrix.tt mono.tt linear.tt Karabinerhaken.tt line.tt field.tt cov.tt object.tt
+lib_LIBRARIES = libinstcoord.a libinstmatrix.a libinstmono.a libinstlinear.a libinstkarabinerhaken.a libinstline.a libinstfield.a libinstcov.a libinstring.a libinstsuu.a
+libinstcoord_a_SOURCES = coord.cc
+libinstmatrix_a_SOURCES = matrix.cc
+libinstmono_a_SOURCES = mono.cc
+libinstlinear_a_SOURCES = linear.cc
+libinstkarabinerhaken_a_SOURCES = Karabinerhaken.cc
+libinstline_a_SOURCES = line.cc
+libinstfield_a_SOURCES = field.cc
+libinstcov_a_SOURCES = cov.cc
+libinstring_a_SOURCES = ring.cc
+libinstsuu_a_SOURCES = suu.cc
 all: all-recursive
 
 .SUFFIXES:
+.SUFFIXES: .cc .lo .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -348,9 +448,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign lib/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign lib/cls/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign lib/Makefile
+	  $(AUTOMAKE) --foreign lib/cls/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -368,6 +468,134 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
+install-libLIBRARIES: $(lib_LIBRARIES)
+	@$(NORMAL_INSTALL)
+	@list='$(lib_LIBRARIES)'; test -n "$(libdir)" || list=; \
+	list2=; for p in $$list; do \
+	  if test -f $$p; then \
+	    list2="$$list2 $$p"; \
+	  else :; fi; \
+	done; \
+	test -z "$$list2" || { \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(libdir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(libdir)" || exit 1; \
+	  echo " $(INSTALL_DATA) $$list2 '$(DESTDIR)$(libdir)'"; \
+	  $(INSTALL_DATA) $$list2 "$(DESTDIR)$(libdir)" || exit $$?; }
+	@$(POST_INSTALL)
+	@list='$(lib_LIBRARIES)'; test -n "$(libdir)" || list=; \
+	for p in $$list; do \
+	  if test -f $$p; then \
+	    $(am__strip_dir) \
+	    echo " ( cd '$(DESTDIR)$(libdir)' && $(RANLIB) $$f )"; \
+	    ( cd "$(DESTDIR)$(libdir)" && $(RANLIB) $$f ) || exit $$?; \
+	  else :; fi; \
+	done
+
+uninstall-libLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	@list='$(lib_LIBRARIES)'; test -n "$(libdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(libdir)'; $(am__uninstall_files_from_dir)
+
+clean-libLIBRARIES:
+	-test -z "$(lib_LIBRARIES)" || rm -f $(lib_LIBRARIES)
+
+libinstcoord.a: $(libinstcoord_a_OBJECTS) $(libinstcoord_a_DEPENDENCIES) $(EXTRA_libinstcoord_a_DEPENDENCIES) 
+	$(AM_V_at)-rm -f libinstcoord.a
+	$(AM_V_AR)$(libinstcoord_a_AR) libinstcoord.a $(libinstcoord_a_OBJECTS) $(libinstcoord_a_LIBADD)
+	$(AM_V_at)$(RANLIB) libinstcoord.a
+
+libinstcov.a: $(libinstcov_a_OBJECTS) $(libinstcov_a_DEPENDENCIES) $(EXTRA_libinstcov_a_DEPENDENCIES) 
+	$(AM_V_at)-rm -f libinstcov.a
+	$(AM_V_AR)$(libinstcov_a_AR) libinstcov.a $(libinstcov_a_OBJECTS) $(libinstcov_a_LIBADD)
+	$(AM_V_at)$(RANLIB) libinstcov.a
+
+libinstfield.a: $(libinstfield_a_OBJECTS) $(libinstfield_a_DEPENDENCIES) $(EXTRA_libinstfield_a_DEPENDENCIES) 
+	$(AM_V_at)-rm -f libinstfield.a
+	$(AM_V_AR)$(libinstfield_a_AR) libinstfield.a $(libinstfield_a_OBJECTS) $(libinstfield_a_LIBADD)
+	$(AM_V_at)$(RANLIB) libinstfield.a
+
+libinstkarabinerhaken.a: $(libinstkarabinerhaken_a_OBJECTS) $(libinstkarabinerhaken_a_DEPENDENCIES) $(EXTRA_libinstkarabinerhaken_a_DEPENDENCIES) 
+	$(AM_V_at)-rm -f libinstkarabinerhaken.a
+	$(AM_V_AR)$(libinstkarabinerhaken_a_AR) libinstkarabinerhaken.a $(libinstkarabinerhaken_a_OBJECTS) $(libinstkarabinerhaken_a_LIBADD)
+	$(AM_V_at)$(RANLIB) libinstkarabinerhaken.a
+
+libinstline.a: $(libinstline_a_OBJECTS) $(libinstline_a_DEPENDENCIES) $(EXTRA_libinstline_a_DEPENDENCIES) 
+	$(AM_V_at)-rm -f libinstline.a
+	$(AM_V_AR)$(libinstline_a_AR) libinstline.a $(libinstline_a_OBJECTS) $(libinstline_a_LIBADD)
+	$(AM_V_at)$(RANLIB) libinstline.a
+
+libinstlinear.a: $(libinstlinear_a_OBJECTS) $(libinstlinear_a_DEPENDENCIES) $(EXTRA_libinstlinear_a_DEPENDENCIES) 
+	$(AM_V_at)-rm -f libinstlinear.a
+	$(AM_V_AR)$(libinstlinear_a_AR) libinstlinear.a $(libinstlinear_a_OBJECTS) $(libinstlinear_a_LIBADD)
+	$(AM_V_at)$(RANLIB) libinstlinear.a
+
+libinstmatrix.a: $(libinstmatrix_a_OBJECTS) $(libinstmatrix_a_DEPENDENCIES) $(EXTRA_libinstmatrix_a_DEPENDENCIES) 
+	$(AM_V_at)-rm -f libinstmatrix.a
+	$(AM_V_AR)$(libinstmatrix_a_AR) libinstmatrix.a $(libinstmatrix_a_OBJECTS) $(libinstmatrix_a_LIBADD)
+	$(AM_V_at)$(RANLIB) libinstmatrix.a
+
+libinstmono.a: $(libinstmono_a_OBJECTS) $(libinstmono_a_DEPENDENCIES) $(EXTRA_libinstmono_a_DEPENDENCIES) 
+	$(AM_V_at)-rm -f libinstmono.a
+	$(AM_V_AR)$(libinstmono_a_AR) libinstmono.a $(libinstmono_a_OBJECTS) $(libinstmono_a_LIBADD)
+	$(AM_V_at)$(RANLIB) libinstmono.a
+
+libinstring.a: $(libinstring_a_OBJECTS) $(libinstring_a_DEPENDENCIES) $(EXTRA_libinstring_a_DEPENDENCIES) 
+	$(AM_V_at)-rm -f libinstring.a
+	$(AM_V_AR)$(libinstring_a_AR) libinstring.a $(libinstring_a_OBJECTS) $(libinstring_a_LIBADD)
+	$(AM_V_at)$(RANLIB) libinstring.a
+
+libinstsuu.a: $(libinstsuu_a_OBJECTS) $(libinstsuu_a_DEPENDENCIES) $(EXTRA_libinstsuu_a_DEPENDENCIES) 
+	$(AM_V_at)-rm -f libinstsuu.a
+	$(AM_V_AR)$(libinstsuu_a_AR) libinstsuu.a $(libinstsuu_a_OBJECTS) $(libinstsuu_a_LIBADD)
+	$(AM_V_at)$(RANLIB) libinstsuu.a
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT)
+
+distclean-compile:
+	-rm -f *.tab.c
+
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Karabinerhaken.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/coord.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cov.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/field.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/line.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/linear.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/matrix.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mono.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ring.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/suu.Po@am__quote@ # am--include-marker
+
+$(am__depfiles_remade):
+	@$(MKDIR_P) $(@D)
+	@echo '# dummy' >$@-t && $(am__mv) $@-t $@
+
+am--depfiles: $(am__depfiles_remade)
+
+.cc.o:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ $<
+
+.cc.obj:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+.cc.lo:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.lo$$||'`;\
+@am__fastdepCXX_TRUE@	$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -555,10 +783,10 @@ distdir-am: $(DISTFILES)
 	done
 check-am: all-am
 check: check-recursive
-all-am: Makefile $(HEADERS)
+all-am: Makefile $(LIBRARIES) $(HEADERS)
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(includedir)"; do \
+	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(includedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-recursive
@@ -593,11 +821,23 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-recursive
 
-clean-am: clean-generic clean-libtool mostlyclean-am
+clean-am: clean-generic clean-libLIBRARIES clean-libtool \
+	mostlyclean-am
 
 distclean: distclean-recursive
+		-rm -f ./$(DEPDIR)/Karabinerhaken.Po
+	-rm -f ./$(DEPDIR)/coord.Po
+	-rm -f ./$(DEPDIR)/cov.Po
+	-rm -f ./$(DEPDIR)/field.Po
+	-rm -f ./$(DEPDIR)/line.Po
+	-rm -f ./$(DEPDIR)/linear.Po
+	-rm -f ./$(DEPDIR)/matrix.Po
+	-rm -f ./$(DEPDIR)/mono.Po
+	-rm -f ./$(DEPDIR)/ring.Po
+	-rm -f ./$(DEPDIR)/suu.Po
 	-rm -f Makefile
-distclean-am: clean-am distclean-generic distclean-tags
+distclean-am: clean-am distclean-compile distclean-generic \
+	distclean-tags
 
 dvi: dvi-recursive
 
@@ -617,7 +857,7 @@ install-dvi: install-dvi-recursive
 
 install-dvi-am:
 
-install-exec-am:
+install-exec-am: install-libLIBRARIES
 
 install-html: install-html-recursive
 
@@ -640,12 +880,23 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-recursive
+		-rm -f ./$(DEPDIR)/Karabinerhaken.Po
+	-rm -f ./$(DEPDIR)/coord.Po
+	-rm -f ./$(DEPDIR)/cov.Po
+	-rm -f ./$(DEPDIR)/field.Po
+	-rm -f ./$(DEPDIR)/line.Po
+	-rm -f ./$(DEPDIR)/linear.Po
+	-rm -f ./$(DEPDIR)/matrix.Po
+	-rm -f ./$(DEPDIR)/mono.Po
+	-rm -f ./$(DEPDIR)/ring.Po
+	-rm -f ./$(DEPDIR)/suu.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-recursive
 
-mostlyclean-am: mostlyclean-generic mostlyclean-libtool
+mostlyclean-am: mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool
 
 pdf: pdf-recursive
 
@@ -655,23 +906,26 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-includeHEADERS
+uninstall-am: uninstall-includeHEADERS uninstall-libLIBRARIES
 
 .MAKE: $(am__recursive_targets) install-am install-strip
 
-.PHONY: $(am__recursive_targets) CTAGS GTAGS TAGS all all-am check \
-	check-am clean clean-generic clean-libtool cscopelist-am ctags \
-	ctags-am distclean distclean-generic distclean-libtool \
-	distclean-tags distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-includeHEADERS install-info \
-	install-info-am install-man install-pdf install-pdf-am \
+.PHONY: $(am__recursive_targets) CTAGS GTAGS TAGS all all-am \
+	am--depfiles check check-am clean clean-generic \
+	clean-libLIBRARIES clean-libtool cscopelist-am ctags ctags-am \
+	distclean distclean-compile distclean-generic \
+	distclean-libtool distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am \
+	install-includeHEADERS install-info install-info-am \
+	install-libLIBRARIES install-man install-pdf install-pdf-am \
 	install-ps install-ps-am install-strip installcheck \
 	installcheck-am installdirs installdirs-am maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic \
-	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-am uninstall \
-	uninstall-am uninstall-includeHEADERS
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+	tags tags-am uninstall uninstall-am uninstall-includeHEADERS \
+	uninstall-libLIBRARIES
 
 .PRECIOUS: Makefile
 

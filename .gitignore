@@ -39,16 +39,3 @@ buildLog
 test*
 comp
 bin/*
-dou-geometry-cpp-library-*.tar.gz
-*.Po
-*.Tpo
-bin/*
-*/.deps/*
-.dirstamp
-*.sage
-src/test/test-suite.log
-test-driver
-*.Plo
-libtool
-ltmain.sh
-*.m4
