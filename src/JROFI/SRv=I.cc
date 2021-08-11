@@ -1,3 +1,4 @@
+#include"./Iv.hh"
 #include"../../lib/conn/sage/settings.hh"
 #include"../../lib/conn/sage/plot.hh"
 
@@ -32,8 +33,12 @@ int main() {
     signal(SIGTERM, d::signal::handler);
     signal(SIGHUP, d::signal::handler);
     std::cout <<std::fixed<<std::setprecision(14);
-    //d::Iv::genFunc([](const d::dyn::compact::mono<double, 1, 1, true>&m){return m.t>7;});
-    //d::Iv::wait();
+    auto lg=d::IvBackend::data(d::IvBackend::low);
+    for(; lg->tugi!=nullptr; lg=lg->tugi) std::cout <<lg->d.t << ", " << lg->d.d[0] << "\n";
+    std::cout <<lg->d.t << ", " << lg->d.d[0] << "\n";
+    d::IvBackend::genMoreOnce(d::IvBackend::medium);
+    std::cout << "genmore"<<std::endl;
+    for(lg=lg->tugi; lg!=nullptr; lg=lg->tugi) std::cout <<lg->d.t << ", " << lg->d.d[0] << "\n";
 
 
     // When SIGHUP is issued, the generation of database is terminated and enters lookup
@@ -51,12 +56,11 @@ int main() {
 
 
 
-    std::cout << "Data: " << d::Iv::data()->size() << std::endl;
+    std::cout << "Data: " << d::IvBackend::data()->size() << std::endl;
     d::conn::sage::settings::files<d::conn::sage::settings::gif> anim;
     d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
     //std::cout << d::conn::sage::anime(m, anim);
-    //std::cout << plot(log, gph);
-    std::cout << plot(d::Iv::data(), gph);
+    std::cout << plot(d::IvBackend::data(), gph);
     std::cout << "Animation:\n"<<anim<<"\nPlot:\n"<<gph<<std::endl;
     double ttt;std::cin>>ttt;
     return 0;
