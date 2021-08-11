@@ -216,7 +216,6 @@ namespace d {
             for(di i=0; i<dim; i++) res+=this->d[i];
             return res;
         }
-        //di size() const { return dim; }
     };
 }
 #endif
