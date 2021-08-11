@@ -62,8 +62,8 @@ namespace d {
             return *this;
         }
         coord& operator=(coord<T> &&other) noexcept {
-            swap(dim, other.dim);
-            swap(d, other.d);
+            std::swap(dim, other.dim);
+            std::swap(d, other.d);
             return *this;
         }
         double norm() const {
