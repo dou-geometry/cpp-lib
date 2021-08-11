@@ -1,6 +1,8 @@
 #ifndef __CAR_LINEAR_MATRIX_HPP__
 #define __CAR_LINEAR_MATRIX_HPP__
 #include"../concepts/coordCarrier.hh"
+#include"../cls/coord.hh"
+#include"../cls/compact/coord.hh"
 namespace d {
     template<typename M>
         struct matrix {
@@ -88,6 +90,14 @@ namespace d {
                 coord<M> res(lhs.y, (M)0);
                 for(di i=0; i<res.dim; i++) {
                     for(di j=0; j<res.dim; j++) res[i]+=lhs[j][i]*rhs[j];
+                }
+                return res;
+            }
+            template<di DM> friend d::compact::coord<M, DM> operator*(matrix<M> lhs, const d::compact::coord<M, DM>& rhs) {
+                //assert(lhs.y==DM);
+                d::compact::coord<M, DM> res((M)0);
+                for(di i=0; i<DM; i++) {
+                    for(di j=0; j<DM; j++) res[i]+=lhs[j][i]*rhs[j];
                 }
                 return res;
             }
