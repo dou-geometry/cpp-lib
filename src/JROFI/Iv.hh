@@ -3,6 +3,7 @@
 #include"../../lib/signal/handle.hh"
 #include"../../lib/cls/coord.hh"
 #include"../../lib/cls/compact/coord.hh"
+#include"../../lib/cls/mono.hh"
 #include"../../lib/dyn/mono.hh"
 #include"../../lib/numerical/rk4.hh"
 #include <cmath>
@@ -42,4 +43,9 @@ namespace d::IvBackend {
 
     //d::dyn::compact::mono<double, 1, 1, true>* shrink(di);
 
+}
+
+namespace d {
+    double I(const d::mono<double>&);
+    double Iv(double);
 }
