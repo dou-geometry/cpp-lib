@@ -42,3 +42,6 @@ bin/*
 Makefile
 *.Plo
 *.Po
+*/.deps/*
+*/.libs/*
+*.so.*
