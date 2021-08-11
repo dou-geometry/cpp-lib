@@ -40,7 +40,6 @@ test*
 comp
 bin/*
 Makefile
-lib/*/Makefile
 *.Plo
 *.Po
 */.deps/*
