@@ -12,7 +12,6 @@
 #include <utility>
 #include <cstring>
 #include<complex>
-using namespace std;
 namespace d {
     template<typename T> struct coord {
         T *d=nullptr;
@@ -52,7 +51,7 @@ namespace d {
             //printf("%p=>%p\n", &other.d, &d);
             memcpy(d, other.d, sizeof(T)*dim);
         }
-        coord(coord<T> &&other) noexcept: d(exchange(other.d, nullptr)), dim(exchange(other.dim,(di)0)) {}
+        coord(coord<T> &&other) noexcept: d(std::exchange(other.d, nullptr)), dim(std::exchange(other.dim,(di)0)) {}
         coord& operator=(const coord<T> &other) {
             //printf("move ro3");
             if (this == &other) return *this;
@@ -188,11 +187,11 @@ namespace d {
         friend coord<T> operator*(coord<T> lhs, const coord<T> &rhs) {return lhs*=rhs;}
         void input() {
             for(di i=0; i<dim; i++) {
-                cin >> d[i];
+                std::cin >> d[i];
             }
         }
         static void input(coord<T> &x) {
-            cout << "Please enter coordinate with each parameter seperated by space: ";
+            std::cout << "Please enter coordinate with each parameter seperated by space: ";
             x.input();
         }
         template<typename Z>
