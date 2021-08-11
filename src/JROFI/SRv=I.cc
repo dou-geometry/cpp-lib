@@ -62,6 +62,6 @@ int main() {
     //std::cout << d::conn::sage::anime(m, anim);
     std::cout << plot(d::IvBackend::data(), gph);
     std::cout << "Animation:\n"<<anim<<"\nPlot:\n"<<gph<<std::endl;
-    double ttt;std::cin>>ttt;
+    std::cout << d::Iv(0.12) << std::endl << d::Iv(0.24) << std::endl;
     return 0;
 }
