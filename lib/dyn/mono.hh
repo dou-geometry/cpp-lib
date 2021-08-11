@@ -245,6 +245,7 @@ namespace d::dyn {
             //                    res.d[i]=this->d[i];
             //                return res;
             //            }
+            di size() const { return order; }
         };
 
     template<typename C>
