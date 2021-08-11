@@ -1,0 +1,9 @@
+template<typename C>
+    template<typename I> d::Karabinerhaken<C>* d::Karabinerhaken<C>::after(I count) { 
+        if(count==0) return this;
+        auto midp=(*this).tugi;
+        while(--count) {
+            midp=midp->tugi;
+        }
+        return midp;
+    }

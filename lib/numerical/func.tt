@@ -1,0 +1,6 @@
+template<typename T>
+T d::numerical::corrfunc::linear(const d::numerical::func<T>& f, const d::coord<T>& crd) {
+    // auto [a, b] = f.neighbour(crd);
+    auto h = f.hidari(crd);
+    return 1225;
+}
