@@ -59,6 +59,7 @@ int main() {
     while(std::cin>>k) {
         std::cout << d::Iv(k) << std::endl;
     }
+    return 0;
 
 
     std::cout << "Data: " << d::IvBackend::data()->size() << std::endl;
