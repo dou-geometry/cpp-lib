@@ -33,12 +33,12 @@ int main() {
     signal(SIGTERM, d::signal::handler);
     signal(SIGHUP, d::signal::handler);
     std::cout <<std::fixed<<std::setprecision(14);
-    auto lg=d::IvBackend::data(d::IvBackend::low);
-    for(; lg->tugi!=nullptr; lg=lg->tugi) std::cout <<lg->d.t << ", " << lg->d.d[0] << "\n";
-    std::cout <<lg->d.t << ", " << lg->d.d[0] << "\n";
-    d::IvBackend::genMoreOnce(d::IvBackend::medium);
-    std::cout << "genmore"<<std::endl;
-    for(lg=lg->tugi; lg!=nullptr; lg=lg->tugi) std::cout <<lg->d.t << ", " << lg->d.d[0] << "\n";
+    auto lg=d::IvBackend::data();
+    //for(; lg->tugi!=nullptr; lg=lg->tugi) std::cout <<lg->d.t << ", " << lg->d.d[0] << "\n";
+    //std::cout <<lg->d.t << ", " << lg->d.d[0] << "\n";
+    //d::IvBackend::genMoreOnce(d::IvBackend::medium);
+    //std::cout << "genmore"<<std::endl;
+    //for(lg=lg->tugi; lg!=nullptr; lg=lg->tugi) std::cout <<lg->d.t << ", " << lg->d.d[0] << "\n";
 
 
     // When SIGHUP is issued, the generation of database is terminated and enters lookup
@@ -54,6 +54,11 @@ int main() {
     //
     //for(di i=0; i<m.logSize; ++i) std::cout << m.log[i][0] << std::endl;
 
+
+    double k;
+    while(std::cin>>k) {
+        std::cout << d::Iv(k) << std::endl;
+    }
 
 
     std::cout << "Data: " << d::IvBackend::data()->size() << std::endl;
