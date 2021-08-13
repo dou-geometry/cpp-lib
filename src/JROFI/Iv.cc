@@ -34,5 +34,6 @@ d::Karabinerhaken<d::dyn::compact::mono<double, 1, 1, true>>* d::IvBackend::genM
 
 double d::Iv(double v) {
     ull key=(ull)(std::round(std::abs(v)*1e4));
+    if(key>(ull)(std::round(d::IvBackend::tMax*1e4))) d::IvBackend::genMoreOnce([](const d::dyn::compact::mono<double, 1, 1, true>&m){return m.t>v;});
     return d::IvBackend::data()->after(key)->d.d[0];
 }
