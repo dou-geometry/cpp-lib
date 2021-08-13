@@ -17,6 +17,8 @@ namespace d::IvBackend {
 
     extern std::atomic<double> tMax;
     std::atomic<double> tMax(0.0);
+    extern std::atomic_flag ongoing;
+    std::atomic_flag ongoing;
 
     static bool belowC(const d::dyn::compact::mono<double, 1, 1, true>& m) {
         return m.t>1.;
