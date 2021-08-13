@@ -1,6 +1,6 @@
 #pragma once
 
-#include"../signal/handle.hh"
+#include"../conn/signal/handle.hh"
 #include"../cls/coord.hh"
 #include"../cls/Karabinerhaken.hh"
 #include"../cls/object.hh"

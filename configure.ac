@@ -53,7 +53,7 @@ AC_CONFIG_FILES([Makefile
                  lib/dyn/Makefile
                  lib/manip/Makefile
                  lib/numerical/Makefile
-                 lib/signal/Makefile
+                 lib/conn/signal/Makefile
                  src/Makefile
                  src/test/Makefile])
 AC_OUTPUT
