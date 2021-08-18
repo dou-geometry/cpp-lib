@@ -3,6 +3,7 @@ AUTOMAKE_OPTIONS = subdir-objects foreign
 lib_LTLIBRARIES = JROFI/libdouIvSR.la
 
 JROFI_libdouIvSR_la_SOURCES = JROFI/IvSR.cc
+#JROFI_libdouIvSR_la_LDFLAGS = -Wl,--unresolved-symbols=ignore-all
 include_HEADERS = JROFI/IvSR.hh
 
 SUBDIRS = test

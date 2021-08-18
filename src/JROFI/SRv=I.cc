@@ -29,13 +29,15 @@ std::string plot(auto* m, d::conn::sage::settings::files<d::conn::sage::settings
     return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
 }
 
+const double d::IvBackend::k=1, d::IvBackend::c=1;
 int main() {
     signal(SIGTERM, d::signal::handler);
     signal(SIGHUP, d::signal::handler);
     std::cout <<std::fixed<<std::setprecision(14);
     //auto lg=d::IvBackend::data(d::IvBackend::aboveC, 2, 2);
     //auto lg=d::IvBackend::data(d::IvBackend::aboveC, 1.2, 2.4);
-    auto lg=d::IvBackend::data(d::IvBackend::aboveC, 1, 1);
+    auto lg=d::IvBackend::data(d::IvBackend::aboveC);
+    std::cout << "Search:\n"<<d::IvSearch(d::Iv(0.2)*d::Iv(0.4)) << std::endl;
     //auto lg=d::IvBackend::data();
     //for(; lg->tugi!=nullptr; lg=lg->tugi) std::cout <<lg->d.t << ", " << lg->d.d[0] << "\n";
     //std::cout <<lg->d.t << ", " << lg->d.d[0] << "\n";

@@ -11,8 +11,9 @@ AC_CONFIG_MACRO_DIRS([m4])
 
 # Checks for programs.
 AC_LANG([C++])
-AX_CHECK_COMPILE_FLAG([-std=gnu++20 -lquadmath -g3], [CXXFLAGS="$CXXFLAGS -std=gnu++20 -lquadmath -g3"])
-AM_CXXFLAGS="-std=gnu++20 -lquadmath -g3"
+AX_CHECK_COMPILE_FLAG([-std=gnu++20 -lquadmath -g3 -Wl,--warn-unresolved-symbols], [CXXFLAGS="$CXXFLAGS -std=gnu++20 -lquadmath -g3 -Wl,--warn-unresolved-symbols"])
+AM_CXXFLAGS="-std=gnu++20 -lquadmath -g3 -Wl,--warn-unresolved-symbols"
+#AM_LDFLAGS="--allow-shlib-undefined"
 AC_PROG_CXX
 
 AC_PROG_AWK
@@ -24,6 +25,7 @@ AC_PROG_MAKE_SET
 
 AM_PROG_AR
 
+#LT_INIT([disable-static])
 LT_INIT
 
 # Checks for libraries.
@@ -43,7 +45,6 @@ AC_CONFIG_FILES([Makefile
                  lib/Makefile
                  lib/boxCounting/Makefile
                  lib/cls/Makefile
-                 lib/cls/compact/Makefile
                  lib/concepts/Makefile
                  lib/conn/Makefile
                  lib/conn/bash/Makefile
