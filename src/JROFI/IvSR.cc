@@ -52,7 +52,7 @@ double d::Iv(double p, double q) {
 
 double d::IvSearch(double I) {
     auto s=d::IvBackend::data(d::IvBackend::aroundC);
-    for(; s->tugi!=nullptr; s=s->tugi)
+    for(s=s->tugi; s->tugi!=nullptr; s=s->tugi)
         if(s->d[0][0]<=I)
             return s->d.t*d::IvBackend::k;
     if(s->d[0][0]<=I)
