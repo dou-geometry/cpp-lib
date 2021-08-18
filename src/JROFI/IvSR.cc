@@ -8,6 +8,7 @@ d::IvBackend::funcPoints::funcPoints(bool(*cond)(const d::dyn::compact::mono<dou
     d::dyn::compact::mono<double, 1, 1, true> m;
     this->dK=d::numerical::rk4::run<1, false>(m, dv, cond);
     auto cur=this->dK;
+    cur->d[0][0]=1;
     for(cur=cur->tugi; cur->tugi!=nullptr; cur=cur->tugi) cur->d[0][0]/=(cur->d.t*k);
     cur->d.log=(d::dyn::compact::mono<double, 1, 1, true>*)malloc(sizeof(cur->d));
     new(cur->d.log)d::dyn::compact::mono<double, 1, 1, true>(cur->d);
@@ -52,7 +53,7 @@ double d::Iv(double p, double q) {
 
 double d::IvSearch(double I) {
     auto s=d::IvBackend::data(d::IvBackend::aroundC);
-    for(s=s->tugi; s->tugi!=nullptr; s=s->tugi)
+    for(; s->tugi!=nullptr; s=s->tugi)
         if(s->d[0][0]<=I)
             return s->d.t*d::IvBackend::k;
     if(s->d[0][0]<=I)
