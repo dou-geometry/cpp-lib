@@ -1,10 +1,10 @@
-#include"../../cls.hh"
-#include"./settings.hh"
-#include"../bash/stdout.hh"
-#include"../../dyn/mono.hh"
-#include"../../concepts/logIncrPromise.hh"
-#include"../../concepts/tracksTime.hh"
-#include"../../concepts/animeFormat.hh"
+#include<cls.hh>
+#include<settings.hh>
+#include<stdout.hh>
+#include<mono.hh>
+#include<logIncrPromise.hh>
+#include<tracksTime.hh>
+#include<animeFormat.hh>
 #include<string>
 #ifndef __CONN_SAGE_PLOT__
 #define __CONN_SAGE_PLOT__

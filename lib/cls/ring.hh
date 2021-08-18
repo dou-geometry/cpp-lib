@@ -1,5 +1,5 @@
 #pragma once
-#include"../concepts/numeric.hh"
+#include<numeric.hh>
 #include<iostream>
 
 namespace d {

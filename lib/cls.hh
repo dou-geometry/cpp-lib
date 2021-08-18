@@ -10,11 +10,11 @@
 
 using namespace std;
 
-#include"cls/Karabinerhaken.hh"
-#include"cls/linear.hh"
-#include"cls/field.hh"
-#include"cls/line.hh"
-#include"cls/cov.hh"
+#include<Karabinerhaken.hh>
+#include<linear.hh>
+#include<field.hh>
+#include<line.hh>
+#include<cov.hh>
 
 
 template<typename G> struct mono{};

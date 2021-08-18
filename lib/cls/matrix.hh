@@ -1,8 +1,7 @@
 #ifndef __CAR_LINEAR_MATRIX_HPP__
 #define __CAR_LINEAR_MATRIX_HPP__
-#include"../concepts/coordCarrier.hh"
-#include"../cls/coord.hh"
-#include"../cls/compact/coord.hh"
+#include<coordCarrier.hh>
+#include<coord.hh>
 namespace d {
     template<typename M>
         struct matrix {

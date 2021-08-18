@@ -1,11 +1,10 @@
 #pragma once
 
-#include"../../lib/conn/signal/handle.hh"
-#include"../../lib/cls/coord.hh"
-#include"../../lib/cls/compact/coord.hh"
-#include"../../lib/cls/mono.hh"
-#include"../../lib/dyn/mono.hh"
-#include"../../lib/numerical/rk4.hh"
+#include<handle.hh>
+#include<coord.hh>
+#include<mono.hh>
+#include<mono.hh>
+#include<rk4.hh>
 #include <cmath>
 #include<iostream>
 #include<string>

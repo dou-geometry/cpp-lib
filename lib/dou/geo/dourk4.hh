@@ -1,7 +1,7 @@
 #pragma once
 
-#include"../../cls/coord.hh"
-#include"../../dyn/mono.hh"
+#include<coord.hh>
+#include<mono.hh>
 #include<functional>
 
 // RK4 currently only support 2-order ODE

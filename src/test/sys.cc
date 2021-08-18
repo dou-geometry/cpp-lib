@@ -1,4 +1,4 @@
-#include"../../lib/dou/sys.hh"
+#include<sys.hh>
 
 int main() {
     /* System setup:

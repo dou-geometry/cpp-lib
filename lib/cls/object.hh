@@ -1,7 +1,7 @@
 #ifndef __CLS_STRUCT_OBJ__
 #define __CLS_STRUCT_OBJ__
 #include<cassert>
-#include"./Karabinerhaken.hh"
+#include<Karabinerhaken.hh>
 
 namespace d::compact {
 template<typename K, typename V, di size, bool keyIncrPromise = false>

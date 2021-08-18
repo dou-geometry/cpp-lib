@@ -1,1 +1,1 @@
-#include"./mono.hh"
+#include<mono.hh>

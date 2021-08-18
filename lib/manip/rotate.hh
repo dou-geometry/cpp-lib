@@ -1,8 +1,8 @@
 #pragma once
-#include"../cls/coord.hh"
-#include"../concepts/coordCarrier.hh"
-#include"../concepts/dim2.hh"
-#include"../cls/matrix.hh"
+#include<coord.hh>
+#include<coordCarrier.hh>
+#include<dim2.hh>
+#include<matrix.hh>
 
 namespace d {
     template<typename T>

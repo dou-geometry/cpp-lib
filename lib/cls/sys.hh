@@ -1,9 +1,13 @@
 #pragma once
 #define di long unsigned int
 #include<random>
-#include"../conn/sage/settings.hh"
-#include"./mono.hh"
+#include<settings.hh>
+#include<mono.hh>
 #include<iostream>
+#include<Karabinerhaken.hh>
+
+
+
 
 /*
 namespace d::dou {
@@ -110,5 +114,20 @@ namespace d::dou::linked::compact {
     };
 }
 */
+
+
+
+
+
+namespace d::dyn {
+template<typename T>
+struct sys:d::Karabinerhaken<d::dyn::mono<T>> {
+    sys& next() {
+    }
+};
+}
+
+
+
 
 #include"./sys.tt"

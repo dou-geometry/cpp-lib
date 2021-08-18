@@ -1,4 +1,4 @@
-#include"./Karabinerhaken.hh"
+#include<Karabinerhaken.hh>
 namespace d {
     template Karabinerhaken<short>* Karabinerhaken<short>::after(short);
     template Karabinerhaken<int>* Karabinerhaken<int>::after(int);

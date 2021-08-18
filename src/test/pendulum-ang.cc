@@ -1,8 +1,8 @@
-#include"../../lib/cls/coord.hh"
-#include"../../lib/dyn/mono.hh"
-#include"../../lib/numerical/rk4.hh"
-#include"../../lib/conn/sage/settings.hh"
-#include"../../lib/conn/sage/plot.hh"
+#include<coord.hh>
+#include<mono.hh>
+#include<rk4.hh>
+#include<settings.hh>
+#include<plot.hh>
 #include <cmath>
 #include<iostream>
 #include<string>

@@ -1,2 +1,3 @@
-include_HEADERS = mono.hh
-EXTRA_DIST = mono.tt
+lib_LIBRARIES = libdynsim.a
+
+libdynsim_a_SOURCES = sim.cc

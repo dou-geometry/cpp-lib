@@ -25,7 +25,7 @@
  *   - Existence-Difference Acceleration
  */
 
-#include"../../lib/dou/sys.hh"
+#include<sys.hh>
 
 int main() {
     auto g=[](const d::dou::compact::mono<double, 2, 2, true>& m) {

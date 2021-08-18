@@ -1,11 +1,11 @@
 #pragma once
 
-#include"../conn/signal/handle.hh"
-#include"../cls/coord.hh"
-#include"../cls/Karabinerhaken.hh"
-#include"../cls/object.hh"
-#include"../dyn/mono.hh"
-#include"../concepts/tracksTime.hh"
+#include<handle.hh>
+#include<coord.hh>
+#include<Karabinerhaken.hh>
+#include<object.hh>
+#include<mono.hh>
+#include<tracksTime.hh>
 #include<functional>
 
 // RK4 currently only support 2-order ODE

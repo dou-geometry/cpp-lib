@@ -1,9 +1,9 @@
 #ifndef __FUNC_NUM_INTE__
 #define __FUNC_NUM_INTE__
-#include"../cls.hh"
-#include"../cls/line.hh"
-#include"../cls/field.hh"
-#include"../cls/cov.hh"
+#include<cls.hh>
+#include<line.hh>
+#include<field.hh>
+#include<cov.hh>
 #define di long unsigned int
 #define ull unsigned long long int
 #define ll long long int

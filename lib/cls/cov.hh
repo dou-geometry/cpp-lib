@@ -1,8 +1,8 @@
 #ifndef __CLS_STRUCT_COV__
 #define __CLS_STRUCT_COV__
-#include"./coord.hh"
-#include"./field.hh"
-#include"./line.hh"
+#include<coord.hh>
+#include<field.hh>
+#include<line.hh>
 namespace d {
     struct cov:field<bool> {
         di resolution=1;

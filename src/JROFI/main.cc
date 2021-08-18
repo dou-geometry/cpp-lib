@@ -1,4 +1,4 @@
-#include"../lib/numerical/rk4.hh"
+#include<rk4.hh>
 #include <cmath>
 #include<iostream>
 

@@ -1,7 +1,7 @@
 #pragma once
-#include"../cls/coord.hh"
+#include<coord.hh>
 #include<concepts>
-#include"./coordCarrier.hh"
+#include<coordCarrier.hh>
 
 namespace d {
 template<typename T>

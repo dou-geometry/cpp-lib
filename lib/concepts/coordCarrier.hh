@@ -1,5 +1,5 @@
 #pragma once
-#include"../cls/coord.hh"
+#include<coord.hh>
 #include<concepts>
 
 namespace d {

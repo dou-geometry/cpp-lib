@@ -1,6 +1,6 @@
 #ifndef __STRUCT_LINE__
 #define __STRUCT_LINE__
-#include"./coord.hh"
+#include<coord.hh>
 #include<tuple>
 #include<cassert>
 #include<cmath>

@@ -1,5 +1,5 @@
 #pragma once
-#include"../concepts/returnSame.hh"
+#include<returnSame.hh>
 
 namespace d::analysis {
     template<typename T>

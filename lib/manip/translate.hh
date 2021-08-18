@@ -1,6 +1,6 @@
 #pragma once
-#include"../concepts/coordCarrier.hh"
-#include"../cls/coord.hh"
+#include<coordCarrier.hh>
+#include<coord.hh>
 
 namespace d {
     template<typename T>

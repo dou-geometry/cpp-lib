@@ -1,2 +1,2 @@
-#include"./ring.hh"
+#include<ring.hh>
 

@@ -1,4 +1,4 @@
-#include"../../lib/signal/handle.hh"
+#include<handle.hh>
 
 #include<iostream>
 #include <unistd.h>
