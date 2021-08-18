@@ -19,7 +19,7 @@ std::string plot(auto* m, d::conn::sage::settings::files<d::conn::sage::settings
     info.scriptf<<"    return pts\n";
     info.scriptf<<"def main():\n";
     info.scriptf<<"    Gph=points(parseLines())\n";
-    info.scriptf<<"    Gph.save(filename=sys.argv[1])\n";
+    info.scriptf<<"    Gph.save(filename=sys.argv[1], ymin=0, ymax=1)\n";
     info.scriptf<<"main()\n";
     info.dataf <<std::fixed<<std::setprecision(14);
     for(; m!=nullptr; m=m->tugi) info.dataf << m->d.d[0] << "\n";
@@ -33,7 +33,10 @@ int main() {
     signal(SIGTERM, d::signal::handler);
     signal(SIGHUP, d::signal::handler);
     std::cout <<std::fixed<<std::setprecision(14);
-    auto lg=d::IvBackend::data();
+    //auto lg=d::IvBackend::data(d::IvBackend::aboveC, 2, 2);
+    //auto lg=d::IvBackend::data(d::IvBackend::aboveC, 1.2, 2.4);
+    auto lg=d::IvBackend::data(d::IvBackend::aboveC, 1, 1);
+    //auto lg=d::IvBackend::data();
     //for(; lg->tugi!=nullptr; lg=lg->tugi) std::cout <<lg->d.t << ", " << lg->d.d[0] << "\n";
     //std::cout <<lg->d.t << ", " << lg->d.d[0] << "\n";
     //d::IvBackend::genMoreOnce(d::IvBackend::medium);
@@ -54,6 +57,7 @@ int main() {
     //
     //for(di i=0; i<m.logSize; ++i) std::cout << m.log[i][0] << std::endl;
 
+    goto plot;
 
     double k;
     while(std::cin>>k) {
@@ -61,6 +65,7 @@ int main() {
     }
     return 0;
 
+plot:
 
     std::cout << "Data: " << d::IvBackend::data()->size() << std::endl;
     d::conn::sage::settings::files<d::conn::sage::settings::gif> anim;
