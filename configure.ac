@@ -25,6 +25,8 @@ AC_PROG_MAKE_SET
 
 AM_PROG_AR
 
+AC_PROG_MKDIR_P
+
 #LT_INIT([disable-static])
 LT_INIT
 
@@ -42,19 +44,22 @@ AC_FUNC_MALLOC
 AC_CHECK_FUNCS([floor memset pow sqrt])
 
 AC_CONFIG_FILES([Makefile
+                 include/Makefile
                  lib/Makefile
                  lib/boxCounting/Makefile
                  lib/cls/Makefile
+                 lib/cls/compact/Makefile
                  lib/concepts/Makefile
                  lib/conn/Makefile
                  lib/conn/bash/Makefile
                  lib/conn/sage/Makefile
+                 lib/conn/signal/Makefile
                  lib/dou/Makefile
                  lib/dou/geo/Makefile
                  lib/dyn/Makefile
                  lib/manip/Makefile
                  lib/numerical/Makefile
-                 lib/conn/signal/Makefile
+                 lib/signal/Makefile
                  src/Makefile
                  src/test/Makefile])
 AC_OUTPUT
