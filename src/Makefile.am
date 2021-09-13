@@ -7,7 +7,7 @@ lib_LTLIBRARIES = JROFI/libdouIvSR.la JROFI/libdouIgN.la
 JROFI_libdouIvSR_la_SOURCES = JROFI/IvSR.cc
 #JROFI_libdouIvSR_la_LDFLAGS = -Wl,--unresolved-symbols=ignore-all
 JROFI_libdouIgN_la_SOURCES = JROFI/IgN.cc
-include_HEADERS = JROFI/IvSR.hh JROFI/IgN.hh
+noinst_HEADERS = JROFI/IvSR.hh JROFI/IgN.hh
 
 SUBDIRS = test
 
