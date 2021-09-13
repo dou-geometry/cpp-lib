@@ -11,8 +11,8 @@ AC_CONFIG_MACRO_DIRS([m4])
 
 # Checks for programs.
 AC_LANG([C++])
-AX_CHECK_COMPILE_FLAG([-std=gnu++20 -lquadmath -g3 -Wl,--warn-unresolved-symbols], [CXXFLAGS="$CXXFLAGS -std=gnu++20 -lquadmath -g3 -Wl,--warn-unresolved-symbols"])
-AM_CXXFLAGS="-std=gnu++20 -lquadmath -g3 -Wl,--warn-unresolved-symbols"
+AX_CHECK_COMPILE_FLAG([-std=gnu++20 -lquadmath -g3 -Wl,--warn-unresolved-symbols -I${top_srcdir}/include], [CXXFLAGS="$CXXFLAGS -std=gnu++20 -lquadmath -g3 -Wl,--warn-unresolved-symbols -I${top_srcdir}/include"])
+AM_CXXFLAGS="-std=gnu++20 -lquadmath -g3 -Wl,--warn-unresolved-symbols -I${top_srcdir}/include"
 #AM_LDFLAGS="--allow-shlib-undefined"
 AC_PROG_CXX
 
