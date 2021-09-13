@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include<IvSR.hh>
+#include"./IvSR.hh"
 
 int main() {
     /*

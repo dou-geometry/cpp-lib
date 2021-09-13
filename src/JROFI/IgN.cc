@@ -1,4 +1,4 @@
-#include<IgN.hh>
+#include"./IgN.hh"
 #include<cmath>
 
 double d::Ig(double r, double M) {

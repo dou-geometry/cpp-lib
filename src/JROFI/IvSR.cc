@@ -1,4 +1,4 @@
-#include<IvSR.hh>
+#include"./IvSR.hh"
 
 d::IvBackend::funcPoints::funcPoints(bool(*cond)(const d::dyn::compact::mono<double, 1, 1, true>&)) {
     //const double d::IvBackend::k=kl, d::IvBackend::c=cl;
