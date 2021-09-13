@@ -3,7 +3,6 @@
 #include<handle.hh>
 #include<coord.hh>
 #include<mono.hh>
-#include<mono.hh>
 #include<rk4.hh>
 #include <cmath>
 #include<iostream>
@@ -58,7 +57,6 @@ namespace d::IvBackend {
 }
 
 namespace d {
-    double I(const d::mono<double>&);
     double Iv(double);
     double Iv(double, double);
     double IvSearch(double);
