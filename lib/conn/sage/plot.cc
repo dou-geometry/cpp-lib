@@ -1,5 +1,5 @@
-#include"../../cls.hh"
-#include"./plot.hh"
+#include<cls.hh>
+#include<plot.hh>
 #include<bits/stdc++.h>
 
 std::string d::conn::sage::plot(cov& f, conn::sage::settings::files<d::conn::sage::settings::png>& info) {

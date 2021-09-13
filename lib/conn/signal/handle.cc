@@ -1,4 +1,4 @@
-#include"./handle.hh"
+#include<handle.hh>
 volatile sig_atomic_t d::signal::SIGTERMcaught=0;
 volatile sig_atomic_t d::signal::SIGUSR1caught=0;
 volatile sig_atomic_t d::signal::SIGUSR2caught=0;

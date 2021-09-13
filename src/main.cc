@@ -1,4 +1,4 @@
-#include"../lib/cls/ring.hh"
+#include<ring.hh>
 #include<string>
 #include<iostream>
 
