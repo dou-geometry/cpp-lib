@@ -1,3 +1,5 @@
+AM_CPPFLAGS = -I$(top_srcdir)/include
+
 lib_LIBRARIES = libnumintegration.a libnumfunc.a
 lib_LTLIBRARIES = libnumrk4.la
 libnumintegration_a_SOURCES = integration.cc

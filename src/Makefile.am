@@ -1,3 +1,5 @@
+AM_CPPFLAGS = -I$(top_srcdir)/include
+
 AUTOMAKE_OPTIONS = subdir-objects foreign
 
 lib_LTLIBRARIES = JROFI/libdouIvSR.la JROFI/libdouIgN.la

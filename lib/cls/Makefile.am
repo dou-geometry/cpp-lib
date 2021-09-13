@@ -1,3 +1,5 @@
+AM_CPPFLAGS = -I$(top_srcdir)/include
+
 lib_LIBRARIES = libinstcoord.a libinstmatrix.a libinstmono.a libinstlinear.a libinstkarabinerhaken.a libinstline.a libinstfield.a libinstcov.a libinstring.a libinstsuu.a libinstsys.a
 
 libinstcoord_a_SOURCES = coord.cc
