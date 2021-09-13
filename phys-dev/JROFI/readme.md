@@ -2,4 +2,4 @@
 
 ## Table of Contents
 
-- [Discrete Refraction Layers Research](./DiscreteRefracLayers)
+- [Discrete Refraction Layers Research](./discreteRefracLayers)

@@ -1,1 +1,0 @@
-# Discrete Refraction Layers Research
