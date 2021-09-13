@@ -38,6 +38,7 @@ int main() {
     //auto lg=d::IvBackend::data(d::IvBackend::aboveC, 1.2, 2.4);
     auto lg=d::IvBackend::data(d::IvBackend::aboveC);
     std::cout << "Search:\n"<<d::IvSearch(d::Iv(0.2)*d::Iv(0.4)) << std::endl;
+    return 0;
     //auto lg=d::IvBackend::data();
     //for(; lg->tugi!=nullptr; lg=lg->tugi) std::cout <<lg->d.t << ", " << lg->d.d[0] << "\n";
     //std::cout <<lg->d.t << ", " << lg->d.d[0] << "\n";
