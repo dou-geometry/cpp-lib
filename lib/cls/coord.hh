@@ -251,12 +251,15 @@ namespace d::compact {
                 std::swap(d, other.d);
                 return *this;
             }
-            double norm() const {
+            inline double norm() const {
+                if constexpr (dimension==1) return this->d[0];
+                else {
                 double res=0;
                 for(di i=0; i<dimension; i++) {
                     res+=std::pow(this->d[i],2.0);
                 }
                 return sqrt(res);
+                }
             }
             double norm2() const {
                 double res=0;
