@@ -1,6 +1,7 @@
 # ToC
 
 - [`compact/`](./compact), a version of the classes in this directory, but uses standard array instead of VLA.
+- [`frag`](#), fragmented version
 
 ```cpp
 // structure
