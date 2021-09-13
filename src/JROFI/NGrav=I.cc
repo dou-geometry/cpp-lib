@@ -2,7 +2,7 @@
 #include<coord.hh>
 #include<mono.hh>
 #include<rk4.hh>
-#include<IgN.hh>
+#include"./IgN.hh"
 #include<settings.hh>
 #include<plot.hh>
 
