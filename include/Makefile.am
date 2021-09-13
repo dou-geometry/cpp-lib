@@ -1,4 +1,4 @@
-include_HEADERS = \
+include_HEADERS = cls.hh \
 				  same.hh nonDim.hh numeric.hh tracksTime.hh logIncrPromise.hh animeFormat.hh sameArgs.hh coordCarrier.hh dim2.hh \
 				  coord.hh matrix.hh mono.hh linear.hh Karabinerhaken.hh line.hh field.hh cov.hh ring.hh suu.hh object.hh sys.hh sys.tt \
 				  mono.tt Karabinerhaken.tt cov.tt \
