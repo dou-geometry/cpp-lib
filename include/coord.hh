@@ -401,6 +401,12 @@ namespace d::compact {
                 for(di i=0; i<dimension; i++) res+=this->d[i];
                 return res;
             }
+            auto& polar(double r, double theta, bool vert=false) {
+                static_assert(dimension==2, "Polar coordinate only supports 2D");
+                if(vert) theta=(theta+M_PI/2.)*-1.;
+                this->d[0]=r*std::cos(theta); this->d[1]=r*std::sin(theta);
+                return *this;
+            }
         };
 }
 
