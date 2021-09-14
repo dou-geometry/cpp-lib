@@ -19,7 +19,8 @@ bin_PROGRAMS = $(top_builddir)/bin/main \
 			   $(top_builddir)/bin/JROFI/SRv-I \
 			   $(top_builddir)/bin/JROFI/SRvelAdd \
 			   $(top_builddir)/bin/JROFI/NGrav-I \
-			   $(top_builddir)/bin/JROFI/NGravCorrect
+			   $(top_builddir)/bin/JROFI/NGravCorrect \
+			   $(top_builddir)/bin/JROFI/discreteRefracLayers
 __top_builddir__bin_main_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/numerical/libnumintegration.a
 __top_builddir__bin_main_SOURCES = main.cc
 
@@ -35,6 +36,7 @@ __top_builddir__bin_JROFI_NGrav_I_LDADD = ../lib/conn/bash/libbashstdout.a ../li
 __top_builddir__bin_JROFI_NGrav_I_SOURCES = JROFI/NGrav=I.cc
 __top_builddir__bin_JROFI_NGravCorrect_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/conn/signal/libsignalhandle.la ../lib/numerical/libnumintegration.a ../lib/numerical/libnumrk4.la JROFI/libdouIgN.la
 __top_builddir__bin_JROFI_NGravCorrect_SOURCES = JROFI/NGravCorrect.cc
+__top_builddir__bin_JROFI_discreteRefracLayers_SOURCES = JROFI/discreteRefracLayers.cc
 
 __top_builddir__bin_test_refraction_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/conn/signal/libsignalhandle.la ../lib/numerical/libnumintegration.a ../lib/numerical/libnumrk4.la
 __top_builddir__bin_test_refraction_SOURCES = JROFI/test/refraction.cc
