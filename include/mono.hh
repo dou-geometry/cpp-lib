@@ -6,6 +6,7 @@
 #include <type_traits>
 #include<cassert>
 #include<functional>
+#include<Karabinerhaken.hh>
 #define di long unsigned int
 #define ull unsigned long long int
 namespace d {
@@ -686,6 +687,18 @@ namespace d::dou::compact {
 }
 
 
+namespace d::compact {
+    template<di dimension=2>
+    struct mono:d::dyn::compact::mono<double, 2, dimension, true> {
+        using d::dyn::compact::mono<double, 2, dimension, true>::d;
+        d::Karabinerhaken<d::compact::mono<dimension>> *karaLog;
+        ~mono() {
+            karaLog->~Karabinerhaken();
+        }
+        d::compact::coord<double, dimension>& posi() { return d[0]; }
+        d::compact::coord<double, dimension> posi() const { return d[0]; }
+    };
+}
 
 
 #include"./mono.tt"
