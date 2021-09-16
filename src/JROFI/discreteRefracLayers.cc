@@ -9,18 +9,18 @@
 
 double refrac(double theta, double vin, double vout) { return std::asin(std::sin(theta)*vout/vin); }
 
+// BFS Fermat Principle Path Finder
+d::compact::coord<double, 2> bfsFermat(d::compact::mono<double, 2>& m, const d::compact::field& f) {
+}
+
+// Greedy Implementation on Fermat
+d::compact::coord<double, 2> greedyFermat(d::compact::mono<double, 2>& m, const d::compact::field& f) {
+}
+
 void calc() {
 }
 
-/*
-d::compact::coord<double, 2> run(double theta, const d::compact::field1d& v) {
-    for(di i=0; i<v.size; ++i)
-        theta=refrac(theta, v[i], v[i+1]);
-    return theta;
-}
-*/
-
-d::compact::coord<double, 2> run(d::compact::mono<double, 2>& m, const d::compact::func1d& v) {
+d::compact::coord<double, 2> runSnell(d::compact::mono<double, 2>& m, const d::compact::func1d& v) {
     // init log
     new(m.karaLog)d::Karabinerhaken<d::compact::mono<T, dimension, logStatus>>(m);
     while(m[0][1]>singleSideThickness-.4) {
