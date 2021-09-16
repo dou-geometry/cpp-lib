@@ -35,7 +35,6 @@ This project is mainly to maintain a general-physics-oriented C++ library. Follo
 - [x] Plotting (though SageMath)
 - [x] Dynamic Systems
   - [x] RK4
-- [ ] Shortest Path (by BFS)
 - [ ] Numerical Integration
 - [ ] boxCounting
 
