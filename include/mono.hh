@@ -690,11 +690,26 @@ namespace d::dou::compact {
 namespace d::compact {
     template<di dimension=2>
     struct mono:d::dyn::compact::mono<double, 2, dimension, true> {
-        using d::dyn::compact::mono<double, 2, dimension, true>::d;
-        d::Karabinerhaken<d::compact::mono<dimension>> *karaLog;
+        using parent=d::dyn::compact::mono<double, 2, dimension, true>;
+        using parent::d;
+        using parent::mono;
+        d::Karabinerhaken<d::compact::mono<dimension>> *karaLog=nullptr;
         ~mono() {
-            karaLog->~Karabinerhaken();
+            //std::cout << karaLog << std::endl;
+            delete karaLog;
         }
+            mono(const mono<dimension> &other): parent(other) {}
+            mono(mono<dimension> &&other) noexcept: karaLog(std::exchange(other.karaLog, nullptr)), parent(other) {}
+            mono& operator=(const mono<dimension> &other) {
+                parent::operator=(other);
+            }
+            mono& operator=(mono<dimension> &&other) noexcept {
+                if(this==&other) return *this;
+                delete karaLog;
+                karaLog=std::exchange(other.karaLog, nullptr);
+                parent::operator=(other);
+                return *this;
+            }
         d::compact::coord<double, dimension>& posi() { return d[0]; }
         d::compact::coord<double, dimension> posi() const { return d[0]; }
     };
