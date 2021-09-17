@@ -8,11 +8,11 @@ namespace d{
         struct Karabinerhaken {
             Karabinerhaken* tugi=nullptr;
             C d;
-            //Karabinerhaken()=delete;
-            Karabinerhaken() {
+            Karabinerhaken()=delete;
+            /*Karabinerhaken() {
                 C tmp;
                 d=tmp;
-            }
+            }*/
             Karabinerhaken(C x, Karabinerhaken* n=nullptr): d(x), tugi(n){}
             ~Karabinerhaken() {
                 d.~C();
