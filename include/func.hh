@@ -6,6 +6,12 @@
 #include<type_traits>
 namespace d::numerical {
 
+    static const char hidari  = -1;
+    static const char migi    = 1;
+    static const char split   = 0;
+    static const char exclusive=2;
+    static const char inclusive=-2;
+
 template<typename T>
 requires std::signed_integral<T> || std::floating_point<T> // As we use unsign/sign coordinates to determine whether or not it's dL or dLinversed;
 struct func;
@@ -52,6 +58,26 @@ struct func:field<T> {
     }
 };
 
+}
+
+namespace d::numerical::compact {
+    template<typename T, di size, char evalType=d::numerical::split>
+    struct func1d:d::compact::coord<T, size> {
+        using d::compact::coord<T, size>::d;
+        T base=0;
+        T dx;
+        func1d(T d=1, T b=0): base(b), dx(d) {}
+        inline double operator()(T x) const {// no auto adjustment
+            if constexpr(evalType==0) return d[(int)(x + 0.5 - (x<0))]; // https://stackoverflow.com/a/9695341/8460574
+            else if constexpr(evalType==1) return d[std::ceil(x)];
+            else if constexpr(evalType==-1) return d[std::floor(x)];
+            //else if constexpr(evalType==2) return 
+            else if constexpr(evalType==-2) return d[(int)x];
+        }
+        inline double operator()(const d::compact::coord<T, 1>& x) const {
+            return this->operator()(x[0]);
+        }
+    };
 }
 
 #include"./func.tt"
