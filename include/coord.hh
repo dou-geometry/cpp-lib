@@ -67,9 +67,20 @@ namespace d {
             std::swap(d, other.d);
             return *this;
         }
-        // Prevent casting from polar coord
-        coord(const d::polarcoord&) = delete;
-        coord(d::polarcoord&&) = delete;
+        // casting from polar coord
+        coord(const d::polarcoord&);
+        coord(d::polarcoord&&);
+        /*
+        coord(const d::polarcoord& x): dim(2) {
+            d=new T[dim];
+            d[0]=x[0]*std::cos(x[1]);
+            d[1]=x[0]*std::sin(x[1]);
+        }
+        coord(d::polarcoord&& x): dim(2) {
+            d=new T[dim];
+            d[0]=x[0]*std::cos(x[1]);
+            d[1]=x[0]*std::sin(x[1]);
+        }*/
         double norm() const {
             double res=0;
             for(di i=0; i<dim; i++) {
@@ -255,6 +266,8 @@ namespace d::compact {
                 std::swap(d, other.d);
                 return *this;
             }
+            coord(const d::polarcoord&) requires (dimension==2);
+            coord(d::polarcoord&&) requires (dimension==2);
             inline double norm() const {
                 if constexpr (dimension==1) return this->d[0];
                 else {

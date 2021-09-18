@@ -74,9 +74,31 @@ namespace d {
         //operator d::compact::coord<double, 2>() = delete;
         d::compact::coord<double, 2> cartesian() const;
     };
+    template<typename T>
+    coord<T>::coord(const d::polarcoord& x): dim(2) {
+        d=new T[dim];
+        d[0]=x[0]*std::cos(x[1]);
+        d[1]=x[0]*std::sin(x[1]);
+    }
+    template<typename T>
+    coord<T>::coord(d::polarcoord&& x): dim(2) {
+        d=new T[dim];
+        d[0]=x[0]*std::cos(x[1]);
+        d[1]=x[0]*std::sin(x[1]);
+    }
 }
 
 namespace d::compact {
     //typedef d::polarcoord polarcoord;
+    template<typename T, di dimension>
+    coord<T, dimension>::coord(const d::polarcoord& x) requires (dimension==2) {
+        d[0]=x[0]*std::cos(x[1]);
+        d[1]=x[0]*std::sin(x[1]);
+    }
+    template<typename T, di dimension>
+    coord<T, dimension>::coord(d::polarcoord&& x) requires (dimension==2) {
+        d[0]=x[0]*std::cos(x[1]);
+        d[1]=x[0]*std::sin(x[1]);
+    }
 }
 #endif
