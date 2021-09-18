@@ -24,8 +24,6 @@ namespace d {
         polarmono(polarmono&&) noexcept;
         polarmono& operator=(const polarmono&);
         polarmono& operator=(polarmono&&) noexcept;
-        d::compact::coord<double, 2>& operator[](int);
-        d::compact::coord<double, 2> operator[](int) const;
         inline d::compact::coord<double, 2>& posi() { return d[0]; }
         inline d::compact::coord<double, 2> posi() const { return d[0]; }
         polarmono& operator*=(double r);
@@ -35,6 +33,8 @@ namespace d {
         friend polarmono& operator+(polarmono, const polarmono&);
         friend polarmono& operator-(polarmono, const polarmono&);
         friend std::ostream& operator<<(std::ostream&, const polarmono&);
+        d::polarcoord& operator[](int);
+        d::polarcoord operator[](int) const;
         di size() const { return 2; }
     };
 }

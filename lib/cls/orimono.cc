@@ -1,3 +1,4 @@
+#include<oricoord.hh>
 #include<orimono.hh>
 d::polarmono::polarmono(const d::compact::coord<double, 2>& x, const d::compact::coord<double, 2>& v) {
     d=(d::polarcoord*)malloc(sizeof(d::polarmono)*2);
@@ -34,16 +35,14 @@ d::polarmono& d::polarmono::operator=(polarmono&& m) noexcept {
     d[1]=m.d[1];
     return *this;
 }
-d::compact::coord<double, 2>& d::polarmono::operator[](int i) {
-    return this->d[i];
-}
-d::compact::coord<double, 2> d::polarmono::operator[](int i) const {
-    return this->d[i];
-}
-std::ostream& operator<<(std::ostream& os, const d::polarmono& m) {
 namespace d { std::ostream& operator<<(std::ostream& os, const d::polarmono& m) {
     os << "x="<<m.d[0]<<", v="<<m.d[1];
     os << "test";
     return os;
 } }
+d::polarcoord& d::polarmono::operator[](int i) {
+    return d[i];
+}
+d::polarcoord d::polarmono::operator[](int i) const {
+    return d[i];
 }
