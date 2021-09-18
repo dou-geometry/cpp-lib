@@ -41,6 +41,9 @@ d::compact::coord<double, 2> d::polarmono::operator[](int i) const {
     return this->d[i];
 }
 std::ostream& operator<<(std::ostream& os, const d::polarmono& m) {
+namespace d { std::ostream& operator<<(std::ostream& os, const d::polarmono& m) {
     os << "x="<<m.d[0]<<", v="<<m.d[1];
+    os << "test";
     return os;
+} }
 }

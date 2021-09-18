@@ -28,12 +28,12 @@ d::polarcoord& d::polarcoord::operator+=(const d::polarcoord &r) {
     d[1]=d[1]+std::atan2(r[0]*std::sin(r[1]-d[1]), oriR+r[0]*std::cos(r[1]-d[1]));
     return *this;
 }
-std::ostream& operator<<(std::ostream& os, const d::polarcoord& crd) {
+namespace d { std::ostream& operator<<(std::ostream& os, const polarcoord& crd) {
     os << "[" << crd[0];
     os << ", " << crd[1];
     os << "]";
     return os;
-}
+} }
 void d::polarcoord::print(int precision) {
     printf("[%.*lf", precision, *d);
     printf(", %.*lf", precision, *(d+1));
