@@ -30,34 +30,28 @@ namespace d{
             inline Karabinerhaken* insert(Karabinerhaken* mae) {
                 return this->insertAfter(mae);
             }
-            void insert(Karabinerhaken* ptr1, Karabinerhaken* ptr2) {
+            Karabinerhaken* insert(Karabinerhaken* ptr1, Karabinerhaken* ptr2) {
                 if((*ptr2).tugi==ptr1) return (*this).insertAfter(ptr2);
                 return (*this).insertAfter(ptr2);
             }
-            inline di size() {
+            inline di size() const {
                 di i=1;
-                Karabinerhaken* cur=this;
-                while(cur->tugi!=nullptr) {
+                Karabinerhaken* cur=this->tugi;
+                while(cur!=nullptr) {
                     ++i;
                     cur=cur->tugi;
                 }
                 return i;
             }
             static inline di size(const Karabinerhaken* x) { return x->size(); }
-            inline Karabinerhaken* last() {
-                Karabinerhaken* cur=this;
-                while(cur->tugi!=nullptr) {
-                    cur=cur->tugi;
-                }
-                return cur;
-            }
-            static inline Karabinerhaken* last(const Karabinerhaken* x) { return x->last(); }
-            inline Karabinerhaken* end() {
-                Karabinerhaken* cur=this;
-                for(; cur->tugi!=nullptr; cur=cur->tugi) {}
+            inline Karabinerhaken* end() const {
+                Karabinerhaken* cur=this->tugi;
+                for(; cur!=nullptr; cur=cur->tugi) {}
                 return cur;
             }
             static inline Karabinerhaken* end(const Karabinerhaken* x) { return x->end(); }
+            inline Karabinerhaken* last() const { return this->end(); }
+            static inline Karabinerhaken* last(const Karabinerhaken* x) { return x->end(); }
             inline friend std::ostream& operator<<(std::ostream& os, const Karabinerhaken& x) {
                 os << x.d << "\n";
                 if(x->tugi!=nullptr) os << x->tugi;
