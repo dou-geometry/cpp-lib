@@ -15,7 +15,7 @@ namespace d {
         double t=0;
         d::Karabinerhaken<d::polarmono> *karaLog=nullptr;
         di logSize=0;
-        d::compact::polarcoord *d=nullptr;
+        d::polarcoord *d=nullptr;
         polarmono(const d::compact::coord<double, 2>&, const d::compact::coord<double, 2>&);
         polarmono(const d::compact::coord<double, 2>& v): polarmono(d::compact::coord<double, 2>(0.), v) {}
         polarmono(): polarmono(d::compact::coord<double, 2>(0.), d::compact::coord<double, 2>(0.)) {}

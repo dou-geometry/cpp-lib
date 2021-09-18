@@ -77,6 +77,6 @@ namespace d {
 }
 
 namespace d::compact {
-    typedef d::polarcoord polarcoord;
+    //typedef d::polarcoord polarcoord;
 }
 #endif
