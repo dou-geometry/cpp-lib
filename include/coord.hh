@@ -13,6 +13,7 @@
 #include <cstring>
 #include<complex>
 namespace d {
+    struct polarcoord;
     template<typename T> struct coord {
         T *d=nullptr;
         long unsigned int dim;
@@ -66,6 +67,9 @@ namespace d {
             std::swap(d, other.d);
             return *this;
         }
+        // Prevent casting from polar coord
+        coord(const d::polarcoord&) = delete;
+        coord(d::polarcoord&&) = delete;
         double norm() const {
             double res=0;
             for(di i=0; i<dim; i++) {
@@ -406,6 +410,12 @@ namespace d::compact {
                 if(vert) theta=(theta+M_PI/2.)*-1.;
                 this->d[0]=r*std::cos(theta); this->d[1]=r*std::sin(theta);
                 return *this;
+            }
+            inline T atan2() const {
+                return std::atan(d[1], d[0]);
+            }
+            friend inline T atan2(const d::compact::coord<T, dimension>& x) {
+                return x.atan2();
             }
         };
 }

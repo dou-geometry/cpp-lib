@@ -692,7 +692,7 @@ namespace d::compact {
     struct mono:d::dyn::compact::mono<double, 2, dimension, true> {
         using parent=d::dyn::compact::mono<double, 2, dimension, true>;
         using parent::d;
-        using parent::mono;
+        //using parent::mono;
         d::Karabinerhaken<d::compact::mono<dimension>> *karaLog=nullptr;
         ~mono() {
             //std::cout << karaLog << std::endl;

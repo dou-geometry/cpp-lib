@@ -1,0 +1,46 @@
+#include<orimono.hh>
+d::polarmono::polarmono(const d::compact::coord<double, 2>& x, const d::compact::coord<double, 2>& v) {
+    d=(d::compact::polarcoord*)malloc(sizeof(d::polarmono)*2);
+    new(d)d::compact::polarcoord(x);
+    new(d+1)d::compact::polarcoord(v);
+}
+d::polarmono::~polarmono() {
+    (d+1)->~polarcoord();
+    d->~polarcoord();
+    free(d);
+    delete karaLog;
+}
+d::polarmono::polarmono(const d::polarmono& m) {
+    t=m.t;
+    d=(d::compact::polarcoord*)malloc(sizeof(d::polarmono)*2);
+    new(d)d::compact::polarcoord(*(m.d));
+    new(d+1)d::compact::polarcoord(*(m.d+1));
+}
+d::polarmono::polarmono(polarmono&& m) noexcept: t(std::exchange(m.t, 0)), karaLog(std::exchange(m.karaLog, nullptr)) {
+    std::swap(d, m.d);
+}
+d::polarmono& d::polarmono::operator=(const d::polarmono& m) {
+    if(this==&m) return *this;
+    t=m.t;
+    d[0]=m.d[0];
+    d[1]=m.d[1];
+    return *this;
+}
+d::polarmono& d::polarmono::operator=(polarmono&& m) noexcept {
+    if(this==&m) return *this;
+    delete karaLog;
+    t=m.t;
+    d[0]=m.d[0];
+    d[1]=m.d[1];
+    return *this;
+}
+d::compact::coord<double, 2>& d::polarmono::operator[](int i) {
+    return this->d[i];
+}
+d::compact::coord<double, 2> d::polarmono::operator[](int i) const {
+    return this->d[i];
+}
+std::ostream& operator<<(std::ostream& os, const d::polarmono& m) {
+    os << "x="<<m.d[0]<<", v="<<m.d[1];
+    return os;
+}
