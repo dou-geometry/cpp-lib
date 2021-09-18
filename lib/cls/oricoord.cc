@@ -51,3 +51,7 @@ void d::polarcoord::input(d::polarcoord &x) {
 d::compact::coord<double, 2> d::polarcoord::cartesian() const {
     return d::compact::coord<double, 2>({d[0]*std::cos(d[1]), d[0]*std::sin(d[1])});
 }
+inline double d::polarcoord::atan2() const { return d[1]; }
+//inline double& d::polarcoord::atan2() { return d[1]; }
+inline static double atan2(const d::polarcoord& x) { return x[1]; }
+//inline static double& atan2(d::polarcoord& x) { return x[1]; }

@@ -73,6 +73,10 @@ namespace d {
         }
         //operator d::compact::coord<double, 2>() = delete;
         d::compact::coord<double, 2> cartesian() const;
+        inline double atan2() const;
+        //inline double& atan2();
+        inline static double atan2(const polarcoord&);
+        //inline static double& atan2(polarcoord&);
     };
     template<typename T>
     coord<T>::coord(const d::polarcoord& x): dim(2) {
