@@ -5,7 +5,7 @@ AUTOMAKE_OPTIONS = subdir-objects foreign
 lib_LTLIBRARIES = JROFI/libdouIvSR.la JROFI/libdouIgN.la
 
 JROFI_libdouIvSR_la_SOURCES = JROFI/IvSR.cc
-#JROFI_libdouIvSR_la_LDFLAGS = -Wl,--unresolved-symbols=ignore-all
+JROFI_libdouIvSR_la_LDFLAGS = -shared
 JROFI_libdouIgN_la_SOURCES = JROFI/IgN.cc
 noinst_HEADERS = JROFI/IvSR.hh JROFI/IgN.hh
 
@@ -36,6 +36,7 @@ __top_builddir__bin_JROFI_NGrav_I_LDADD = ../lib/conn/bash/libbashstdout.a ../li
 __top_builddir__bin_JROFI_NGrav_I_SOURCES = JROFI/NGrav=I.cc
 __top_builddir__bin_JROFI_NGravCorrect_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/conn/signal/libsignalhandle.la ../lib/numerical/libnumintegration.a ../lib/numerical/libnumrk4.la JROFI/libdouIgN.la
 __top_builddir__bin_JROFI_NGravCorrect_SOURCES = JROFI/NGravCorrect.cc
+__top_builddir__bin_JROFI_discreteRefracLayers_LDADD = ../lib/cls/libinstkarabinerhaken.a ../lib/cls/libinstoricoord.a ../lib/cls/libinstorimono.a
 __top_builddir__bin_JROFI_discreteRefracLayers_SOURCES = JROFI/discreteRefracLayers.cc
 
 __top_builddir__bin_test_refraction_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/conn/signal/libsignalhandle.la ../lib/numerical/libnumintegration.a ../lib/numerical/libnumrk4.la
