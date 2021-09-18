@@ -248,8 +248,7 @@ namespace d::compact {
                 //assert(l.size()<=dimension);
                 memcpy(d, l.begin(), sizeof(T)*dimension);
             }
-            ~coord() {//Not VLA so no need to destruct?
-            }
+            ~coord() = default;
             coord(const coord<T, dimension> &other) {
                 memcpy(d, other.d, sizeof(T)*dimension);
             }
@@ -397,12 +396,17 @@ namespace d::compact {
                 x.input();
             }
             template<typename Z>
+                requires (d::nonDim<Z>) && (dimension==1)
+                operator Z() const { return *d; }
+            /*
+            template<typename Z>
                 requires (d::nonDim<Z>)
                 operator Z() const {
                     Z res=1;
                     for(di i=0; i<dimension; i++) res*=this->d[i];
                     return res;
                 }
+                */
             template<typename Z>operator coord<Z, dimension>() const {
                 coord<Z, dimension> res;
                 for(di i=0; i<dimension; i++) res[i]=(Z)d[i];
