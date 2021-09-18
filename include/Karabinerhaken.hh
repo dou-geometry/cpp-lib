@@ -15,7 +15,6 @@ namespace d{
             }*/
             Karabinerhaken(C x, Karabinerhaken* n=nullptr): d(x), tugi(n){}
             ~Karabinerhaken() {
-                d.~C();
                 delete tugi;
             }
             Karabinerhaken& operator=(const Karabinerhaken& x)=delete;
