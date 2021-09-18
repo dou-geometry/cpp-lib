@@ -57,11 +57,11 @@ namespace d{
                 if(x->tugi!=nullptr) os << x->tugi;
                 return os;
             }
-            inline friend std::ostream& operator<<(std::ostream& os, const Karabinerhaken* ptr) {
+            /*inline friend std::ostream& operator<<(std::ostream& os, const Karabinerhaken* ptr) {
                 os << ptr->d << "\n";
                 if(ptr->tugi!=nullptr) os << ptr->tugi;
                 return os;
-            }
+            }*/
         };
 }
 #include"./Karabinerhaken.tt"
