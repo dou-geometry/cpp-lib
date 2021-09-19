@@ -5,6 +5,7 @@
 #define ll long long int
 #include<coord.hh>
 #include<nonDim.hh>
+#include<units.hh>
 #include<concepts>
 #include <initializer_list>
 #include <iostream>
@@ -15,6 +16,8 @@
 
 namespace d {
     struct polarcoord:d::compact::coord<double, 2> { // Only using double
+        polarcoord(double r, double theta): d::compact::coord<double, 2>({r, theta}) {}
+        using d::compact::coord<double, 2>::coord;
         inline double norm() const;
         inline double norm2() const;
         polarcoord& pow(double p);
@@ -31,12 +34,12 @@ namespace d {
            }
            */
         polarcoord& operator+=(const polarcoord&);
-        /*polarcoord& operator-=(const polarcoord &r) { for(di i=0; i<r.dim; i++) { this->d[i]-=r[i]; }; return *this; }
-          polarcoord& operator*=(const double &r) { for(di i=0; i<this->dim; i++) { this->d[i]*=r; }; return *this; }
-          polarcoord& operator/=(const double &r) { for(di i=0; i<this->dim; i++) { this->d[i]/=r; }; return *this; }
+        polarcoord& operator-=(const polarcoord&);
+        polarcoord& operator*=(const double &r) { this->d[0]*=r; return *this; }
+        polarcoord& operator/=(const double &r) { this->d[0]/=r; return *this; }
         // cross product overload
-        polarcoord& operator*=(const polarcoord &rhs) {
-        if(dim!=3 && dim!=7 && dim!=2) throw "Dimension doesn't have cross product operation";
+        /*polarcoord& operator*=(const polarcoord &rhs) {
+          if(dim!=3 && dim!=7 && dim!=2) throw "Dimension doesn't have cross product operation";
         // 2-D cross product is acheived by little trick that's implemented at operator[], which gives 0 when you read out of range
         if(dim==7) throw "7-D cross product isn't implemented yet";
         if(dim==3) (*this)=polarcoord({
@@ -47,16 +50,16 @@ namespace d {
         if(dim==2) (*this)=polarcoord({(*this)[0]*(rhs[1])-(*this)[1]*(rhs[0]), 0});
         return *this;
         }*/
-        friend std::ostream& operator<<(std::ostream&, const polarcoord&);
+        friend std::ostream& operator<<(std::ostream&, const d::polarcoord&);
         void print(int precision=15);
         friend polarcoord operator+(polarcoord lhs, const polarcoord &r) { return lhs+=r; }
-        /*friend polarcoord operator-(polarcoord lhs, const polarcoord &r) { return lhs-=r; }
-          template<typename O> requires std::convertible_to<O, double> friend polarcoord operator*(polarcoord lhs, const O &r) { return lhs*=(double)r; }
-          template<typename O> requires std::convertible_to<O, double> friend polarcoord operator*(const O &r, polarcoord lhs) { return lhs*=(double)r; }
-          template<typename O> requires std::convertible_to<O, double> friend polarcoord operator/(polarcoord lhs, const O &r) { return lhs/=(double)r; }
-          template<typename O> requires std::convertible_to<O, double> friend polarcoord operator/(const O &r, polarcoord lhs) { return lhs/=(double)r; }
+        friend polarcoord operator-(polarcoord lhs, const polarcoord &r) { return lhs-=r; }
+        friend polarcoord operator*(polarcoord lhs, const double &r) { return lhs*=r; }
+        friend polarcoord operator*(const double &r, polarcoord lhs) { return lhs*=r; }
+        friend polarcoord operator/(polarcoord lhs, const double &r) { return lhs/=r; }
+        friend polarcoord operator/(const double &r, polarcoord lhs) { return lhs/=r; }
         // cross product overload
-        friend polarcoord operator*(polarcoord lhs, const polarcoord &rhs) {return lhs*=rhs;}*/
+        //friend polarcoord operator*(polarcoord lhs, const polarcoord &rhs) {return lhs*=rhs;}
         void input();
         static void input(polarcoord&);
         template<typename Z>
@@ -74,34 +77,36 @@ namespace d {
         d::compact::coord<double, 2> cartesian() const;
         inline double atan2() const;
         //inline double& atan2();
-        inline static double atan2(const polarcoord&);
+        friend inline double atan2(const polarcoord& x) {
+            return x[1];
+        }
         //inline static double& atan2(polarcoord&);
     };
     template<typename T>
-    coord<T>::coord(const d::polarcoord& x): dim(2) {
-        d=new T[dim];
-        d[0]=x[0]*std::cos(x[1]);
-        d[1]=x[0]*std::sin(x[1]);
-    }
+        coord<T>::coord(const d::polarcoord& x): dim(2) {
+            d=new T[dim];
+            d[0]=x[0]*std::cos(x[1]);
+            d[1]=x[0]*std::sin(x[1]);
+        }
     template<typename T>
-    coord<T>::coord(d::polarcoord&& x): dim(2) {
-        d=new T[dim];
-        d[0]=x[0]*std::cos(x[1]);
-        d[1]=x[0]*std::sin(x[1]);
-    }
+        coord<T>::coord(d::polarcoord&& x): dim(2) {
+            d=new T[dim];
+            d[0]=x[0]*std::cos(x[1]);
+            d[1]=x[0]*std::sin(x[1]);
+        }
 }
 
 namespace d::compact {
     //typedef d::polarcoord polarcoord;
     template<typename T, di dimension>
-    coord<T, dimension>::coord(const d::polarcoord& x) requires (dimension==2) {
-        d[0]=x[0]*std::cos(x[1]);
-        d[1]=x[0]*std::sin(x[1]);
-    }
+        coord<T, dimension>::coord(const d::polarcoord& x) requires (dimension==2) {
+            d[0]=x[0]*std::cos(x[1]);
+            d[1]=x[0]*std::sin(x[1]);
+        }
     template<typename T, di dimension>
-    coord<T, dimension>::coord(d::polarcoord&& x) requires (dimension==2) {
-        d[0]=x[0]*std::cos(x[1]);
-        d[1]=x[0]*std::sin(x[1]);
-    }
+        coord<T, dimension>::coord(d::polarcoord&& x) requires (dimension==2) {
+            d[0]=x[0]*std::cos(x[1]);
+            d[1]=x[0]*std::sin(x[1]);
+        }
 }
 #endif

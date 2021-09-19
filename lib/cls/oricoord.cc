@@ -17,18 +17,25 @@ d::polarcoord d::polarcoord::unit() const {
     return cpy;
 }
 d::polarcoord d::polarcoord::abs() const {
-    polarcoord res(2);
+    polarcoord res;
     res[0]=fabs(res[0]);
     return res;
 }
 d::polarcoord& d::polarcoord::operator+=(const d::polarcoord &r) {
-    polarcoord res(2);
+    polarcoord res;
     auto oriR=d[0];
-    d[0]=(oriR*oriR)+(r[0]*r[0])-2.*oriR*r[0]*std::cos(r[1]-d[1]);
+    d[0]=std::sqrt((oriR*oriR)+(r[0]*r[0])+2.*oriR*r[0]*std::cos(r[1]-d[1]));
     d[1]=d[1]+std::atan2(r[0]*std::sin(r[1]-d[1]), oriR+r[0]*std::cos(r[1]-d[1]));
     return *this;
 }
-namespace d { std::ostream& operator<<(std::ostream& os, const polarcoord& crd) {
+d::polarcoord& d::polarcoord::operator-=(const d::polarcoord &r) {
+    polarcoord res;
+    auto oriR=d[0];
+    d[0]=std::sqrt((oriR*oriR)+(r[0]*r[0])-2.*oriR*r[0]*std::cos(r[1]-d[1]));
+    d[1]=d[1]+std::atan2(-1.*r[0]*std::sin(r[1]-d[1]), oriR-r[0]*std::cos(r[1]-d[1]));
+    return *this;
+}
+namespace d { std::ostream& operator<<(std::ostream& os, const d::polarcoord& crd) {
     os << "[" << crd[0];
     os << ", " << crd[1];
     os << "]";
@@ -53,5 +60,5 @@ d::compact::coord<double, 2> d::polarcoord::cartesian() const {
 }
 inline double d::polarcoord::atan2() const { return d[1]; }
 //inline double& d::polarcoord::atan2() { return d[1]; }
-inline static double atan2(const d::polarcoord& x) { return x[1]; }
+//inline double atan2(const d::polarcoord& x) { return x[1]; }
 //inline static double& atan2(d::polarcoord& x) { return x[1]; }
