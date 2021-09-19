@@ -31,12 +31,15 @@ namespace d {
         polarmono& operator-=(const polarmono&);
         friend polarmono& operator+(polarmono, const polarmono&);
         friend polarmono& operator-(polarmono, const polarmono&);
+        /*
         friend std::ostream& operator<<(std::ostream& os, const polarmono& m) {
-    std::cout << "x="<<m[0]<<", v="<<m[1];
-    return os;
-    }
+            std::cout << "x="<<m[0]<<", v="<<m[1];
+            return os;
+        }
+        */
         d::polarcoord& operator[](int);
         d::polarcoord operator[](int) const;
+        friend std::ostream& operator<<(std::ostream&, const polarmono&);
         di size() const { return 2; }
     };
 }

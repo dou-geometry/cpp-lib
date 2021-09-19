@@ -34,15 +34,13 @@ d::polarmono& d::polarmono::operator=(polarmono&& m) noexcept {
     d[1]=m.d[1];
     return *this;
 }
-/*
-namespace d { std::ostream& operator<<(std::ostream& os, const d::polarmono& m) {
-    std::cout << "x="<<m[0]<<", v="<<m[1];
-    return os;
-} }
-*/
 d::polarcoord& d::polarmono::operator[](int i) {
     return d[i];
 }
 d::polarcoord d::polarmono::operator[](int i) const {
     return d[i];
 }
+namespace d { std::ostream& operator<<(std::ostream& os, const d::polarmono& m) {
+    std::cout << "x="<<m.d[0]<<", v="<<m.d[1];
+    return os;
+} }
