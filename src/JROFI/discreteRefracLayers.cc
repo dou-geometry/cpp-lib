@@ -28,11 +28,39 @@ std::string plot(const d::numerical::compact::func1d<double, DATAAMOUNT>& f, d::
     info.scriptf<<"            dx=d[1]\n";
     info.scriptf<<"            continue\n";
     info.scriptf<<"        Gph+=point((ln*dx+base, d))\n";
-    info.scriptf<<"        Gph.save(filename=sys.argv[1])\n";
+    info.scriptf<<"    Gph.save(filename=sys.argv[1])\n";
     info.dataf <<std::fixed<<std::setprecision(14);
     info.dataf << f.base << ", " << f.dx << "\n";
     for(di i=0; i<DATAAMOUNT; ++i)
         info.dataf << f.d[i] << "\n";
+    info.dataf.close();
+    info.scriptf.close();
+    return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
+}
+
+std::string plot(const d::polarmono& m, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
+    info.scriptf<<"#!/usr/bin/env sage\n";
+    info.scriptf<<"import sys\n";
+    info.scriptf<<"from sage.all import *\n";
+    info.scriptf<<"from sage.plot.line import Line\n";
+    info.scriptf<<"def main():\n";
+    info.scriptf<<"    E.<x,y> = EuclideanSpace(2)\n";
+    info.scriptf<<"    cartesian = E.cartesian_coordinates()\n";
+    info.scriptf<<"    polar.<r,t> = E.polar_coordinates()\n";
+    info.scriptf<<"    xs=[]\n";
+    info.scriptf<<"    ys=[]\n";
+    info.scriptf<<"    for ln in sys.stdin():\n";
+    info.scriptf<<"        d=ln.split(\"=\")\n";
+    info.scriptf<<"        x=sage_eval(d[1].split(",")[:-3])\n";
+    info.scriptf<<"        [curX, curY]=E.coord_change(polar, cartesian)(x[0], x[1])\n";
+    info.scriptf<<"        xs.append(curX)\n";
+    info.scriptf<<"        ys.append(curY)\n";
+    info.scriptf<<"    Gph=Line(xs, ys)\n";
+    info.scriptf<<"    Gph.save(filename=sys.argv[1])\n";
+    info.dataf <<std::fixed<<std::setprecision(14);
+    auto logPtr=m.karaLog;
+    for(; logPtr!=nullptr; logPtr=logPtr->tugi)
+        info.dataf << logPtr->d << std::endl;
     info.dataf.close();
     info.scriptf.close();
     return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
