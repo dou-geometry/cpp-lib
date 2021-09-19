@@ -1,5 +1,7 @@
 #include<iostream>
 #include<coord.hh>
+#include<settings.hh>
+#include<stdout.hh>
 #include<oricoord.hh>
 #include<func.hh>
 #include<orimono.hh>
@@ -8,6 +10,33 @@
 #define singleSideThickness 2.
 
 double refrac(double theta, double vin, double vout) { if(vin==vout) return theta; else return std::asin(std::sin(theta)*vout/vin); }
+
+std::string plot(const d::numerical::compact::func1d<double, DATAAMOUNT>& f, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
+    info.scriptf<<"#!/usr/bin/env sage\n";
+    info.scriptf<<"import sys\n";
+    info.scriptf<<"from sage.all import *\n";
+    info.scriptf<<"def main():\n";
+    info.scriptf<<"    ln=-2\n";
+    info.scriptf<<"    base=0\n";
+    info.scriptf<<"    dx=1\n";
+    info.scriptf<<"    Gph=Graphics()\n";
+    info.scriptf<<"    for ln in sys.stdin():\n";
+    info.scriptf<<"        ln+=1\n";
+    info.scriptf<<"        d=sage_eval(ln)\n";
+    info.scriptf<<"        if(ln==-1):\n";
+    info.scriptf<<"            base=d[0]\n";
+    info.scriptf<<"            dx=d[1]\n";
+    info.scriptf<<"            continue\n";
+    info.scriptf<<"        Gph+=point((ln*dx+base, d))\n";
+    info.scriptf<<"        Gph.save(filename=sys.argv[1])\n";
+    info.dataf <<std::fixed<<std::setprecision(14);
+    info.dataf << f.base << ", " << f.dx << "\n";
+    for(di i=0; i<DATAAMOUNT; ++i)
+        info.dataf << f.d[i] << "\n";
+    info.dataf.close();
+    info.scriptf.close();
+    return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
+}
 
 void calc() {
 }
@@ -48,5 +77,5 @@ int main() {
         outboundRay(res, prevOut);
     std::cout << "Intersecting angle="<<(d::deg)(inboundRay.ang(outboundRay))<<std::endl;
     //assert(res[0]==outboundCheck[0]);
-	return 0;
+    return 0;
 }
