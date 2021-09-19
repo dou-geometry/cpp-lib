@@ -1,4 +1,5 @@
 #pragma once
+#include<iostream>
 
 namespace d {
     struct rad {
@@ -33,6 +34,8 @@ namespace d {
         operator double() const {
             return (double)d;
         }
+        //friend std::ostream& operator<<(std::ostream& os, const d::deg& x) { os << x.val << "DEG"; return os; }
+        friend std::ostream& operator<<(std::ostream& os, const d::deg& x) { os << x.val << "°"; return os; }
     };
     struct trig {
         double val;
