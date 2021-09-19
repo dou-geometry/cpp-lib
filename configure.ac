@@ -52,8 +52,6 @@ AC_CONFIG_FILES([Makefile
                  lib/conn/bash/Makefile
                  lib/conn/sage/Makefile
                  lib/conn/signal/Makefile
-                 lib/dou/Makefile
-                 lib/dou/geo/Makefile
                  lib/dyn/Makefile
                  lib/manip/Makefile
                  lib/numerical/Makefile
