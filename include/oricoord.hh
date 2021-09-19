@@ -3,7 +3,6 @@
 #define di long unsigned int
 #define ull unsigned long long int
 #define ll long long int
-#define deg unsigned short
 #include<coord.hh>
 #include<nonDim.hh>
 #include<concepts>

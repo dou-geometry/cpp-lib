@@ -3,7 +3,6 @@
 #define di long unsigned int
 #define ull unsigned long long int
 #define ll long long int
-#define deg unsigned short
 #include<nonDim.hh>
 #include<concepts>
 #include <initializer_list>
@@ -24,7 +23,7 @@ namespace d {
                 d[i]=val;
             }
         }
-        coord(double r, deg theta, deg phi, double divisor=1.0) { // theta<-[0,360), phi<-[0,180]
+        /*coord(double r, deg theta, deg phi, double divisor=1.0) { // theta<-[0,360), phi<-[0,180]
             dim=3;
             double t=(double)theta/divisor/180*M_PI, p=(double)phi/divisor/180*M_PI;
             d={r*cos(t)*sin(p),r*sin(t)*sin(p),r*cos(p)};
@@ -33,7 +32,7 @@ namespace d {
             dim=2;
             double t=(double)theta/divisor/180*M_PI;
             d={r*cos(t), r*sin(t)};
-        }
+        }*/
         coord(std::initializer_list<T> l): dim{l.size()} {
             //printf("init %p\n", this);
             //d=(T *)calloc(dim, sizeof(T));
