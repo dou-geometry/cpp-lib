@@ -41,6 +41,6 @@ d::polarcoord d::polarmono::operator[](int i) const {
     return d[i];
 }
 namespace d { std::ostream& operator<<(std::ostream& os, const d::polarmono& m) {
-    std::cout << "x="<<m.d[0]<<", v="<<m.d[1];
+    std::cout << "x="<<m.d[0]<<", v="<<m.d[1]<<", t="<<m.t;
     return os;
 } }
