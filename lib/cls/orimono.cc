@@ -5,7 +5,6 @@ d::polarmono::polarmono(const d::polarcoord& x, const d::polarcoord& v) {
     new(d+1)d::polarcoord(v);
 }
 d::polarmono::~polarmono() {
-    std::cout << "Destructing: "<<this<<" with log: "<<karaLog << " and d: "<<d<<std::endl;
     (d+1)->~polarcoord();
     d->~polarcoord();
     free(d);
