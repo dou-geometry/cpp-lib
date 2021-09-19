@@ -1,6 +1,7 @@
 #ifndef __STRUCT_LINE__
 #define __STRUCT_LINE__
 #include<coord.hh>
+#include<units.hh>
 #include<tuple>
 #include<cassert>
 #include<cmath>
@@ -37,7 +38,7 @@ struct line {
     friend double angcos(const d::line<L>& a, const d::line<L>& b) {
         return a.angcos(b);
     }
-    inline double ang(const d::line<L>& ln) const {
+    inline d::rad ang(const d::line<L>& ln) const {
         //return arccos(this->angcos(ln));
         //auto [a, b]=this->standard();
         //auto [c, d]=ln.standard();
@@ -49,10 +50,10 @@ struct line {
         //return std::acos(pdq/p.norm()/q.norm());
         return std::acos(this->d.dot(ln.d));
     }
-    static inline double ang(const d::line<L>& a, const d::line<L>& b) {
+    static inline d::rad ang(const d::line<L>& a, const d::line<L>& b) {
         return a.ang(b);
     }
-    inline double ang() const {
+    inline d::rad ang() const {
         return std::atan(d[1]/d[0]);
     }
 };
@@ -89,7 +90,7 @@ struct line {
     friend double angcos(const d::compact::line& a, const d::compact::line& b) {
         return a.angcos(b);
     }
-    inline double ang(const d::compact::line& ln) const {
+    inline d::rad ang(const d::compact::line& ln) const {
         //return arccos(this->angcos(ln));
         //auto [a, b]=this->standard();
         //auto [c, d]=ln.standard();
@@ -101,10 +102,10 @@ struct line {
         //return std::acos(pdq/p.norm()/q.norm());
         return std::acos(this->d.dot(ln.d));
     }
-    static inline double ang(const d::compact::line& a, const d::compact::line& b) {
+    static inline d::rad ang(const d::compact::line& a, const d::compact::line& b) {
         return a.ang(b);
     }
-    inline double ang() const {
+    inline d::rad ang() const {
         return std::atan(d[1]/d[0]);
     }
 };

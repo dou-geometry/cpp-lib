@@ -46,7 +46,7 @@ int main() {
     auto [prevOut, res]=runSnell(m, v);
     d::compact::line inboundRay(m.karaLog->d[0], m.karaLog->tugi->d[0]),
         outboundRay(res, prevOut);
-    std::cout << "Intersecting angle="<<inboundRay.ang(outboundRay)<<std::endl;
+    std::cout << "Intersecting angle="<<(d::deg)(inboundRay.ang(outboundRay))<<std::endl;
     //assert(res[0]==outboundCheck[0]);
 	return 0;
 }
