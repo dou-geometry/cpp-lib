@@ -1,11 +1,11 @@
-#include<oricoord.hh>
 #include<orimono.hh>
-d::polarmono::polarmono(const d::compact::coord<double, 2>& x, const d::compact::coord<double, 2>& v) {
+d::polarmono::polarmono(const d::polarcoord& x, const d::polarcoord& v) {
     d=(d::polarcoord*)malloc(sizeof(d::polarmono)*2);
     new(d)d::polarcoord(x);
     new(d+1)d::polarcoord(v);
 }
 d::polarmono::~polarmono() {
+    std::cout << "Destructing: "<<this<<" with log: "<<karaLog << " and d: "<<d<<std::endl;
     (d+1)->~polarcoord();
     d->~polarcoord();
     free(d);
@@ -35,11 +35,12 @@ d::polarmono& d::polarmono::operator=(polarmono&& m) noexcept {
     d[1]=m.d[1];
     return *this;
 }
+/*
 namespace d { std::ostream& operator<<(std::ostream& os, const d::polarmono& m) {
-    os << "x="<<m.d[0]<<", v="<<m.d[1];
-    os << "test";
+    std::cout << "x="<<m[0]<<", v="<<m[1];
     return os;
 } }
+*/
 d::polarcoord& d::polarmono::operator[](int i) {
     return d[i];
 }
