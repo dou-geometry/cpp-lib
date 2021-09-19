@@ -5,7 +5,7 @@ AUTOMAKE_OPTIONS = subdir-objects foreign
 lib_LTLIBRARIES = JROFI/libdouIvSR.la JROFI/libdouIgN.la
 
 JROFI_libdouIvSR_la_SOURCES = JROFI/IvSR.cc
-JROFI_libdouIvSR_la_LDFLAGS = -shared
+#JROFI_libdouIvSR_la_LDFLAGS = "-shared -export-dynamic"
 JROFI_libdouIgN_la_SOURCES = JROFI/IgN.cc
 noinst_HEADERS = JROFI/IvSR.hh JROFI/IgN.hh
 
@@ -21,7 +21,7 @@ bin_PROGRAMS = $(top_builddir)/bin/main \
 			   $(top_builddir)/bin/JROFI/NGrav-I \
 			   $(top_builddir)/bin/JROFI/NGravCorrect \
 			   $(top_builddir)/bin/JROFI/discreteRefracLayers
-__top_builddir__bin_main_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/numerical/libnumintegration.a
+__top_builddir__bin_main_LDADD = ../lib/cls/libinstorimono.a
 __top_builddir__bin_main_SOURCES = main.cc
 
 __top_builddir__bin_JROFI_JROFI_LDADD = ../lib/conn/bash/libbashstdout.a ../lib/conn/sage/libsageplot.a ../lib/numerical/libnumintegration.a
