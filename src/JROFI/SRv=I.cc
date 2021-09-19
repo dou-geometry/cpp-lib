@@ -29,7 +29,7 @@ std::string plot(auto* m, d::conn::sage::settings::files<d::conn::sage::settings
     return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
 }
 
-const double d::IvBackend::k=1, d::IvBackend::c=1;
+const double d::IvBackend::k=1., d::IvBackend::c=1.;
 int main() {
     signal(SIGTERM, d::signal::handler);
     signal(SIGHUP, d::signal::handler);

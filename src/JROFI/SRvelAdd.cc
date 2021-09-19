@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include"./IvSR.hh"
 
+const double d::IvBackend::k=1., d::IvBackend::c=1.;
 int main() {
     /*
     double SvS=0., SvL=0.7, LvM=0.7;
