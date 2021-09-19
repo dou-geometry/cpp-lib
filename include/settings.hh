@@ -1,6 +1,7 @@
-#include<cls.hh>
 #include<stdout.hh>
-#include<bits/stdc++.h>
+#include<fstream>
+#include<iostream>
+#include<iomanip>
 #ifndef __CONN_SAGE_SETTINGS__
 #define __CONN_SAGE_SETTINGS__
 namespace d::conn::sage::settings {
@@ -12,7 +13,7 @@ namespace d::conn::sage::settings {
 
     template<const char *plotExt="png">
     struct files {
-        ofstream scriptf, dataf;
+        std::ofstream scriptf, dataf;
         std::string script, plot, data;
         const bool rmData=false, rmScript=false;
         files():rmScript(true), rmData(true) {
@@ -71,7 +72,7 @@ namespace d::conn::sage::settings {
             this->dataf.open(this->data);
             return *this;
         }
-        friend ostream& operator<<(ostream& os, files &f) {
+        friend std::ostream& operator<<(std::ostream& os, const files &f) {
             os << "Plot: " << f.plot << "\nData: " << f.data << (f.rmData?" (deleted)":"") << "\nScript: " << f.script << (f.rmScript?" (deleted)":"");
             return os;
         }
