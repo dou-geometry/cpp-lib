@@ -75,12 +75,13 @@ namespace d {
         }
         //operator d::compact::coord<double, 2>() = delete;
         d::compact::coord<double, 2> cartesian() const;
-        inline double atan2() const;
+        inline double atan2() const { return d[1]; }
         //inline double& atan2();
         friend inline double atan2(const polarcoord& x) {
             return x[1];
         }
         //inline static double& atan2(polarcoord&);
+        inline polarcoord& rotate(d::rad x) { d[1]+=x; return *this; }
     };
     template<typename T>
         coord<T>::coord(const d::polarcoord& x): dim(2) {

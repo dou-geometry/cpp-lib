@@ -6,6 +6,7 @@
 #include<cassert>
 #include<functional>
 #include<Karabinerhaken.hh>
+#include<mono.hh>
 #define di long unsigned int
 #define ull unsigned long long int
 
@@ -33,7 +34,8 @@ namespace d {
         friend polarmono& operator-(polarmono, const polarmono&);
         d::polarcoord& operator[](int);
         d::polarcoord operator[](int) const;
+        d::compact::mono<2> cartesian() const;
         friend std::ostream& operator<<(std::ostream&, const polarmono&);
-        di size() const { return 2; }
+        consteval di size() const { return 2; }
     };
 }

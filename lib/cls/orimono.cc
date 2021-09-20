@@ -40,6 +40,9 @@ d::polarcoord& d::polarmono::operator[](int i) {
 d::polarcoord d::polarmono::operator[](int i) const {
     return d[i];
 }
+d::compact::mono<2> d::polarmono::cartesian() const {
+    return d::compact::mono<2>(this->t, this->d->cartesian(), this->d[1].cartesian());
+}
 namespace d { std::ostream& operator<<(std::ostream& os, const d::polarmono& m) {
     os << "x="<<m.d[0]<<", v="<<m.d[1]<<", t="<<m.t;
     return os;
