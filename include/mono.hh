@@ -74,9 +74,9 @@ namespace d::dyn {
                 if (d!=nullptr)
                     for(di i=0; i<order; i++)
                         (d+i)->~coord();
-                        // this supposed, as all existing constructors behaves,
-                        // you couldn't create a d::dyn::mono without fully initializing the d::dyn:::mono::d
-                        // use malloc is just saving time as it doesn't require constructor to be called twice
+                // this supposed, as all existing constructors behaves,
+                // you couldn't create a d::dyn::mono without fully initializing the d::dyn:::mono::d
+                // use malloc is just saving time as it doesn't require constructor to be called twice
                 free(d);
             }
             mono(const mono<T, false> &other): order(other.order), t(other.t) {
@@ -96,7 +96,7 @@ namespace d::dyn {
             }
             mono(mono<T, logIncrPromise> &&other) noexcept: d(std::exchange(other.d, nullptr)), order(std::exchange(other.order, 0)), t(std::exchange(other.t, 0)), log(std::exchange(other.log, nullptr)) {
             }
-            mono& operator=(const mono<T, false> &other) {
+            mono& operator=(const mono<T, false> &other) requires (!logIncrPromise) {
                 if(this==&other) return *this;
                 // Basically we aren't replacing logs
                 // Only copying t, pos, vel
@@ -113,7 +113,7 @@ namespace d::dyn {
                 return *this;
             }
             mono& operator=(const mono<T, true> &other) {
-                if(this==&other) return *this;
+                if constexpr(logIncrPromise) if(this==&other) return *this;
                 // Basically we aren't replacing logs
                 // Only copying t, pos, vel
                 this->t=other.t; // As order in array are only relative to the log[0]
@@ -153,8 +153,8 @@ namespace d::dyn {
                 return this->d[i];
             }
             mono& operator()(double t) { // This preforms check if t matches, if failed it'll be followed by binary search
-                double dt=this->log[1]-(this->log[0]);
-                t-=this->log[0];
+                double dt=this->log[1].t-(this->log[0].t);
+                t-=this->log[0].t;
                 int id=t/dt;
                 if constexpr(logIncrPromise) { return this->log[id]; }
                 else {
@@ -689,20 +689,10 @@ namespace d::dou::compact {
 
 namespace d::compact {
     template<di dimension=2>
-    struct mono:d::dyn::compact::mono<double, 2, dimension, true> {
-        using parent=d::dyn::compact::mono<double, 2, dimension, true>;
-        using parent::d;
-        //using parent::mono;
-        d::Karabinerhaken<d::compact::mono<dimension>> *karaLog=nullptr;
-        ~mono() {
-            //std::cout << karaLog << std::endl;
-            delete karaLog;
-        }
-            mono(const mono<dimension> &other): parent(other) {}
+        struct mono:d::dyn::compact::mono<double, 2, dimension, true> {
+            using parent=d::dyn::compact::mono<double, 2, dimension, true>;
+            using parent::d;
             mono(mono<dimension> &&other) noexcept: karaLog(std::exchange(other.karaLog, nullptr)), parent(other) {}
-            mono& operator=(const mono<dimension> &other) {
-                parent::operator=(other);
-            }
             mono& operator=(mono<dimension> &&other) noexcept {
                 if(this==&other) return *this;
                 delete karaLog;
@@ -710,9 +700,20 @@ namespace d::compact {
                 parent::operator=(other);
                 return *this;
             }
-        d::compact::coord<double, dimension>& posi() { return d[0]; }
-        d::compact::coord<double, dimension> posi() const { return d[0]; }
-    };
+            using parent::mono;
+            //using parent::mono;
+            d::Karabinerhaken<d::compact::mono<dimension>> *karaLog=nullptr;
+            ~mono() {
+                //std::cout << karaLog << std::endl;
+                delete karaLog;
+            }
+            mono(const mono<dimension> &other): parent(other) {}
+            mono& operator=(const mono<dimension> &other) {
+                parent::operator=(other);
+            }
+            d::compact::coord<double, dimension>& posi() { return d[0]; }
+            d::compact::coord<double, dimension> posi() const { return d[0]; }
+        };
 }
 
 
