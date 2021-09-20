@@ -112,8 +112,10 @@ int main() {
     d::conn::sage::settings::files<d::conn::sage::settings::png> fgph;
     std::cout << "Function v(x): \n"<<fgph<<"\nPath: \n"<<gph<<std::endl;
     std::cout << plot(v, fgph) << std::endl << plot(m, gph) << std::endl;
+#ifdef HOLD
     double t;
     std::cin >> t;
+#endif
     //assert(res[0]==outboundCheck[0]);
     return 0;
 }
