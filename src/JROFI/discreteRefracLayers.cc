@@ -11,6 +11,8 @@
 
 double refrac(double theta, double vin, double vout) { if(vin==vout) return theta; else return std::asin(std::sin(theta)*vout/vin); }
 
+//double stdNormDist(double x) { return 1/std::sqrt(2.*M_PI)*std::exp(x*x/-2.); }
+
 std::string plot(const d::numerical::compact::func1d<double, DATAAMOUNT>& f, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
     info.scriptf<<"#!/usr/bin/env sage\n";
     info.scriptf<<"import sys\n";
@@ -97,7 +99,7 @@ int main() {
     double inboundAngle, inboundVel, outboundVel;
     std::cin >> inboundAngle;
 
-    d::numerical::compact::func1d<double, DATAAMOUNT> v(1e-4, 0);
+    d::numerical::compact::func1d<double, DATAAMOUNT> v(1e-2, -4, static_cast<double(*)(double)>(&std::erf));
     d::polarmono m;
     m[0]=d::polarcoord(singleSideThickness, M_PI/2.)+d::polarcoord(.4, M_PI/2.+inboundAngle);
     m[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
