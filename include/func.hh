@@ -1,5 +1,6 @@
 #pragma once
 #include<field.hh>
+#include<sets.hh>
 #include<functional>
 #include<utility>
 #include<concepts>
@@ -67,6 +68,12 @@ namespace d::numerical::compact {
         T base=0;
         T dx;
         func1d(T d, T b, const std::function<T(T)>& sf): base(b), dx(d) { this->sampleFrom(sf); }
+        func1d(const std::function<T(T)>& sf, const d::R& boundaries): base(boundaries.von()) {
+            if(boundaries.inclusive) dx=boundaries.span()/(size-1);
+            else dx = boundaries.span()/(size-1);
+            if(!boundaries.inclusive) base+=dx;
+            this->sampleFrom(sf);
+        }
         func1d(T d=1, T b=0): base(b), dx(d) {}
         inline T operator()(T x) const {// no auto adjustment
             if constexpr(evalType==0) return d[(int)(x + 0.5 - (x<0))]; // https://stackoverflow.com/a/9695341/8460574
