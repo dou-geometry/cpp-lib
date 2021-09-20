@@ -6,7 +6,7 @@
 #include<func.hh>
 #include<orimono.hh>
 #include<cassert>
-#define DATAAMOUNT 1224
+#define DATAAMOUNT 1224 // Recommended 1224 or 20201224 as those are pre-compiled
 #define singleSideThickness 2.
 
 double refrac(double theta, double vin, double vout) { if(vin==vout) return theta; else return std::asin(std::sin(theta)*vout/vin); }
