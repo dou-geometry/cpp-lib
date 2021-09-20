@@ -66,6 +66,7 @@ namespace d::numerical::compact {
         using d::compact::coord<T, size>::d;
         T base=0;
         T dx;
+        func1d(T d, T b, const std::function<T(T)>& sf): base(b), dx(d) { this->sampleFrom(sf); }
         func1d(T d=1, T b=0): base(b), dx(d) {}
         inline T operator()(T x) const {// no auto adjustment
             if constexpr(evalType==0) return d[(int)(x + 0.5 - (x<0))]; // https://stackoverflow.com/a/9695341/8460574
@@ -75,8 +76,23 @@ namespace d::numerical::compact {
             else if constexpr(evalType==-2) return d[(int)x];
             else return d[(int)x];
         }
+        inline T& operator()(T x) {// no auto adjustment
+            if constexpr(evalType==0) return d[(int)(x + 0.5 - (x<0))]; // https://stackoverflow.com/a/9695341/8460574
+            else if constexpr(evalType==1) return d[(int)std::ceil(x)];
+            else if constexpr(evalType==-1) return d[(int)std::floor(x)];
+            //else if constexpr(evalType==2) return 
+            else if constexpr(evalType==-2) return d[(int)x];
+            else return d[(int)x];
+        }
         inline double operator()(const d::compact::coord<T, 1>& x) const {
             return this->operator()(x[0]);
+        }
+        template<typename F>
+            requires std::convertible_to<F, std::function<T(T)>>
+        inline func1d& sampleFrom(const F& sf) {
+            for(di i=0; i<size; ++i)
+                d[i]=sf(base+dx*i);
+            return *this;
         }
     };
 }
