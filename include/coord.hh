@@ -90,7 +90,7 @@ namespace d {
         double norm2() const {
             double res=0;
             for(di i=0; i<dim; i++) {
-                res+=pow(this->d[i],2.0);
+                res+=std::pow(this->d[i],2.0);
             }
             return (res);
         }
@@ -122,9 +122,9 @@ namespace d {
         }
         coord<double> round(int digits) const {
             coord<double> crd(dim, 0);
-            double r=pow(10, digits);
+            double r=std::pow(10, digits);
             for(di i=0; i<dim; i++) {
-                crd[i]+=llrind((d[i]*r))/r;
+                crd[i]+=llrint((d[i]*r))/r;
             }
             return crd;
         }
@@ -311,9 +311,9 @@ namespace d::compact {
             }
             coord<double, dimension> round(int digits) const {
                 coord<double, dimension> crd(0);
-                double r=pow(10, digits);
+                double r=std::pow(10, digits);
                 for(di i=0; i<dimension; i++) {
-                    crd[i]+=llrind((d[i]*r))/r;
+                    crd[i]+=llrint((d[i]*r))/r;
                 }
                 return crd;
             }
@@ -344,16 +344,20 @@ namespace d::compact {
             coord<T, dimension>& operator*=(const T &r) { for(di i=0; i<dimension; i++) { this->d[i]*=r; }; return *this; }
             coord<T, dimension>& operator/=(const T &r) { for(di i=0; i<dimension; i++) { this->d[i]/=r; }; return *this; }
             // cross product overload
-            coord<T, dimension>& operator*=(const coord<T, dimension> &rhs) {
-                static_assert(dimension!=3 && dimension!=7 && dimension!=2, "Dimension doesn't have cross product operation");
-                // 2-D cross product is acheived by little trick that's implemented at operator[], which gives 0 when you read out of range
-                if constexpr(dimension==7) throw "7-D cross product isn't implemented yet";
-                if constexpr(dimension==3) (*this)=coord<T>({
+            coord<T, 7>& operator*=(const coord<T, dimension> &rhs) requires (dimension==7) {
+                throw "unimplemented yet";
+                return *this;
+            }
+            coord<T, 3>& operator*=(const coord<T, dimension> &rhs) requires (dimension==3) {
+                (*this)=coord<T, 3>({
                         (*this)[1]*(rhs[2])-(*this)[2]*(rhs[1]),
                         (*this)[2]*(rhs[0])-(*this)[0]*(rhs[2]),
                         (*this)[0]*(rhs[1])-(*this)[1]*(rhs[0])
                         });
-                if constexpr(dimension==2) (*this)=coord<T>({(*this)[0]*(rhs[1])-(*this)[1]*(rhs[0]), 0});
+                return *this;
+            }
+            coord<T, 2>& operator*=(const coord<T, dimension> &rhs) requires (dimension==2) {
+                (*this)=coord<T, 2>({(*this)[0]*(rhs[1])-(*this)[1]*(rhs[0]), 0});
                 return *this;
             }
             T& operator[](int i) {
@@ -421,14 +425,14 @@ namespace d::compact {
                 for(di i=0; i<dimension; i++) res+=this->d[i];
                 return res;
             }
-            auto& polar(double r, double theta, bool vert=false) {
-                static_assert(dimension==2, "Polar coordinate only supports 2D");
+            auto& polar(double r, double theta, bool vert=false) requires (dimension==2) {
+                //static_assert(dimension==2, "Polar coordinate only supports 2D");
                 if(vert) theta=(theta+M_PI/2.)*-1.;
                 this->d[0]=r*std::cos(theta); this->d[1]=r*std::sin(theta);
                 return *this;
             }
             inline T atan2() const {
-                return std::atan(d[1], d[0]);
+                return std::atan2(d[1], d[0]);
             }
             friend inline T atan2(const d::compact::coord<T, dimension>& x) {
                 return x.atan2();
