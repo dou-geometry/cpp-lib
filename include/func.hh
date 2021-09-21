@@ -70,12 +70,15 @@ namespace d::numerical::compact {
         func1d(T d, T b, const std::function<T(T)>& sf): base(b), dx(d) { this->sampleFrom(sf); }
         func1d(const std::function<T(T)>& sf, const d::R& boundaries): base(boundaries.von()) {
             if(boundaries.inclusive) dx=boundaries.span()/(size-1);
-            else dx = boundaries.span()/(size-1);
+            else dx = boundaries.span()/(size+1);
             if(!boundaries.inclusive) base+=dx;
             this->sampleFrom(sf);
         }
         func1d(T d=1, T b=0): base(b), dx(d) {}
         inline T operator()(double x) const {// no auto adjustment
+#ifdef SANITYCHECK
+            if (x<base || x>=(base+dx*size)) assert(false && "OOR access to func1d");
+#endif
             x=(x-base)/dx;
             if constexpr(evalType==0) return d[(int)(x + 0.5 - (x<0))]; // https://stackoverflow.com/a/9695341/8460574
             else if constexpr(evalType==1) return d[(int)std::ceil(x)];
@@ -88,6 +91,7 @@ namespace d::numerical::compact {
 #ifdef SANITYCHECK
             if (x<base || x>=(base+dx*size)) assert(false && "OOR access to func1d");
 #endif
+            x=(x-base)/dx;
             if constexpr(evalType==0) return d[(int)(x + 0.5 - (x<0))]; // https://stackoverflow.com/a/9695341/8460574
             else if constexpr(evalType==1) return d[(int)std::ceil(x)];
             else if constexpr(evalType==-1) return d[(int)std::floor(x)];
