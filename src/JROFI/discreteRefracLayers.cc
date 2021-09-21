@@ -144,7 +144,8 @@ int main() {
     std::cin >> inboundAngle;
 
     d::R range(-singleSideThickness-.5, singleSideThickness+.5);
-    d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){return x<0?299792458.:2.25e8;}, range);
+    //d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){return x<0?299792458.:2.25e8;}, range);
+    d::numerical::compact::func1d<double, DATAAMOUNT> v(static_cast<double(*)(double)>(&std::erf), range);
     d::polarmono m;
     m[0]=d::polarcoord(singleSideThickness, M_PI/2.)+d::polarcoord(.4, M_PI/2.+inboundAngle);
     m[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
