@@ -12,6 +12,16 @@
 
 double refrac(double theta, double vin, double vout) { if(vin==vout) return theta; else return std::asin(std::sin(theta)*vout/vin); }
 
+#ifdef SANITYCHECK
+void noNegInFunc(const d::numerical::compact::func1d<double, DATAAMOUNT>& f) {
+    for(di i=0; i<DATAAMOUNT; ++i)
+        assert(f.d[i]>0 && "Function has value less than zero!");
+    return;
+}
+#else
+void noNegInFunc(const d::numerical::compact::func1d<double, DATAAMOUNT>& f) { return; }
+#endif
+
 //double stdNormDist(double x) { return 1/std::sqrt(2.*M_PI)*std::exp(x*x/-2.); }
 
 std::string plot(const d::numerical::compact::func1d<double, DATAAMOUNT>& f, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
@@ -68,7 +78,11 @@ std::string plot(const d::polarmono& m, d::conn::sage::settings::files<d::conn::
     info.scriptf<<"main()\n";
     info.dataf <<std::fixed<<std::setprecision(14);
     auto logPtr=m.karaLog;
-    for(; logPtr!=nullptr; logPtr=logPtr->tugi)
+    for(; logPtr!=nullptr
+#ifdef SANITYCHECK
+            &&(!std::isnan(logPtr->d[1][1]))
+#endif
+            ; logPtr=logPtr->tugi)
         info.dataf << logPtr->d << std::endl;
     info.dataf.close();
     info.scriptf.close();
@@ -145,7 +159,8 @@ int main() {
 
     d::R range(-singleSideThickness-.5, singleSideThickness+.5);
     //d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){return x<0?299792458.:2.25e8;}, range);
-    d::numerical::compact::func1d<double, DATAAMOUNT> v(static_cast<double(*)(double)>(&std::erf), range);
+    d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){ return std::erf(x)*12.24+20.; }, range);
+    noNegInFunc(v);
     d::polarmono m;
     m[0]=d::polarcoord(singleSideThickness, M_PI/2.)+d::polarcoord(.4, M_PI/2.+inboundAngle);
     m[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
