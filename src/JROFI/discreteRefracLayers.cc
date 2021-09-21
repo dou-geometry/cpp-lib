@@ -116,17 +116,21 @@ std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const d::numer
     // init log
     m.karaLog=new d::Karabinerhaken<d::polarmono>(m);
     auto karaLog=m.karaLog;
-    auto curVel=v(m[0][1]);
-    double dt=1e-4;
+    auto curVel=v(m[0][0]*std::sin(m[0][1]));
+    double dt=1e-2; // Reducing from 1e-4 to compress data size
     auto prev=m[0];
     //std::cerr << m[0];
-    while(m[0][1]>singleSideThickness-.4) {
+    while(m[0].cartesian()[1]>-singleSideThickness-.4) {
         // check at interface, update velocity
-        auto nowAng=atan(m[0]);
-        auto newAng=refrac(nowAng, curVel, v(m[0][1]));
+        auto nowAng=m[1][1];
+        auto newVel=v(m[0][0]*std::sin(m[0][1]));
+        auto delAng=refrac(nowAng, curVel, newVel)-nowAng;
+        std::cout << "vel="<<newVel<<", access="<<m[0][0]*std::sin(m[0][1])<<std::endl;
+        curVel=newVel;
+        std::cout << delAng << ", " << curVel << std::endl;
         // move one step
         prev=m[0];
-        m[0]+=m[1]*dt;
+        m[0]+=m[1].rotate(-1.*delAng)*dt;
         m.t+=dt;
         // log
         karaLog=(new d::Karabinerhaken<d::polarmono>(m))->insertAfter(karaLog);
@@ -146,6 +150,7 @@ int main() {
     m[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
     std::cout << "Init: "<<m<<std::endl;
     auto [prevOut, res]=runSnell(m, v);
+    std::cout << "Res : "<<m<<std::endl;
     d::compact::line inboundRay(m.karaLog->d[0], m.karaLog->tugi->d[0]),
         outboundRay(res, prevOut);
     std::cout << "Intersecting angle="<<(d::deg)(inboundRay.ang(outboundRay))<<std::endl;
