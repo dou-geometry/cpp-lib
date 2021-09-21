@@ -144,7 +144,7 @@ std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const d::numer
         std::cout << delAng << ", " << curVel << std::endl;
         // move one step
         prev=m[0];
-        m[0]+=m[1].rotate(-1.*delAng)*dt;
+        m[0]+=m[1].rotate(delAng)*dt;
         m.t+=dt;
         // log
         karaLog=(new d::Karabinerhaken<d::polarmono>(m))->insertAfter(karaLog);
@@ -158,11 +158,13 @@ int main() {
     std::cin >> inboundAngle;
 
     d::R range(-singleSideThickness-.5, singleSideThickness+.5);
-    //d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){return x<0?299792458.:2.25e8;}, range);
-    d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){ return std::erf(x)*12.24+20.; }, range);
+    d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){return x>0?299792458.:2.25e8;}, range);
+    std::cout << "range=["<<range.von()<<", "<<range.zu()<<"]\n";
+    //d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){ return std::erf(x)*12.24+20.; }, range);
     noNegInFunc(v);
     d::polarmono m;
-    m[0]=d::polarcoord(singleSideThickness, M_PI/2.)+d::polarcoord(.4, M_PI/2.+inboundAngle);
+    //m[0]=d::polarcoord(singleSideThickness, M_PI/2.)+d::polarcoord(.4, M_PI/2.+inboundAngle);
+    m[0]=d::polarcoord(singleSideThickness+.4, M_PI/2.+inboundAngle);
     m[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
     std::cout << "Init: "<<m<<std::endl;
     auto [prevOut, res]=runSnell(m, v);
@@ -170,14 +172,16 @@ int main() {
     d::compact::line inboundRay(m.karaLog->d[0], m.karaLog->tugi->d[0]),
         outboundRay(res, prevOut);
     std::cout << "Intersecting angle="<<(d::deg)(inboundRay.ang(outboundRay))<<std::endl;
-    d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
-    d::conn::sage::settings::files<d::conn::sage::settings::png> fgph;
-    std::cout << "Function v(x): \n"<<fgph<<"\nPath: \n"<<gph<<std::endl;
-    std::cout << plot(v, fgph) << std::endl << plot(m, gph) << std::endl;
+    //d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
+    //d::conn::sage::settings::files<d::conn::sage::settings::png> fgph;
+    //std::cout << "Function v(x): \n"<<fgph<<"\nPath: \n"<<gph<<std::endl;
+    //std::cout << plot(v, fgph) << std::endl << plot(m, gph) << std::endl;
 #ifdef HOLD
     double t;
     std::cin >> t;
 #endif
+    //assert((inboundRay.ang(outboundRay)-(inboundAngle+M_PI-refrac(inboundAngle, v(range.von()), v(range.zu()))))<1e-12);
+    std::cout << inboundRay.ang(outboundRay)<<std::endl<<(inboundAngle+M_PI-refrac(inboundAngle, v(range.von()), v(range.zu())))<<std::endl;
     //assert(res[0]==outboundCheck[0]);
     return 0;
 }
