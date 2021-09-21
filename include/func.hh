@@ -75,7 +75,8 @@ namespace d::numerical::compact {
             this->sampleFrom(sf);
         }
         func1d(T d=1, T b=0): base(b), dx(d) {}
-        inline T operator()(T x) const {// no auto adjustment
+        inline T operator()(double x) const {// no auto adjustment
+            x=(x-base)/dx;
             if constexpr(evalType==0) return d[(int)(x + 0.5 - (x<0))]; // https://stackoverflow.com/a/9695341/8460574
             else if constexpr(evalType==1) return d[(int)std::ceil(x)];
             else if constexpr(evalType==-1) return d[(int)std::floor(x)];
