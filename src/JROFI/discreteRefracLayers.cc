@@ -5,6 +5,7 @@
 #include<oricoord.hh>
 #include<func.hh>
 #include<orimono.hh>
+#include<sets.hh>
 #include<cassert>
 #define DATAAMOUNT 1224 // Recommended 1224 or 20201224 as those are pre-compiled
 #define singleSideThickness 2.
@@ -99,7 +100,8 @@ int main() {
     double inboundAngle, inboundVel, outboundVel;
     std::cin >> inboundAngle;
 
-    d::numerical::compact::func1d<double, DATAAMOUNT> v(1e-2, -4, static_cast<double(*)(double)>(&std::erf));
+    d::R range(-singleSideThickness-.5, singleSideThickness+.5);
+    d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){return x<0?299792458.:2.25e8;}, range);
     d::polarmono m;
     m[0]=d::polarcoord(singleSideThickness, M_PI/2.)+d::polarcoord(.4, M_PI/2.+inboundAngle);
     m[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
