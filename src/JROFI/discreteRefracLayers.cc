@@ -58,9 +58,48 @@ std::string plot(const d::polarmono& m, d::conn::sage::settings::files<d::conn::
     info.scriptf<<"        x=sage_eval(d[1][:-3])\n";
     info.scriptf<<"        [curX, curY]=E.coord_change(polar, cartesian)(x[0], x[1])\n";
     info.scriptf<<"        pts.append((curX, curY))\n";
-    info.scriptf<<"    Gph=line(pts)\n";
+    info.scriptf<<"    ms=(pts[1][1]-pts[0][1])/(pts[1][0]-pts[0][0])\n";
+    info.scriptf<<"    bs=pts[1][1]-ms*pts[1][0]\n";
+    info.scriptf<<"    me=(pts[-2][1]-pts[-1][1])/(pts[-2][0]-pts[-1][0])\n";
+    info.scriptf<<"    be=pts[-1][1]-me*pts[-1][0]\n";
+    info.scriptf<<"    x=var(\"x\")\n";
+    info.scriptf<<"    Gph=line(pts)+plot(ms*x+bs, (x, pts[0][0], pts[-1][0]), color=\"red\", alpha=0.4)+plot(me*x+be, (x, pts[0][0], pts[-1][0]), color=\"violet\", alpha=0.4)\n";
     info.scriptf<<"    Gph.save(filename=sys.argv[1])\n";
     info.scriptf<<"main()\n";
+    info.dataf <<std::fixed<<std::setprecision(14);
+    auto logPtr=m.karaLog;
+    for(; logPtr!=nullptr; logPtr=logPtr->tugi)
+        info.dataf << logPtr->d << std::endl;
+    info.dataf.close();
+    info.scriptf.close();
+    return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
+}
+
+std::string animate(const d::polarmono& m, d::conn::sage::settings::files<d::conn::sage::settings::gif>& info) {
+    info.scriptf<<"#!/usr/bin/env sage\n";
+    info.scriptf<<"import sys\n";
+    info.scriptf<<"from sage.all import *\n";
+    info.scriptf<<"# both cartesian\n";
+    info.scriptf<<"xs=[]\n";
+    info.scriptf<<"vs=[]\n";
+    info.scriptf<<"def parseData():\n";
+    info.scriptf<<"    E.<x,y> = EuclideanSpace(2)\n";
+    info.scriptf<<"    cartesian = E.cartesian_coordinates()\n";
+    info.scriptf<<"    polar.<r,t> = E.polar_coordinates()\n";
+    info.scriptf<<"    # Since all precision are fixed, we're going lazy\n";
+    info.scriptf<<"    for ln in sys.stdin:\n";
+    info.scriptf<<"        ln=ln.rstrip()\n";
+    info.scriptf<<"        x=sage_eval(ln[2:38])\n";
+    info.scriptf<<"        xs.append(E.coord_change(polar, cartesian)(x[0], x[1]))\n";
+    info.scriptf<<"        v=sage_eval(ln[42:79])\n";
+    info.scriptf<<"        vs.append(E.coord_change(polar, cartesian)(v[0], v[1]))\n";
+    info.scriptf<<"def main():\n";
+    info.scriptf<<"    parseData()\n";
+    info.scriptf<<"    frames=[]\n";
+    info.scriptf<<"    for i in range(len(xs)):\n";
+    info.scriptf<<"        frames.append(point(xs[i])+line([xs[i], xs[i]+vs[i]], color=\"red\"))\n";
+    info.scriptf<<"    Gph=animate(frames)\n";
+    info.scriptf<<"    Gph.save(filename=sys.argv[1])\n";
     info.dataf <<std::fixed<<std::setprecision(14);
     auto logPtr=m.karaLog;
     for(; logPtr!=nullptr; logPtr=logPtr->tugi)
