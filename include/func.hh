@@ -85,6 +85,9 @@ namespace d::numerical::compact {
             else return d[(int)x];
         }
         inline T& operator()(T x) {// no auto adjustment
+#ifdef SANITYCHECK
+            if (x<base || x>=(base+dx*size)) assert(false && "OOR access to func1d");
+#endif
             if constexpr(evalType==0) return d[(int)(x + 0.5 - (x<0))]; // https://stackoverflow.com/a/9695341/8460574
             else if constexpr(evalType==1) return d[(int)std::ceil(x)];
             else if constexpr(evalType==-1) return d[(int)std::floor(x)];
