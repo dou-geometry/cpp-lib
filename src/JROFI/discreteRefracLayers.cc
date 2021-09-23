@@ -123,9 +123,6 @@ std::string animate(const d::polarmono& m, d::conn::sage::settings::files<d::con
     return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
 }
 
-void calc() {
-}
-
 std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const d::numerical::compact::func1d<double, DATAAMOUNT>& v) {
     // init log
     m.karaLog=new d::Karabinerhaken<d::polarmono>(m);
@@ -139,18 +136,47 @@ std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const d::numer
         auto nowAng=m[1][1];
         auto newVel=v(m[0][0]*std::sin(m[0][1]));
         auto delAng=refrac(nowAng, curVel, newVel)-nowAng;
-        std::cout << "vel="<<newVel<<", access="<<m[0][0]*std::sin(m[0][1])<<std::endl;
+        //std::cout << "vel="<<newVel<<", access="<<m[0][0]*std::sin(m[0][1])<<std::endl;
         curVel=newVel;
-        std::cout << delAng << ", " << curVel << std::endl;
+        //std::cout << delAng << ", " << curVel << std::endl;
         // move one step
         prev=m[0];
         m[0]+=m[1].rotate(delAng)*dt;
         m.t+=dt;
         // log
         karaLog=(new d::Karabinerhaken<d::polarmono>(m))->insertAfter(karaLog);
-        std::cout << m << std::endl;
+        //std::cout << m << std::endl;
     }
     return std::make_pair(prev, m[0]);
+}
+
+d::rad intersect(const d::numerical::compact::func1d<double, DATAAMOUNT>& v, d::rad inboundAngle) {
+    d::R range(-singleSideThickness-.5, singleSideThickness+.5);
+    noNegInFunc(v);
+    d::polarmono m;
+    m[0]=d::polarcoord(singleSideThickness+.4, M_PI/2.+inboundAngle);
+    m[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
+    auto [prevOut, res]=runSnell(m, v);
+    d::compact::line inboundRay(m.karaLog->d[0], m.karaLog->tugi->d[0]),
+        outboundRay(res, prevOut);
+    return inboundRay.ang(outboundRay);
+}
+
+void insertionGuessing(d::numerical::compact::func1d<double, DATAAMOUNT>& v, const d::R& b, double correctIntersection, di guessPoints) {
+    // Requires incremental continous function
+    double pts[guessPoints];
+    double d=b.span()/(guessPoints+1);
+    std::cout << "d="<<d<<std::endl;
+    for(di i=0; i<guessPoints; ++i)
+        pts[i]=d*(i+1.)+b.von();
+    for(di i=0; i<guessPoints; ++i)
+        std::cout << pts[i]<<", ";
+    std::cout << std::endl;
+    d::rad inboundAng=1.2;
+    return;
+    while((intersect(v, inboundAng)-correctIntersection)>1e-12) {
+        //improve guess
+    }
 }
 
 int main() {
@@ -160,8 +186,8 @@ int main() {
     d::R range(-singleSideThickness-.5, singleSideThickness+.5);
     d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){return x>0?299792458.:2.25e8;}, range);
     std::cout << "range=["<<range.von()<<", "<<range.zu()<<"]\n";
-    //d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){ return std::erf(x)*12.24+20.; }, range);
     noNegInFunc(v);
+    //d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){ return std::erf(x)*12.24+20.; }, range);
     d::polarmono m;
     //m[0]=d::polarcoord(singleSideThickness, M_PI/2.)+d::polarcoord(.4, M_PI/2.+inboundAngle);
     m[0]=d::polarcoord(singleSideThickness+.4, M_PI/2.+inboundAngle);
@@ -171,7 +197,8 @@ int main() {
     std::cout << "Res : "<<m<<std::endl;
     d::compact::line inboundRay(m.karaLog->d[0], m.karaLog->tugi->d[0]),
         outboundRay(res, prevOut);
-    std::cout << "Intersecting angle="<<(d::deg)(inboundRay.ang(outboundRay))<<std::endl;
+    auto correctIntersectingAngle=(inboundRay.ang(outboundRay));
+    insertionGuessing(v, range, correctIntersectingAngle, 5);
     //d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
     //d::conn::sage::settings::files<d::conn::sage::settings::png> fgph;
     //std::cout << "Function v(x): \n"<<fgph<<"\nPath: \n"<<gph<<std::endl;
