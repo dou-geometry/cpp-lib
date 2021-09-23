@@ -6,6 +6,7 @@
 #include<func.hh>
 #include<orimono.hh>
 #include<sets.hh>
+#include<handle.hh>
 #include<cassert>
 #define DATAAMOUNT 1224 // Recommended 1224 or 20201224 as those are pre-compiled
 #define singleSideThickness 2.
@@ -145,7 +146,7 @@ std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const d::numer
         m.t+=dt;
         // log
         karaLog=(new d::Karabinerhaken<d::polarmono>(m))->insertAfter(karaLog);
-        std::cout << m.cartesian() << std::endl;
+        //std::cout << m.cartesian() << std::endl;
     }
     return std::make_pair(prev, m[0]);
 }
@@ -169,19 +170,21 @@ void insertionGuessing(d::numerical::compact::func1d<double, DATAAMOUNT>& v, con
     double dx=b.span()/(2.*guessLevel);
     //auto midpointCrd=[&guessLevel](di cnt)
     for(double i=0; i<2.*guessLevel; ++i)
-        for(v.rel(dx*(i+0.5))=v.rel(dx*i); std::abs(intersect(v, inboundAng)-correctIntersection)>1e-12 && v.rel(dx*(i+0.5))<=v.rel(dx*(i+1.)); v.rel(dx*(i+.5))+=20201224) {
+        for(v.rel(dx*(i+0.5))=v.rel(dx*i); std::abs(intersect(v, inboundAng)-correctIntersection)>1e-12 && v.rel(dx*(i+0.5))<=v.rel(dx*(i+1.)); v.rel(dx*(i+.5))-=20201224) {
+            if(v.rel(dx*(i+.5))<v.rel(dx*(i+1.))) v.rel(dx*(i+.5))=v.rel(dx*(i+1.));
             v.expandRel(dx*i, dx*(i+.5), dx*(i+1.)); //improve guess
-            std::cerr << v.rel(dx*(i+.5)) << std::endl;
+            std::cerr << i << ", " << v.rel(dx*(i+.5)) << std::endl;
         }
     return;
 }
 
 int main() {
+    signal(SIGHUP, d::signal::handler);
     double inboundAngle, inboundVel, outboundVel;
     std::cin >> inboundAngle;
 
     d::R range(-singleSideThickness-.5, singleSideThickness+.5);
-    d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){return x>0?299792458.:2.25e8;}, range);
+    d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){return x<0?299792458.:2.25e8;}, range);
     std::cout << "range=["<<range.von()<<", "<<range.zu()<<"]\n";
     noNegInFunc(v);
     //d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){ return std::erf(x)*12.24+20.; }, range);
@@ -198,7 +201,7 @@ int main() {
     // init first guess
     v[DATAAMOUNT/2]=(v[0]+v[DATAAMOUNT-1])/2;
     v.expand(0, DATAAMOUNT/2, DATAAMOUNT-1);
-    for(di lev=1; lev<1225; ++lev) insertionGuessing(v, range, inboundAngle, correctIntersectingAngle, lev);
+    for(di lev=1; lev<125 && (!d::signal::SIGHUPcaught); ++lev) insertionGuessing(v, range, inboundAngle, correctIntersectingAngle, lev);
     std::cout << "Final:\n";
     d::polarmono mfin;
     mfin[0]=d::polarcoord(singleSideThickness+.4, M_PI/2.+inboundAngle);

@@ -1,3 +1,8 @@
+/* Usage:
+ * Put following code at top of main()
+ * signal(SIGTERM, d::signal::handler);
+ * change signal name as you like
+ */
 #pragma once
 #include<signal.h>
 namespace d::signal {
