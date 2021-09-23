@@ -13,7 +13,7 @@ namespace d {
     struct deg {
         double val;
         rad d;
-        deg(d::rad x): d(x), val(x/M_PI*180.) {}
+        deg(d::rad x): val(x/M_PI*180.), d(x) {}
         deg(double x): val(x), d(x/180.*M_PI) {}
         // Remember all function using d::deg should be marked as explicit,
         // otherwise above constructor should be comment out to prevent direct casting,

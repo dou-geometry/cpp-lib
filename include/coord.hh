@@ -184,7 +184,7 @@ namespace d {
             os << ")";
             return os;
         }
-        void print(int precision=15) {
+        void print(int precision=15) requires std::same_as<T, double> {
             printf("(%.*lf", precision, *d);
             for(di i=1; i<dim; i++) {
                 printf(", %.*lf", precision, *(d+i));
@@ -374,7 +374,7 @@ namespace d::compact {
                 os << ")";
                 return os;
             }
-            void print(int precision=15) {
+            void print(int precision=15) requires std::same_as<T, double> {
                 printf("(%.*lf", precision, *d);
                 for(di i=1; i<dimension; i++) {
                     printf(", %.*lf", precision, *(d+i));
