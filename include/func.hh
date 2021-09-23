@@ -77,7 +77,8 @@ namespace d::numerical::compact {
         func1d(T delta=1, T b=0): base(b), dx(delta) {}
         inline T operator()(double x) const {// no auto adjustment
 #ifdef SANITYCHECK
-            if (x<base || x>=(base+dx*size)) assert(false && "OOR access to func1d");
+            if (x<base) { std::cerr<<x<<" is lesser than "<<this->base<<std::endl; assert(false && "OOR access to func1d, x="); }
+            if(x>=(base+dx*size)) assert(false && "Access over right boundary to func1d");
 #endif
             x=(x-base)/dx;
             if constexpr(evalType==0) return d[(int)(x + 0.5 - (x<0))]; // https://stackoverflow.com/a/9695341/8460574
@@ -102,6 +103,31 @@ namespace d::numerical::compact {
         inline double operator()(const d::compact::coord<T, 1>& x) const {
             return this->operator()(x[0]);
         }
+        inline T& rel(double x) {
+#ifdef SANITYCHECK
+            if(x<0 || x>=size) assert(false && "OOR access to func1d from rel()");
+#endif
+            return this->operator()(base+x);
+        }
+        inline T rel(double x) const {
+#ifdef SANITYCHECK
+            if(x<0 || x>=size) assert(false && "OOR access to func1d from rel()");
+#endif
+            return this->operator()(base+x);
+        }
+        inline int resolve(double x) const {// no auto adjustment
+#ifdef SANITYCHECK
+            if (x<base || x>=(base+dx*size)) assert(false && "OOR access to func1d from resolve");
+#endif
+            x=(x-base)/dx;
+            if constexpr(evalType==0) return (int)(x + 0.5 - (x<0)); // https://stackoverflow.com/a/9695341/8460574
+            else if constexpr(evalType==1) return (int)std::ceil(x);
+            else if constexpr(evalType==-1) return (int)std::floor(x);
+            //else if constexpr(evalType==2) return 
+            else if constexpr(evalType==-2) return (int)x;
+            else return (int)x;
+        }
+        inline int resolveRel(double x) const { return this->resolve(base+x); }
         template<typename F>
             requires std::convertible_to<F, std::function<T(T)>>
         inline func1d& sampleFrom(const F& sf) {
@@ -109,6 +135,19 @@ namespace d::numerical::compact {
                 d[i]=sf(base+dx*i);
             return *this;
         }
+        func1d& expand(int m, int k, int h) requires(evalType==0) {
+            int amt=h-m-2;
+            int occupied=amt/2;
+            for(di i=1; i<=occupied; ++i) {
+                d[k+i]=d[k];
+                d[k-i]=d[k];
+            }
+            return *this;
+        }
+        func1d& expand(double m, double k, double h) { return this->expand(this->resolve(m), this->resolve(k), this->resolve(h)); }
+        func1d& expand(double m, double h) { return this->expand(m, (m+h)/2., h); }
+        func1d& expandRel(double a, double k, double b) { return this->expand(this->resolveRel(a), this->resolveRel(k), this->resolveRel(b)); }
+        func1d& expandRel(double a, double b) { return this->expand(this->resolveRel(a), this->resolveRel(b)); }
     };
 }
 

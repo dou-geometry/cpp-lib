@@ -145,14 +145,14 @@ std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const d::numer
         m.t+=dt;
         // log
         karaLog=(new d::Karabinerhaken<d::polarmono>(m))->insertAfter(karaLog);
-        //std::cout << m << std::endl;
+        std::cout << m.cartesian() << std::endl;
     }
     return std::make_pair(prev, m[0]);
 }
 
 d::rad intersect(const d::numerical::compact::func1d<double, DATAAMOUNT>& v, d::rad inboundAngle) {
-    d::R range(-singleSideThickness-.5, singleSideThickness+.5);
     noNegInFunc(v);
+    std::cerr << "v.base="<<v.base<<std::endl;
     d::polarmono m;
     m[0]=d::polarcoord(singleSideThickness+.4, M_PI/2.+inboundAngle);
     m[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
@@ -162,21 +162,18 @@ d::rad intersect(const d::numerical::compact::func1d<double, DATAAMOUNT>& v, d::
     return inboundRay.ang(outboundRay);
 }
 
-void insertionGuessing(d::numerical::compact::func1d<double, DATAAMOUNT>& v, const d::R& b, double correctIntersection, di guessPoints) {
+void insertionGuessing(d::numerical::compact::func1d<double, DATAAMOUNT>& v, const d::R& b, double inboundAng, double correctIntersection, di guessLevel) {
     // Requires incremental continous function
-    double pts[guessPoints];
-    double d=b.span()/(guessPoints+1);
-    std::cout << "d="<<d<<std::endl;
-    for(di i=0; i<guessPoints; ++i)
-        pts[i]=d*(i+1.)+b.von();
-    for(di i=0; i<guessPoints; ++i)
-        std::cout << pts[i]<<", ";
-    std::cout << std::endl;
-    d::rad inboundAng=1.2;
+    // for guessLevel=n means 2n-1 midpoints have been confirmed
+    // and 2n more guesses has to be made
+    double dx=b.span()/(2.*guessLevel);
+    //auto midpointCrd=[&guessLevel](di cnt)
+    for(double i=0; i<2.*guessLevel; ++i)
+        for(v.rel(dx*(i+0.5))=v.rel(dx*i); std::abs(intersect(v, inboundAng)-correctIntersection)>1e-12 && v.rel(dx*(i+0.5))<=v.rel(dx*(i+1.)); v.rel(dx*(i+.5))+=20201224) {
+            v.expandRel(dx*i, dx*(i+.5), dx*(i+1.)); //improve guess
+            std::cerr << v.rel(dx*(i+.5)) << std::endl;
+        }
     return;
-    while((intersect(v, inboundAng)-correctIntersection)>1e-12) {
-        //improve guess
-    }
 }
 
 int main() {
@@ -198,11 +195,29 @@ int main() {
     d::compact::line inboundRay(m.karaLog->d[0], m.karaLog->tugi->d[0]),
         outboundRay(res, prevOut);
     auto correctIntersectingAngle=(inboundRay.ang(outboundRay));
-    insertionGuessing(v, range, correctIntersectingAngle, 5);
-    //d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
-    //d::conn::sage::settings::files<d::conn::sage::settings::png> fgph;
-    //std::cout << "Function v(x): \n"<<fgph<<"\nPath: \n"<<gph<<std::endl;
-    //std::cout << plot(v, fgph) << std::endl << plot(m, gph) << std::endl;
+    // init first guess
+    v[DATAAMOUNT/2]=(v[0]+v[DATAAMOUNT-1])/2;
+    v.expand(0, DATAAMOUNT/2, DATAAMOUNT-1);
+    for(di lev=1; lev<1225; ++lev) insertionGuessing(v, range, inboundAngle, correctIntersectingAngle, lev);
+    std::cout << "Final:\n";
+    d::polarmono mfin;
+    mfin[0]=d::polarcoord(singleSideThickness+.4, M_PI/2.+inboundAngle);
+    mfin[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
+    std::cout << "Init: "<<mfin<<std::endl;
+    auto [prevOutFin, resFin]=runSnell(mfin, v);
+    std::cout << "Res : "<<mfin<<std::endl;
+    d::compact::line inboundRayFin(mfin.karaLog->d[0], mfin.karaLog->tugi->d[0]),
+        outboundRayFin(resFin, prevOutFin);
+    auto finAngle=(inboundRay.ang(outboundRay));
+    d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
+    d::conn::sage::settings::files<d::conn::sage::settings::png> fgph;
+    std::cout << "Function v(x): \n"<<fgph<<std::endl;
+    std::cout << "Path: \n"<<gph<<std::endl;
+    std::cout << plot(v, fgph) << std::endl;
+    std::cout << plot(mfin, gph) << std::endl;
+    std::cout << "Final="<<finAngle<<", correct="<<correctIntersectingAngle<<std::endl;
+    assert(std::abs(finAngle-correctIntersectingAngle)<1e-12);
+    return 0;
 #ifdef HOLD
     double t;
     std::cin >> t;
