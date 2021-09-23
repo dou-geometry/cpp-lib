@@ -44,7 +44,8 @@ namespace d::dyn {
                     di i=0;
                     (...,void(new(d+(i++))d::coord<T>(args))); // https://stackoverflow.com/a/34569679/8460574
                     //std::cout << "Size: " << sizeof...(Ts) << std::endl;
-                    for(di i=sizeof...(Ts); i<order; ++i)
+                    //for(; i<order; ++i)
+                    for(i=sizeof...(Ts); i<order; ++i)
                         new(d+i)d::coord<T>(d->dim);
                 }
             template<typename...Ts>
@@ -60,7 +61,7 @@ namespace d::dyn {
                 requires std::same_as<d::coord<T>, typename std::common_type<Ts...>::type> && d::nonDim<X>
                 mono(X it, di ord, Ts...args): mono(ord, it, args...) {}
             mono(): mono(1ul, 0.0, d::coord<T>(1)) {}
-            mono(di order, di dimension=1): mono(order, 0.0, d::coord<T>(dimension)) {}
+            mono(di EQorder, di dimension=1): mono(EQorder, 0.0, d::coord<T>(dimension)) {}
             inline mono& rmLog() {
                 if(log!=nullptr)
                     for(di i=0; i<=logSize; ++i)
@@ -152,17 +153,17 @@ namespace d::dyn {
             d::coord<T> operator[](int i) const {
                 return this->d[i];
             }
-            mono& operator()(double t) { // This preforms check if t matches, if failed it'll be followed by binary search
+            mono& operator()(double st) { // This preforms check if t matches, if failed it'll be followed by binary search
                 double dt=this->log[1].t-(this->log[0].t);
-                t-=this->log[0].t;
-                int id=t/dt;
+                st-=this->log[0].t;
+                int id=st/dt;
                 if constexpr(logIncrPromise) { return this->log[id]; }
                 else {
-                    if((this->log[id]).t==t) {
+                    if((this->log[id]).t==st) {
                         return this->log[id];
                     } else {
-                        while((this->log[id]).t!=t) {
-                            id-=((this->log[id]).t)>t?id/2:-1;
+                        while((this->log[id]).t!=st) {
+                            id-=((this->log[id]).t)>st?id/2:-1;
                         }
                         return this->log[id];
                     }
@@ -354,17 +355,17 @@ namespace d::dyn::compact {
             d::compact::coord<T, dimension> operator[](int i) const {
                 return this->d[i];
             }
-            mono& operator()(double t) { // This preforms check if t matches, if failed it'll be followed by binary search
+            mono& operator()(double st) { // This preforms check if t matches, if failed it'll be followed by binary search
                 double dt=this->log[1]-(this->log[0]);
-                t-=this->log[0];
-                int id=t/dt;
+                st-=this->log[0];
+                int id=st/dt;
                 if constexpr(logIncrPromise) { return this->log[id]; }
                 else {
-                    if((this->log[id]).t==t) {
+                    if((this->log[id]).t==st) {
                         return this->log[id];
                     } else {
-                        while((this->log[id]).t!=t) {
-                            id-=((this->log[id]).t)>t?id/2:-1;
+                        while((this->log[id]).t!=st) {
+                            id-=((this->log[id]).t)>st?id/2:-1;
                         }
                         return this->log[id];
                     }
@@ -578,17 +579,17 @@ namespace d::dou::compact {
             d::compact::coord<T, dimension> operator[](int i) const {
                 return this->d[i];
             }
-            mono& operator()(double t) { // This preforms check if t matches, if failed it'll be followed by binary search
+            mono& operator()(double st) { // This preforms check if t matches, if failed it'll be followed by binary search
                 double dt=this->log[1]-(this->log[0]);
-                t-=this->log[0];
-                int id=t/dt;
+                st-=this->log[0];
+                int id=st/dt;
                 if constexpr(logIncrPromise) { return this->log[id]; }
                 else {
-                    if((this->log[id]).t==t) {
+                    if((this->log[id]).t==st) {
                         return this->log[id];
                     } else {
-                        while((this->log[id]).t!=t) {
-                            id-=((this->log[id]).t)>t?id/2:-1;
+                        while((this->log[id]).t!=st) {
+                            id-=((this->log[id]).t)>st?id/2:-1;
                         }
                         return this->log[id];
                     }

@@ -21,15 +21,15 @@ struct line {
         return std::forward_as_tuple(a, b);
     }
     double dist(const d::coord<L> Punkt) {
-        double t=(Punkt-s).dot(d);
-        auto oLP=s+d*t;
+        double tt=(Punkt-s).dot(d);
+        auto oLP=s+d*tt;
         return (Punkt-oLP).norm();
     }
     double angcos(const d::line<L>& ln) const {
         auto [a, b]=this->standard();
-        auto [c, d]=ln.standard();
+        auto [c, f]=ln.standard();
         // ax+b==cx+d
-        double x=(d-b)/(a-c), y=a*x+b;
+        double x=(f-b)/(a-c), y=a*x+b;
         d::coord<double> intersect({x, y});
         auto p=this->s-intersect, q=ln.s-intersect;
         double pdq=p.dot(q);
@@ -73,15 +73,15 @@ struct line {
         return std::forward_as_tuple(a, b);
     }
     double dist(const d::compact::coord<double, 2> Punkt) {
-        double t=(Punkt-s).dot(d);
-        auto odoubleP=s+d*t;
+        double tt=(Punkt-s).dot(d);
+        auto odoubleP=s+d*tt;
         return (Punkt-odoubleP).norm();
     }
     double angcos(const d::compact::line& ln) const {
         auto [a, b]=this->standard();
-        auto [c, d]=ln.standard();
+        auto [c, f]=ln.standard();
         // ax+b==cx+d
-        double x=(d-b)/(a-c), y=a*x+b;
+        double x=(f-b)/(a-c), y=a*x+b;
         d::compact::coord<double, 2> intersect({x, y});
         auto p=this->s-intersect, q=ln.s-intersect;
         double pdq=p.dot(q);

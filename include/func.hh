@@ -67,14 +67,14 @@ namespace d::numerical::compact {
         using d::compact::coord<T, size>::d;
         T base=0;
         T dx;
-        func1d(T d, T b, const std::function<T(T)>& sf): base(b), dx(d) { this->sampleFrom(sf); }
+        func1d(T delta, T b, const std::function<T(T)>& sf): base(b), dx(delta) { this->sampleFrom(sf); }
         func1d(const std::function<T(T)>& sf, const d::R& boundaries): base(boundaries.von()) {
             if(boundaries.inclusive) dx=boundaries.span()/(size-1);
             else dx = boundaries.span()/(size+1);
             if(!boundaries.inclusive) base+=dx;
             this->sampleFrom(sf);
         }
-        func1d(T d=1, T b=0): base(b), dx(d) {}
+        func1d(T delta=1, T b=0): base(b), dx(delta) {}
         inline T operator()(double x) const {// no auto adjustment
 #ifdef SANITYCHECK
             if (x<base || x>=(base+dx*size)) assert(false && "OOR access to func1d");

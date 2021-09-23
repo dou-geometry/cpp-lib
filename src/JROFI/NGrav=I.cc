@@ -41,13 +41,13 @@ int main(int argc, char** argv) {
     std::cin >> tt;
     mn m(0.0, zh({x0}), zh({v0}));
     //const double vr=v0/d::Ig(x0);
-    auto dx=[](const mn& m) {
+    auto dx=[](const mn& ml) {
         //std::cout <<vr*d::Ig(m[0][0])  << std::endl;
         //return zh({vr*d::Ig(m[0][0])});
-        const zh dx({1e-12}); //must be positive
-        auto migi=(m[0]+dx), hidari=(m[0]-dx);
+        const zh dxl({1e-12}); //must be positive
+        auto migi=(ml[0]+dxl), hidari=(ml[0]-dxl);
         double dir=d::Ig(migi.norm())>d::Ig(hidari.norm())?1.:-1.;
-        auto res=zh({(d::Ig(migi.norm())-d::Ig(hidari.norm()))/(2*dx.norm())});
+        auto res=zh({(d::Ig(migi.norm())-d::Ig(hidari.norm()))/(2*dxl.norm())});
         /*
         std::cout << m[0] << std::endl;
         std::cout << dir << std::endl;

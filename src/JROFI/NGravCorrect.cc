@@ -41,9 +41,9 @@ int main() {
     std::cin >> tt;
     mn m(0.0, zh({x0}), zh({v0}));
     std::cout << m <<std::endl;
-    auto dv=[](const mn& m) {
+    auto dv=[](const mn& ml) {
         //std::cout <<vr*d::Ig(m[0][0])  << std::endl;
-        return zh({(m[0][0]>0?-1:1)*9.80665});///pow(m[0][0], 2.)});
+        return zh({(ml[0][0]>0?-1:1)*9.80665});///pow(m[0][0], 2.)});
     };
     d::numerical::rk4::run<1, false>(m, dv, tt, 0.1);
     for(di i=0; i<m.logSize; ++i)

@@ -83,7 +83,7 @@ struct obj {
     }
     VE& operator[](KE Schluessel) {
         auto [k, v] = std::tuple{keys, values};
-        for(auto [k, v] = std::tuple{keys, values}; k->d!=Schluessel && k->tugi!=nullptr; k=k->tugi, v=v->tugi) {}
+        for(; k->d!=Schluessel && k->tugi!=nullptr; k=k->tugi, v=v->tugi) {}
         return v->d;
     }
     VE operator()(KE Schluessel) const {
@@ -126,7 +126,7 @@ struct prependObj {
     }
     VE& operator[](KE Schluessel) {
         auto [k, v] = std::tuple{keys, values};
-        for(auto [k, v] = std::tuple{keys, values}; k->d!=Schluessel && k->tugi!=nullptr; k=k->tugi, v=v->tugi) {}
+        for(; k->d!=Schluessel && k->tugi!=nullptr; k=k->tugi, v=v->tugi) {}
         return v->d;
     }
     VE operator()(KE Schluessel) const {
@@ -172,7 +172,7 @@ struct objfast {
     }
     VE& operator[](KE Schluessel) {
         auto [k, v] = std::tuple{keys, values};
-        for(auto [k, v] = std::tuple{keys, values}; k->d!=Schluessel && k->tugi!=nullptr; k=k->tugi, v=v->tugi) {}
+        for(; k->d!=Schluessel && k->tugi!=nullptr; k=k->tugi, v=v->tugi) {}
         return v->d;
     }
     VE operator[](di i) const {
