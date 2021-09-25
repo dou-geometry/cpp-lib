@@ -68,6 +68,11 @@ namespace d::numerical::compact {
         T base=0;
         T dx;
         func1d(T delta, T b, const std::function<T(T)>& sf): base(b), dx(delta) { this->sampleFrom(sf); }
+        func1d(const d::R& boundaries): base(boundaries.von()) {
+            if(boundaries.inclusive) dx=boundaries.span()/(size-1);
+            else dx = boundaries.span()/(size+1);
+            if(!boundaries.inclusive) base+=dx;
+        }
         func1d(const std::function<T(T)>& sf, const d::R& boundaries): base(boundaries.von()) {
             if(boundaries.inclusive) dx=boundaries.span()/(size-1);
             else dx = boundaries.span()/(size+1);
@@ -133,6 +138,17 @@ namespace d::numerical::compact {
         inline func1d& sampleFrom(const F& sf) {
             for(di i=0; i<size; ++i)
                 d[i]=sf(base+dx*i);
+            return *this;
+        }
+        template<typename F>
+            requires std::convertible_to<F, std::function<T(T)>>
+        inline func1d& sampleFrom(const F& sf, const d::R& range) {
+            if(range.inclusive)
+                for(double i=range.von(); i<=range.zu(); i+=dx)
+                    d[i]=sf(i);
+            else
+                for(double i=range.von()+dx; i<range.zu(); i+=dx)
+                    d[i]=sf(i);
             return *this;
         }
         func1d& expand(int m, int k, int h) requires(evalType==0) {
