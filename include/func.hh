@@ -134,21 +134,21 @@ namespace d::numerical::compact {
         }
         inline int resolveRel(double x) const { return this->resolve(base+x); }
         template<typename F>
-            requires std::convertible_to<F, std::function<T(T)>>
+            //requires std::convertible_to<F, std::function<T(T)>>
         inline func1d& sampleFrom(const F& sf) {
             for(di i=0; i<size; ++i)
                 d[i]=sf(base+dx*i);
             return *this;
         }
         template<typename F>
-            requires std::convertible_to<F, std::function<T(T)>>
+            //requires std::convertible_to<F, std::function<T(T)>>
         inline func1d& sampleFrom(const F& sf, const d::R& range) {
             if(range.inclusive)
                 for(double i=range.von(); i<=range.zu(); i+=dx)
-                    d[i]=sf(i);
+                    d[this->resolve(i)]=sf(i);
             else
                 for(double i=range.von()+dx; i<range.zu(); i+=dx)
-                    d[i]=sf(i);
+                    d[this->resolve(i)]=sf(i);
             return *this;
         }
         func1d& expand(int m, int k, int h) requires(evalType==0) {
@@ -164,6 +164,14 @@ namespace d::numerical::compact {
         func1d& expand(double m, double h) { return this->expand(m, (m+h)/2., h); }
         func1d& expandRel(double a, double k, double b) { return this->expand(this->resolveRel(a), this->resolveRel(k), this->resolveRel(b)); }
         func1d& expandRel(double a, double b) { return this->expand(this->resolveRel(a), this->resolveRel(b)); }
+        explicit operator d::compact::coord<double, 2>*() {
+            d::compact::coord<double, 2>* res=new d::compact::coord<double, 2>[size];
+            for(di i=0; i<size; ++i) {
+                res[i][0]=base+dx*i;
+                res[i][1]=d[i];
+            }
+            return res;
+        }
     };
 }
 
