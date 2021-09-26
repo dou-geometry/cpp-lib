@@ -152,6 +152,10 @@ namespace d::numerical::compact {
             return *this;
         }
         func1d& expand(int m, int k, int h) requires(evalType==0) {
+#ifdef SANITYCHECK
+            assert(m<=k && k<=h); // This could be solved by swapping, but extra branch costs time
+            assert(d[k]>=d[h] && d[k]<=d[m] && "not incremental!");
+#endif
             int amt=h-m-2;
             int occupied=amt/2;
             for(di i=1; i<=occupied; ++i) {
