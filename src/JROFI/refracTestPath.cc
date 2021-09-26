@@ -12,7 +12,8 @@
 #define DATAAMOUNT 1224 // Recommended 1224 or 20201224 as those are pre-compiled
 #define singleSideThickness 2.
 
-double refrac(double theta, double vin, double vout) { if(vin==vout) return theta; else return std::asin(std::sin(theta)*vout/vin); }
+inline double refrac(double theta, double vin, double vout) { if(vin==vout) return theta; else return std::asin(std::sin(theta)*vout/vin); }
+inline double solveRefrac(double thetaIn, double thetaOut, double vin=1) { return std::sin(thetaOut)*vin/std::sin(thetaIn); }
 
 #ifdef SANITYCHECK
 void noNegInFunc(const d::numerical::compact::func1d<double, DATAAMOUNT>& f) {
@@ -24,7 +25,7 @@ void noNegInFunc(const d::numerical::compact::func1d<double, DATAAMOUNT>& f) {
 void noNegInFunc(const d::numerical::compact::func1d<double, DATAAMOUNT>& f) { return; }
 #endif
 
-std::string plot(const d::numerical::compact::func1d<double, DATAAMOUNT>& f, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
+std::string plotpath(const d::numerical::compact::func1d<double, DATAAMOUNT>& f, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
     info.scriptf<<"#!/usr/bin/env sage\n";
     info.scriptf<<"import sys\n";
     info.scriptf<<"from sage.all import *\n";
@@ -54,7 +55,7 @@ std::string plot(const d::numerical::compact::func1d<double, DATAAMOUNT>& f, d::
 }
 
 
-d::numerical::compact::func1d<double, DATAAMOUNT> bezier(const d::R& rangeInit, const double vin, const double vout, const double theta, const d::R& rangeCurve) {
+d::numerical::compact::func1d<double, DATAAMOUNT> bezierMid(const d::R& rangeInit, const double vin, const double vout, const double theta, const d::R& rangeCurve) {
     using crd=d::compact::coord<double, 2>;
     assert(rangeCurve.inside(rangeInit));
     // init data
@@ -81,6 +82,23 @@ d::numerical::compact::func1d<double, DATAAMOUNT> bezier(const d::R& rangeInit, 
         return 1./4.*((std::pow(b, 2.)+std::pow(y, 2.))*(a+c) + 2.*b*(a - c)*y)/std::pow(b, 2.);
     };
     res.sampleFrom(Bx, rangeCurve);
+    return res;
+}
+
+d::numerical::compact::func1d<double, DATAAMOUNT> calc(const d::numerical::compact::func1d<double, DATAAMOUNT>& p, const double vin, const double vout, const double theta) {
+    using crd=d::compact::coord<double, 2>;
+    d::numerical::compact::func1d<double, DATAAMOUNT> res(p.dx, p.base);
+    res[DATAAMOUNT-1]=vin;
+    for(di i=DATAAMOUNT-2; i>0; --i) {
+        crd prev({p[i+1], p.base+i*p.dx+p.dx}),
+            cur({p[i], p.base+i*p.dx}),
+            next({p[i-1], p.base+i*p.dx-p.dx});
+        double thetaIn=M_PI/2.+atan2(cur-prev);
+        double thetaOut=M_PI/2.+atan2(next-cur);
+        res[i]=solveRefrac(thetaIn, thetaOut, res[i+1]);
+    }
+    std::cout << "Calc="<<res[1]<<", cor="<<vout<<std::endl;
+    //assert(std::abs(res[DATAAMOUNT-1]-vout)<1e-12);
     return res;
 }
 
@@ -113,9 +131,15 @@ int main(int argc, char**argv) {
     assert(inboundAngle<(inboundVel<outboundVel?std::asin(inboundVel/outboundVel):std::asin(outboundVel/inboundVel)));
 
     d::R range(-singleSideThickness-.5, singleSideThickness+.5);
-    auto bres=bezier(range, inboundVel, outboundVel, inboundAngle, d::R(-singleSideThickness-.4, singleSideThickness+.4));
-    d::conn::sage::settings::files<d::conn::sage::settings::png> fgph;
-    std::cout << "Function v(x): \n"<<fgph<<std::endl;
-    std::cout << plot(bres, fgph) << std::endl;
+    auto path=bezierMid(range, inboundVel, outboundVel, inboundAngle, d::R(-singleSideThickness-.4, singleSideThickness+.4));
+    auto v=calc(path, inboundVel, outboundVel, inboundAngle);
+
+    //plotting
+    d::conn::sage::settings::files<d::conn::sage::settings::png> pgph;
+    d::conn::sage::settings::files<d::conn::sage::settings::png> vgph;
+    std::cout << "Path Taken: \n"<<pgph<<std::endl;
+    std::cout << plotpath(path, pgph) << std::endl;
+    std::cout << "v(y): \n"<<vgph<<std::endl;
+    std::cout << plotpath(v, vgph) << std::endl;
     return 0;
 }
