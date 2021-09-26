@@ -25,6 +25,37 @@ void noNegInFunc(const d::numerical::compact::func1d<double, DATAAMOUNT>& f) { r
 
 //double stdNormDist(double x) { return 1/std::sqrt(2.*M_PI)*std::exp(x*x/-2.); }
 
+d::numerical::compact::func1d<double, DATAAMOUNT> bezier(const d::R& rangeInit, const double vin, const double vout, const double theta, const d::R& rangeCurve) {
+    using crd=d::compact::coord<double, 2>;
+    assert(rangeCurve.inside(rangeInit));
+    // init data
+    d::numerical::compact::func1d<double, DATAAMOUNT> res(rangeInit);
+    d::R upper(0+res.dx, rangeInit.zu()), lower(rangeInit.von(), 0-res.dx);
+    res.sampleFrom([&theta](double y){return std::tan(theta)*y;}, upper);
+    res.sampleFrom([&](double y){return std::tan(refrac(theta, vin, vout))*y;}, lower);
+    res(0)=0;
+    // modify as bezier
+    /*
+    auto bezierSym=[](const crd& P0, const crd& P2, double t){
+        std::cout << P0 << std::endl << P2 << std::endl;
+        return std::pow(1-t, 2)*P0+std::pow(t, 2)*P2;
+    };
+    bezierSym(crd({std::tan(refrac(theta, vin, vout))*rangeCurve.von(), rangeCurve.von()}),
+            crd({std::tan(theta)*rangeCurve.zu(), rangeCurve.zu()}),
+            0.7);
+            */
+    auto Bx=[&](double y) {
+        double a=std::tan(refrac(theta, vin, vout))*rangeCurve.von(),
+               b=rangeCurve.von(),
+               c=std::tan(theta)*rangeCurve.zu(),
+               d=rangeCurve.zu();
+        return 1/4*((std::pow(b, 2)+std::pow(y, 2))*(a+c) + 2*b*(a - c)*y)/std::pow(b, 2);
+    };
+    res.sampleFrom(Bx, rangeCurve);
+    return res;
+}
+//d::numerical::compact::func1d<double, DATAAMOUNT> bezierArbritary(double vin, double vout, double theta, double division) {}
+
 std::string plot(const d::numerical::compact::func1d<double, DATAAMOUNT>& f, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
     info.scriptf<<"#!/usr/bin/env sage\n";
     info.scriptf<<"import sys\n";
@@ -153,7 +184,7 @@ std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const d::numer
 
 d::rad intersect(const d::numerical::compact::func1d<double, DATAAMOUNT>& v, d::rad inboundAngle) {
     noNegInFunc(v);
-    std::cerr << "v.base="<<v.base<<std::endl;
+    //std::cerr << "v.base="<<v.base<<std::endl;
     d::polarmono m;
     m[0]=d::polarcoord(singleSideThickness+.4, M_PI/2.+inboundAngle);
     m[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
@@ -164,16 +195,20 @@ d::rad intersect(const d::numerical::compact::func1d<double, DATAAMOUNT>& v, d::
 }
 
 void insertionGuessing(d::numerical::compact::func1d<double, DATAAMOUNT>& v, const d::R& b, double inboundAng, double correctIntersection, di guessLevel) {
+    std::cout << "GuessLev="<<guessLevel<<std::endl;
     // Requires incremental continous function
     // for guessLevel=n means 2n-1 midpoints have been confirmed
     // and 2n more guesses has to be made
     double dx=b.span()/(2.*guessLevel);
+    bool echoed=false;
     //auto midpointCrd=[&guessLevel](di cnt)
     for(double i=0; i<2.*guessLevel; ++i)
         for(v.rel(dx*(i+0.5))=v.rel(dx*i); std::abs(intersect(v, inboundAng)-correctIntersection)>1e-12 && v.rel(dx*(i+0.5))<=v.rel(dx*(i+1.)); v.rel(dx*(i+.5))-=20201224) {
+            std::cout << i << "\t\t\r";
+            if(d::signal::SIGHUPcaught && !echoed) { std::cout << "Signal Caught!"<<std::endl; echoed=true; }
             if(v.rel(dx*(i+.5))<v.rel(dx*(i+1.))) v.rel(dx*(i+.5))=v.rel(dx*(i+1.));
             v.expandRel(dx*i, dx*(i+.5), dx*(i+1.)); //improve guess
-            std::cerr << i << ", " << v.rel(dx*(i+.5)) << std::endl;
+            //std::cerr << i << ", " << v.rel(dx*(i+.5)) << std::endl;
         }
     return;
 }
