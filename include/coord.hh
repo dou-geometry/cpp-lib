@@ -437,6 +437,12 @@ namespace d::compact {
             friend inline T atan2(const d::compact::coord<T, dimension>& x) {
                 return x.atan2();
             }
+            coord& swap() requires(dimension==2) {
+                T tmp=*d;
+                d[0]=d[1];
+                d[1]=tmp;
+                return *this;
+            }
         };
 }
 
