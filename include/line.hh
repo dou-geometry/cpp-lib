@@ -66,6 +66,10 @@ struct line {
     double length;
     line(d::compact::coord<double, 2> a, d::compact::coord<double, 2> b): s(a), t(b), d((b-a).unit()), length((b-a).norm()) {}
     line(const line &other): s(other.d), t(other.t), d(other.d), length(other.length) {}
+    line(double slope, double shift): length(1),
+    s(d::compact::coord<double, 2>({0., shift})),
+        t(d::compact::coord<double, 2>({1., slope+shift})),
+        d(d::compact::coord<double, 2>({1., slope+shift}).unit()) {}
     ~line() = default;
     std::tuple<double, double> standard() const {
         double a=d[1]/d[0];
@@ -109,6 +113,8 @@ struct line {
         return std::atan(d[1]/d[0]);
     }
 };
+static const line yAxis=line(d::compact::coord<double, 2>({0, 0}),
+        d::compact::coord<double, 2>({0, 1}));
 }
 
 #endif
