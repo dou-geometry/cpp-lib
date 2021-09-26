@@ -134,7 +134,7 @@ namespace d::numerical::compact {
         }
         inline int resolveRel(double x) const { return this->resolve(base+x); }
         template<typename F>
-            //requires std::convertible_to<F, std::function<T(T)>>
+            requires std::regular_invocable<F, double> //requires std::convertible_to<F, std::function<T(T)>>
         inline func1d& sampleFrom(const F& sf) {
             for(di i=0; i<size; ++i)
                 d[i]=sf(base+dx*i);
