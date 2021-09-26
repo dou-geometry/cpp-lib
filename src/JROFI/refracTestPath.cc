@@ -1,4 +1,4 @@
-#include<fenv.h>
+#include<cfenv>
 #include<iostream>
 #include<coord.hh>
 #include<settings.hh>
@@ -110,7 +110,7 @@ int main(int argc, char**argv) {
             outboundVel=atof(argv[3]);
             break;
     }
-    assert(inboundAngle<M_PI/2.);
+    assert(inboundAngle<(inboundVel<outboundVel?std::asin(inboundVel/outboundVel):std::asin(outboundVel/inboundVel)));
 
     d::R range(-singleSideThickness-.5, singleSideThickness+.5);
     auto bres=bezier(range, inboundVel, outboundVel, inboundAngle, d::R(-singleSideThickness-.4, singleSideThickness+.4));
