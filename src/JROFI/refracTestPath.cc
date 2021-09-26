@@ -1,3 +1,4 @@
+#include<fenv.h>
 #include<iostream>
 #include<coord.hh>
 #include<settings.hh>
@@ -84,6 +85,7 @@ d::numerical::compact::func1d<double, DATAAMOUNT> bezier(const d::R& rangeInit, 
 }
 
 int main(int argc, char**argv) {
+    feenableexcept(FE_ALL_EXCEPT & ~FE_INEXACT);
     signal(SIGHUP, d::signal::handler);
     double inboundAngle, inboundVel, outboundVel;
     switch(argc) {
