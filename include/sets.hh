@@ -17,6 +17,7 @@ namespace d {
         inline double von() const { return hidari; }
         inline double zu() const { return migi; }
         double span() const { return migi-hidari; }
+        bool contains(double x) const { return hidari<=x && x<=migi; }
         bool inside(const R& another) const { return another.von()<=this->hidari && this->migi<=another.zu(); }
         bool surrounds(const R& another) const { return this->hidari<=another.von() && another.zu()<=this->migi; }
     };
