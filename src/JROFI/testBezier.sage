@@ -1,7 +1,10 @@
+# System config
+RR=realField(124)
+EPS=10^-24
+
 # const def
 vin, vout=[1, 0.9] # vin>vout
 h=2
-EPS=1e-12
 y, theta, phi=var("y theta phi")
 templateP=-1/8*h*((h - 2*y)/h - 2)^2*tan(theta) + 1/8*(h - 2*y)^2*tan(phi)/h
 
