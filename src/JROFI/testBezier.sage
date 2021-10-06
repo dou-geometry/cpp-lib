@@ -11,7 +11,11 @@ tpout=asin(sin(tpin)*vout/vin)
 
 # x=RR.random_element(-h/2*tan(asin(vout/vin)), -h/2*tan(asin(vout/vin*vout/vin)))
 # or
-y=RR.random_element(-h/2, h/2)
+sy=RR.random_element(-h/2, h/2)
 
 P(y)= # 
 Pp(y)= # path of tpin
+sthin=arctan(1, P.diff()(sy+EPS))
+sthout=arctan(1, P.diff()(sy-EPS))
+stpin=arctan(1, Pp.diff()(sy+EPS))
+stpout=arctan(1, Pp.diff()(sy-EPS))
