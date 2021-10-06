@@ -1,5 +1,5 @@
 # System config
-RR=realField(124)
+RR=RealField(124)
 EPS=10^-24
 
 # const def
