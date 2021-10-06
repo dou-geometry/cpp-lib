@@ -2,6 +2,8 @@
 vin, vout=[1, 0.9] # vin>vout
 h=2
 EPS=1e-12
+y, theta, phi=var("y theta phi")
+templateP=-1/8*h*((h - 2*y)/h - 2)^2*tan(theta) + 1/8*(h - 2*y)^2*tan(phi)/h
 
 # forall
 thin=RR.random_element(0, asin(vout/vin))
@@ -13,8 +15,8 @@ tpout=asin(sin(tpin)*vout/vin)
 # or
 sy=RR.random_element(-h/2, h/2)
 
-P(y)= # 
-Pp(y)= # path of tpin
+P(y)=templateP(theta=thin, phi=thout) # 
+Pp(y)=templateP(theta=tpin, phi=tpout) # path of tpin
 sthin=arctan(1, P.diff()(sy+EPS))
 sthout=arctan(1, P.diff()(sy-EPS))
 stpin=arctan(1, Pp.diff()(sy+EPS))
