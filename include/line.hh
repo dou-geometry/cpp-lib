@@ -67,7 +67,7 @@ struct line {
     line(d::compact::coord<double, 2> a, d::compact::coord<double, 2> b): s(a), t(b), d((b-a).unit()), length((b-a).norm()) {}
     line(const line &other): s(other.d), t(other.t), d(other.d), length(other.length) {}
     line(double slope, double shift): length(1),
-    s(d::compact::coord<double, 2>({0., shift})),
+        s(d::compact::coord<double, 2>({0., shift})),
         t(d::compact::coord<double, 2>({1., slope+shift})),
         d(d::compact::coord<double, 2>({1., slope+shift}).unit()) {}
     ~line() = default;
@@ -111,6 +111,14 @@ struct line {
     }
     inline d::rad ang() const {
         return std::atan(d[1]/d[0]);
+    }
+    d::compact::coord<double, 2> intersect(const d::compact::line& l) {
+        double ta=d[1]/d[0], la=l.d[1]/l.d[0];
+        double tb=s[1]-ta*s[0], lb=l.s[1]-la*l.s[0];
+        // ta*x+tb=la*x+lb
+        // (ta-la)*x==lb-tb
+        double x=(lb-tb)/(ta-la);
+        return d::compact::coord<double, 2>({x, ta*x+tb});
     }
 };
 static const line yAxis=line(d::compact::coord<double, 2>({0, 0}),
