@@ -25,35 +25,6 @@ void noNegInFunc(const d::numerical::compact::func1d<double, DATAAMOUNT>& f) { r
 
 //double stdNormDist(double x) { return 1/std::sqrt(2.*M_PI)*std::exp(x*x/-2.); }
 
-d::numerical::compact::func1d<double, DATAAMOUNT> bezier(const d::R& rangeInit, const double vin, const double vout, const double theta, const d::R& rangeCurve) {
-    using crd=d::compact::coord<double, 2>;
-    assert(rangeCurve.inside(rangeInit));
-    // init data
-    d::numerical::compact::func1d<double, DATAAMOUNT> res(rangeInit);
-    d::R upper(0+res.dx, rangeInit.zu()), lower(rangeInit.von(), 0-res.dx);
-    res.sampleFrom([&theta](double y){return std::tan(theta)*y;}, upper);
-    res.sampleFrom([&](double y){return std::tan(refrac(theta, vin, vout))*y;}, lower);
-    res(0)=0;
-    // modify as bezier
-    /*
-    auto bezierSym=[](const crd& P0, const crd& P2, double t){
-        std::cout << P0 << std::endl << P2 << std::endl;
-        return std::pow(1-t, 2)*P0+std::pow(t, 2)*P2;
-    };
-    bezierSym(crd({std::tan(refrac(theta, vin, vout))*rangeCurve.von(), rangeCurve.von()}),
-            crd({std::tan(theta)*rangeCurve.zu(), rangeCurve.zu()}),
-            0.7);
-            */
-    auto Bx=[&](double y) {
-        double a=std::tan(refrac(theta, vin, vout))*rangeCurve.von(),
-               b=rangeCurve.von(),
-               c=std::tan(theta)*rangeCurve.zu(),
-               d=rangeCurve.zu();
-        return 1/4*((std::pow(b, 2)+std::pow(y, 2))*(a+c) + 2*b*(a - c)*y)/std::pow(b, 2);
-    };
-    res.sampleFrom(Bx, rangeCurve);
-    return res;
-}
 //d::numerical::compact::func1d<double, DATAAMOUNT> bezierArbritary(double vin, double vout, double theta, double division) {}
 
 std::string plot(const d::numerical::compact::func1d<double, DATAAMOUNT>& f, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
@@ -213,55 +184,58 @@ void insertionGuessing(d::numerical::compact::func1d<double, DATAAMOUNT>& v, con
     return;
 }
 
-int main() {
+int main(int argc, char**argv) {
     signal(SIGHUP, d::signal::handler);
     double inboundAngle, inboundVel, outboundVel;
-    std::cin >> inboundAngle;
+    switch(argc) {
+        case 1:
+            std::cin >> inboundAngle;
+            std::cin >> inboundVel;
+            std::cin >> outboundVel;
+            break;
+        case 2:
+            inboundAngle=atof(argv[1]);
+            std::cin >> inboundVel;
+            std::cin >> outboundVel;
+            break;
+        case 3:
+            inboundAngle=atof(argv[1]);
+            inboundVel=atof(argv[2]);
+            std::cin >> outboundVel;
+            break;
+        case 4:
+            inboundAngle=atof(argv[1]);
+            inboundVel=atof(argv[2]);
+            outboundVel=atof(argv[3]);
+            break;
+    }
+    assert(inboundAngle<(inboundVel<outboundVel?std::asin(inboundVel/outboundVel):std::asin(outboundVel/inboundVel)));
+    std::cout << "theta="<<inboundAngle<<"\nvin="<<inboundVel<<"\nvout="<<outboundVel<<std::endl;
 
     d::R range(-singleSideThickness-.5, singleSideThickness+.5);
-    d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){return x<0?299792458.:2.25e8;}, range);
+    d::numerical::compact::func1d<double, DATAAMOUNT> v([&](double x){
+            if(x>singleSideThickness) return inboundVel;
+            else if (x<-singleSideThickness) return outboundVel;
+            std::cout << "Rel dist="<<singleSideThickness-x<<std::endl;
+            return inboundVel*std::pow(outboundVel/inboundVel, (singleSideThickness-x)/(2.*singleSideThickness));
+        }, range);
     std::cout << "range=["<<range.von()<<", "<<range.zu()<<"]\n";
     noNegInFunc(v);
-    //d::numerical::compact::func1d<double, DATAAMOUNT> v([](double x){ return std::erf(x)*12.24+20.; }, range);
     d::polarmono m;
-    //m[0]=d::polarcoord(singleSideThickness, M_PI/2.)+d::polarcoord(.4, M_PI/2.+inboundAngle);
     m[0]=d::polarcoord(singleSideThickness+.4, M_PI/2.+inboundAngle);
     m[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
     std::cout << "Init: "<<m<<std::endl;
     auto [prevOut, res]=runSnell(m, v);
     std::cout << "Res : "<<m<<std::endl;
-    d::compact::line inboundRay(m.karaLog->d[0], m.karaLog->tugi->d[0]),
-        outboundRay(res, prevOut);
-    auto correctIntersectingAngle=(inboundRay.ang(outboundRay));
-    // init first guess
-    v[DATAAMOUNT/2]=(v[0]+v[DATAAMOUNT-1])/2;
-    v.expand(0, DATAAMOUNT/2, DATAAMOUNT-1);
-    for(di lev=1; lev<125 && (!d::signal::SIGHUPcaught); ++lev) insertionGuessing(v, range, inboundAngle, correctIntersectingAngle, lev);
-    std::cout << "Final:\n";
-    d::polarmono mfin;
-    mfin[0]=d::polarcoord(singleSideThickness+.4, M_PI/2.+inboundAngle);
-    mfin[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
-    std::cout << "Init: "<<mfin<<std::endl;
-    auto [prevOutFin, resFin]=runSnell(mfin, v);
-    std::cout << "Res : "<<mfin<<std::endl;
-    d::compact::line inboundRayFin(mfin.karaLog->d[0], mfin.karaLog->tugi->d[0]),
-        outboundRayFin(resFin, prevOutFin);
-    auto finAngle=(inboundRay.ang(outboundRay));
     d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
     d::conn::sage::settings::files<d::conn::sage::settings::png> fgph;
     std::cout << "Function v(x): \n"<<fgph<<std::endl;
-    std::cout << "Path: \n"<<gph<<std::endl;
     std::cout << plot(v, fgph) << std::endl;
-    std::cout << plot(mfin, gph) << std::endl;
-    std::cout << "Final="<<finAngle<<", correct="<<correctIntersectingAngle<<std::endl;
-    assert(std::abs(finAngle-correctIntersectingAngle)<1e-12);
-    return 0;
+    std::cout << "Path: \n"<<gph<<std::endl;
+    std::cout << plot(m, gph) << std::endl;
 #ifdef HOLD
     double t;
     std::cin >> t;
 #endif
-    //assert((inboundRay.ang(outboundRay)-(inboundAngle+M_PI-refrac(inboundAngle, v(range.von()), v(range.zu()))))<1e-12);
-    std::cout << inboundRay.ang(outboundRay)<<std::endl<<(inboundAngle+M_PI-refrac(inboundAngle, v(range.von()), v(range.zu())))<<std::endl;
-    //assert(res[0]==outboundCheck[0]);
     return 0;
 }
