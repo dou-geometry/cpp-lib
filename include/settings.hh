@@ -10,8 +10,10 @@ namespace d::conn::sage::settings {
     static const char gif[]="gif";
     static const char apng[]="apng";
     static const char jpeg[]="jpeg";
+    static const char indent[]="\t";
+    static const char dindent[]="\t\t";
 
-    template<const char *plotExt="png">
+    template<const char *plotExt=png, const char *prependText=indent>
     struct files {
         std::ofstream scriptf, dataf;
         std::string script, plot, data;
@@ -73,7 +75,7 @@ namespace d::conn::sage::settings {
             return *this;
         }
         friend std::ostream& operator<<(std::ostream& os, const files &f) {
-            os << "Plot: " << f.plot << "\nData: " << f.data << (f.rmData?" (deleted)":"") << "\nScript: " << f.script << (f.rmScript?" (deleted)":"");
+            os << prependText << "Plot: " << f.plot << "\n"<<prependText<<"Data: " << f.data << (f.rmData?" (deleted)":"") << "\n"<<prependText<<"Script: " << f.script << (f.rmScript?" (deleted)":"");
             return os;
         }
     };
