@@ -126,62 +126,31 @@ std::string animate(const d::polarmono& m, d::conn::sage::settings::files<d::con
     return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
 }
 
-std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const d::numerical::compact::func1d<double, DATAAMOUNT>& v) {
+d::polarcoord runSnell(d::polarmono& m, const d::numerical::compact::func1d<double, DATAAMOUNT>& v) {
     // init log
     m.karaLog=new d::Karabinerhaken<d::polarmono>(m);
     auto karaLog=m.karaLog;
     auto curVel=v(m[0][0]*std::sin(m[0][1]));
     double dt=1e-2; // Reducing from 1e-4 to compress data size
-    auto prev=m[0];
     //std::cerr << m[0];
     while(m[0].cartesian()[1]>-singleSideThickness-.4) {
+        std::cout << m[0].cartesian() << std::endl;
         // check at interface, update velocity
         auto nowAng=m[1][1];
-        auto newVel=v(m[0][0]*std::sin(m[0][1]));
+        //auto newVel=v(m[0][0]*std::sin(m[0][1]));
+        auto newVel=v(m[0].cartesian()[1]);
         auto delAng=refrac(nowAng, curVel, newVel)-nowAng;
         //std::cout << "vel="<<newVel<<", access="<<m[0][0]*std::sin(m[0][1])<<std::endl;
         curVel=newVel;
         //std::cout << delAng << ", " << curVel << std::endl;
         // move one step
-        prev=m[0];
         m[0]+=m[1].rotate(delAng)*dt;
         m.t+=dt;
         // log
         karaLog=(new d::Karabinerhaken<d::polarmono>(m))->insertAfter(karaLog);
         //std::cout << m.cartesian() << std::endl;
     }
-    return std::make_pair(prev, m[0]);
-}
-
-d::rad intersect(const d::numerical::compact::func1d<double, DATAAMOUNT>& v, d::rad inboundAngle) {
-    noNegInFunc(v);
-    //std::cerr << "v.base="<<v.base<<std::endl;
-    d::polarmono m;
-    m[0]=d::polarcoord(singleSideThickness+.4, M_PI/2.+inboundAngle);
-    m[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
-    auto [prevOut, res]=runSnell(m, v);
-    d::compact::line inboundRay(m.karaLog->d[0], m.karaLog->tugi->d[0]),
-        outboundRay(res, prevOut);
-    return inboundRay.ang(outboundRay);
-}
-
-void insertionGuessing(d::numerical::compact::func1d<double, DATAAMOUNT>& v, const d::R& b, double inboundAng, double correctIntersection, di guessLevel) {
-    std::cout << "GuessLev="<<guessLevel<<std::endl;
-    // Requires incremental continous function
-    // for guessLevel=n means 2n-1 midpoints have been confirmed
-    // and 2n more guesses has to be made
-    double dx=b.span()/(2.*guessLevel);
-    bool echoed=false;
-    //auto midpointCrd=[&guessLevel](di cnt)
-    for(double i=0; i<2.*guessLevel; ++i)
-        for(v.rel(dx*(i+0.5))=v.rel(dx*i); std::abs(intersect(v, inboundAng)-correctIntersection)>1e-12 && v.rel(dx*(i+0.5))<=v.rel(dx*(i+1.)); v.rel(dx*(i+.5))-=20201224) {
-            std::cout << i << "\t\t\r";
-            if(d::signal::SIGHUPcaught && !echoed) { std::cout << "Signal Caught!"<<std::endl; echoed=true; }
-            if(v.rel(dx*(i+.5))<v.rel(dx*(i+1.))) v.rel(dx*(i+.5))=v.rel(dx*(i+1.));
-            v.expandRel(dx*i, dx*(i+.5), dx*(i+1.)); //improve guess
-            //std::cerr << i << ", " << v.rel(dx*(i+.5)) << std::endl;
-        }
-    return;
+    return m[0];
 }
 
 int main(int argc, char**argv) {
@@ -216,8 +185,7 @@ int main(int argc, char**argv) {
     d::numerical::compact::func1d<double, DATAAMOUNT> v([&](double x){
             if(x>singleSideThickness) return inboundVel;
             else if (x<-singleSideThickness) return outboundVel;
-            std::cout << "Rel dist="<<singleSideThickness-x<<std::endl;
-            return inboundVel*std::pow(outboundVel/inboundVel, (singleSideThickness-x)/(2.*singleSideThickness));
+            else return inboundVel*std::pow(outboundVel/inboundVel, (singleSideThickness-x)/(2.*singleSideThickness));
         }, range);
     std::cout << "range=["<<range.von()<<", "<<range.zu()<<"]\n";
     noNegInFunc(v);
@@ -225,7 +193,7 @@ int main(int argc, char**argv) {
     m[0]=d::polarcoord(singleSideThickness+.4, M_PI/2.+inboundAngle);
     m[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
     std::cout << "Init: "<<m<<std::endl;
-    auto [prevOut, res]=runSnell(m, v);
+    runSnell(m, v);
     std::cout << "Res : "<<m<<std::endl;
     d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
     d::conn::sage::settings::files<d::conn::sage::settings::png> fgph;
