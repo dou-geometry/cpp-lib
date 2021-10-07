@@ -126,15 +126,14 @@ std::string animate(const d::polarmono& m, d::conn::sage::settings::files<d::con
     return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
 }
 
-d::polarcoord runSnell(d::polarmono& m, const d::numerical::compact::func1d<double, DATAAMOUNT>& v) {
+d::polarcoord runSnell(d::polarmono& m, const auto& v) {
     // init log
     m.karaLog=new d::Karabinerhaken<d::polarmono>(m);
     auto karaLog=m.karaLog;
     auto curVel=v(m[0][0]*std::sin(m[0][1]));
-    double dt=1e-2; // Reducing from 1e-4 to compress data size
+    double dt=1e-4; // Reducing from 1e-4 to compress data size
     //std::cerr << m[0];
     while(m[0].cartesian()[1]>-singleSideThickness-.4) {
-        std::cout << m[0].cartesian() << std::endl;
         // check at interface, update velocity
         auto nowAng=m[1][1];
         //auto newVel=v(m[0][0]*std::sin(m[0][1]));
@@ -193,7 +192,11 @@ int main(int argc, char**argv) {
     m[0]=d::polarcoord(singleSideThickness+.4, M_PI/2.+inboundAngle);
     m[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
     std::cout << "Init: "<<m<<std::endl;
-    runSnell(m, v);
+    runSnell(m, [&](double x){
+            if(x>singleSideThickness) return inboundVel;
+            else if (x<-singleSideThickness) return outboundVel;
+            else return inboundVel*std::pow(outboundVel/inboundVel, (singleSideThickness-x)/(2.*singleSideThickness));
+        });
     std::cout << "Res : "<<m<<std::endl;
     d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
     d::conn::sage::settings::files<d::conn::sage::settings::png> fgph;
