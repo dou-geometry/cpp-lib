@@ -1,3 +1,4 @@
+#include<stack>
 #include<stdout.hh>
 #include<fstream>
 #include<iostream>
@@ -23,6 +24,10 @@ namespace d::conn::sage::settings {
         }
         files(bool rD, bool rS=true): rmData(rD), rmScript(rS) {
             this->init(3);
+        }
+        files(std::stack<std::string>& tk): files(false, false) {
+            tk.push(this->data);
+            tk.push(this->plot);
         }
         files(std::string pl): rmScript(true), rmData(true) { this->init(2, pl); }
         files(std::string pl, std::string da): rmScript(true) { this->init(1, pl, da); }

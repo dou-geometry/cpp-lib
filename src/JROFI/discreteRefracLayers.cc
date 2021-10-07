@@ -1,6 +1,7 @@
 #include<iostream>
 #include<coord.hh>
 #include<settings.hh>
+#include<plot.hh>
 #include<stdout.hh>
 #include<oricoord.hh>
 #include<func.hh>
@@ -182,6 +183,8 @@ int main(int argc, char**argv) {
     assert(inboundAngle<(inboundVel<outboundVel?std::asin(inboundVel/outboundVel):std::asin(outboundVel/inboundVel)));
     std::cout << "theta="<<inboundAngle<<"\nvin="<<inboundVel<<"\nvout="<<outboundVel<<std::endl;
 
+    std::stack<std::string> fTr;
+
     // Function Library
     auto symbolicCorrect=[&](double y){
         if(y>singleSideThickness) return inboundVel;
@@ -214,8 +217,8 @@ int main(int argc, char**argv) {
             outboundRay(res, prevOut);
         std::cout << "Ray intersection zu Origin dist="<<inboundRay.intersect(outboundRay).norm()<<std::endl;
         std::cout << "Res : "<<m<<std::endl;
-        d::conn::sage::settings::files<d::conn::sage::settings::png> gph(false, false);
-        d::conn::sage::settings::files<d::conn::sage::settings::png> fgph(false, false);
+        d::conn::sage::settings::files<d::conn::sage::settings::png> gph(fTr);
+        d::conn::sage::settings::files<d::conn::sage::settings::png> fgph(fTr);
         std::cout << "Function v(x): \n"<<fgph<<std::endl;
         std::cout << plot(v, fgph, bge) << std::endl;
         std::cout << "Path: \n"<<gph<<std::endl;
@@ -225,6 +228,7 @@ int main(int argc, char**argv) {
     env(symbolicGeometric, "Geometric", true);
     env(symbolicArithmetic, "Arithmetic", true);
     env(symbolicCorrect, "Correct", false);
+    d::conn::sage::cleanup(fTr);
 #ifdef HOLD
     double t;
     std::cin >> t;

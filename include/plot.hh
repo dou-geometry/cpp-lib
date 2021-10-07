@@ -6,6 +6,7 @@
 #include<tracksTime.hh>
 #include<animeFormat.hh>
 #include<string>
+#include<stack>
 #ifndef __CONN_SAGE_PLOT__
 #define __CONN_SAGE_PLOT__
 #define di long unsigned int
@@ -21,6 +22,7 @@ namespace d::conn::sage {
     template<bool logIncrPromise=false, typename D, const char *M>
         requires d::tracksTime<d::dyn::mono<D, logIncrPromise>>
         std::string plot(const d::dyn::mono<D, logIncrPromise>&, settings::files<M>&);
+    std::string cleanup(std::stack<std::string>&);
     //template<typename D> std::string point(Karabinerhaken<d::coord<D>>&, settings::files&);
     //template<typename D> std::string line(Karabinerhaken<d::coord<D>>&, settings::files&);
 }
