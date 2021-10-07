@@ -214,8 +214,8 @@ int main(int argc, char**argv) {
             outboundRay(res, prevOut);
         std::cout << "Ray intersection zu Origin dist="<<inboundRay.intersect(outboundRay).norm()<<std::endl;
         std::cout << "Res : "<<m<<std::endl;
-        d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
-        d::conn::sage::settings::files<d::conn::sage::settings::png> fgph;
+        d::conn::sage::settings::files<d::conn::sage::settings::png> gph(false, false);
+        d::conn::sage::settings::files<d::conn::sage::settings::png> fgph(false, false);
         std::cout << "Function v(x): \n"<<fgph<<std::endl;
         std::cout << plot(v, fgph, bge) << std::endl;
         std::cout << "Path: \n"<<gph<<std::endl;
