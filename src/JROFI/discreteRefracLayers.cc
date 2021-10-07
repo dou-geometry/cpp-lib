@@ -27,7 +27,7 @@ void noNegInFunc(const d::numerical::compact::func1d<double, DATAAMOUNT>& f) { r
 
 //d::numerical::compact::func1d<double, DATAAMOUNT> bezierArbritary(double vin, double vout, double theta, double division) {}
 
-std::string plot(const d::numerical::compact::func1d<double, DATAAMOUNT>& f, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
+std::string plot(const d::numerical::compact::func1d<double, DATAAMOUNT>& f, d::conn::sage::settings::files<d::conn::sage::settings::png>& info, bool bgexec=false) {
     info.scriptf<<"#!/usr/bin/env sage\n";
     info.scriptf<<"import sys\n";
     info.scriptf<<"from sage.all import *\n";
@@ -53,10 +53,10 @@ std::string plot(const d::numerical::compact::func1d<double, DATAAMOUNT>& f, d::
         info.dataf << f.d[i] << "\n";
     info.dataf.close();
     info.scriptf.close();
-    return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
+    return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data+(bgexec?" &":""));
 }
 
-std::string plot(const d::polarmono& m, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {
+std::string plot(const d::polarmono& m, d::conn::sage::settings::files<d::conn::sage::settings::png>& info, bool bgexec=false) {
     info.scriptf<<"#!/usr/bin/env sage\n";
     info.scriptf<<"import sys\n";
     info.scriptf<<"from sage.all import *\n";
@@ -89,10 +89,10 @@ std::string plot(const d::polarmono& m, d::conn::sage::settings::files<d::conn::
         info.dataf << logPtr->d << std::endl;
     info.dataf.close();
     info.scriptf.close();
-    return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
+    return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data+(bgexec?" &":""));
 }
 
-std::string animate(const d::polarmono& m, d::conn::sage::settings::files<d::conn::sage::settings::gif>& info) {
+std::string animate(const d::polarmono& m, d::conn::sage::settings::files<d::conn::sage::settings::gif>& info, bool bgexec=false) {
     info.scriptf<<"#!/usr/bin/env sage\n";
     info.scriptf<<"import sys\n";
     info.scriptf<<"from sage.all import *\n";
@@ -123,7 +123,7 @@ std::string animate(const d::polarmono& m, d::conn::sage::settings::files<d::con
         info.dataf << logPtr->d << std::endl;
     info.dataf.close();
     info.scriptf.close();
-    return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
+    return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data+(bgexec?" &":""));
 }
 
 std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const auto& v) {
@@ -131,7 +131,7 @@ std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const auto& v)
     m.karaLog=new d::Karabinerhaken<d::polarmono>(m);
     auto karaLog=m.karaLog;
     auto curVel=v(m[0][0]*std::sin(m[0][1]));
-    double dt=1e-2; // Reducing from 1e-4 to compress data size
+    double dt=1e-4; // Reducing from 1e-4 to compress data size
     auto prev=m[0];
     //std::cerr << m[0];
     while(m[0].cartesian()[1]>-singleSideThickness-.4) {
@@ -182,33 +182,49 @@ int main(int argc, char**argv) {
     assert(inboundAngle<(inboundVel<outboundVel?std::asin(inboundVel/outboundVel):std::asin(outboundVel/inboundVel)));
     std::cout << "theta="<<inboundAngle<<"\nvin="<<inboundVel<<"\nvout="<<outboundVel<<std::endl;
 
-    d::R range(-singleSideThickness-.5, singleSideThickness+.5);
-    d::numerical::compact::func1d<double, DATAAMOUNT> v([&](double x){
-            if(x>singleSideThickness) return inboundVel;
-            else if (x<-singleSideThickness) return outboundVel;
-            else return inboundVel*std::pow(outboundVel/inboundVel, (singleSideThickness-x)/(2.*singleSideThickness));
-        }, range);
-    std::cout << "range=["<<range.von()<<", "<<range.zu()<<"]\n";
-    noNegInFunc(v);
-    d::polarmono m;
-    m[0]=d::polarcoord(singleSideThickness+.4, M_PI/2.+inboundAngle);
-    m[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
-    std::cout << "Init: "<<m<<std::endl;
-    auto [prevOut, res]=runSnell(m, [&](double x){
-            if(x>singleSideThickness) return inboundVel;
-            else if (x<-singleSideThickness) return outboundVel;
-            else return inboundVel*std::pow(outboundVel/inboundVel, (singleSideThickness-x)/(2.*singleSideThickness));
-        });
-    d::compact::line inboundRay(m.karaLog->d[0], m.karaLog->tugi->d[0]),
-        outboundRay(res, prevOut);
-    std::cout << "Ray intersection zu Origin dist="<<inboundRay.intersect(outboundRay).norm()<<std::endl;
-    std::cout << "Res : "<<m<<std::endl;
-    d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
-    d::conn::sage::settings::files<d::conn::sage::settings::png> fgph;
-    std::cout << "Function v(x): \n"<<fgph<<std::endl;
-    std::cout << plot(v, fgph) << std::endl;
-    std::cout << "Path: \n"<<gph<<std::endl;
-    std::cout << plot(m, gph) << std::endl;
+    // Function Library
+    auto symbolicCorrect=[&](double y){
+        if(y>singleSideThickness) return inboundVel;
+        else if (y<-singleSideThickness) return outboundVel;
+        else return inboundVel*std::pow(outboundVel/inboundVel, (singleSideThickness-y)/(2.*singleSideThickness));
+    };
+    auto symbolicArithmetic=[&](double y) {
+        if(y>singleSideThickness) return inboundVel;
+        else if (y<-singleSideThickness) return outboundVel;
+        else return (singleSideThickness-y)*(outboundVel-inboundVel)/(2.*singleSideThickness)+inboundVel;
+    };
+    auto symbolicGeometric=[&](double y) {
+        if(y>singleSideThickness) return inboundVel;
+        else if (y<-singleSideThickness) return outboundVel;
+        else return inboundVel*std::pow(outboundVel/inboundVel, (singleSideThickness-y)/(2.*singleSideThickness));
+    };
+
+    auto env=[&](auto vofy, std::string title="", bool bge=false){
+        std::cout << std::endl << title << std::endl;
+        d::R range(-singleSideThickness-.5, singleSideThickness+.5);
+        d::numerical::compact::func1d<double, DATAAMOUNT> v(vofy, range);
+        std::cout << "range=["<<range.von()<<", "<<range.zu()<<"]\n";
+        //noNegInFunc(v);
+        d::polarmono m;
+        m[0]=d::polarcoord(singleSideThickness+.4, M_PI/2.+inboundAngle);
+        m[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
+        std::cout << "Init: "<<m<<std::endl;
+        auto [prevOut, res]=runSnell(m, vofy);
+        d::compact::line inboundRay(m.karaLog->d[0], m.karaLog->tugi->d[0]),
+            outboundRay(res, prevOut);
+        std::cout << "Ray intersection zu Origin dist="<<inboundRay.intersect(outboundRay).norm()<<std::endl;
+        std::cout << "Res : "<<m<<std::endl;
+        d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
+        d::conn::sage::settings::files<d::conn::sage::settings::png> fgph;
+        std::cout << "Function v(x): \n"<<fgph<<std::endl;
+        std::cout << plot(v, fgph, bge) << std::endl;
+        std::cout << "Path: \n"<<gph<<std::endl;
+        std::cout << plot(m, gph, bge) << std::endl;
+        std::cout << std::endl;
+    };
+    env(symbolicGeometric, "Geometric", true);
+    env(symbolicArithmetic, "Arithmetic", true);
+    env(symbolicCorrect, "Correct", false);
 #ifdef HOLD
     double t;
     std::cin >> t;
