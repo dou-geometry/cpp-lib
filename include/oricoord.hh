@@ -18,6 +18,8 @@ namespace d {
     struct polarcoord:d::compact::coord<double, 2> { // Only using double
         polarcoord(double r, double theta): d::compact::coord<double, 2>({r, theta}) {}
         using d::compact::coord<double, 2>::coord;
+        inline double x() const;
+        inline double y() const;
         inline double norm() const;
         inline double norm2() const;
         polarcoord& pow(double p);

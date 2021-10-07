@@ -1,5 +1,7 @@
 #include<oricoord.hh>
 
+inline double d::polarcoord::x() const { return d[0]*std::cos(d[1]); }
+inline double d::polarcoord::y() const { return d[0]*std::sin(d[1]); }
 inline double d::polarcoord::norm() const { return d[0]; }
 inline double d::polarcoord::norm2() const { return d[0]*d[0]; }
 d::polarcoord& d::polarcoord::pow(double p) {
