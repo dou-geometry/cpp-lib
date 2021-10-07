@@ -136,8 +136,7 @@ d::polarcoord runSnell(d::polarmono& m, const auto& v) {
     while(m[0].cartesian()[1]>-singleSideThickness-.4) {
         // check at interface, update velocity
         auto nowAng=m[1][1];
-        //auto newVel=v(m[0][0]*std::sin(m[0][1]));
-        auto newVel=v(m[0].cartesian()[1]);
+        auto newVel=v(m[0].y());
         auto delAng=refrac(nowAng, curVel, newVel)-nowAng;
         //std::cout << "vel="<<newVel<<", access="<<m[0][0]*std::sin(m[0][1])<<std::endl;
         curVel=newVel;
