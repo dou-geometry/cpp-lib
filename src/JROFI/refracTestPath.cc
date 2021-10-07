@@ -79,9 +79,12 @@ d::numerical::compact::func1d<double, DATAAMOUNT> bezierMid(const d::R& rangeIni
                b=rangeCurve.von(),
                c=std::tan(theta+M_PI/2.)*rangeCurve.zu(),
                d=rangeCurve.zu();
+#ifdef SANITYCHECK
+        assert(b==-1*d);
+#endif
         return 1./4.*((std::pow(b, 2.)+std::pow(y, 2.))*(a+c) + 2.*b*(a - c)*y)/std::pow(b, 2.);
     };
-    res.sampleFrom(Bx, rangeCurve);
+    //res.sampleFrom(Bx, rangeCurve);
     return res;
 }
 
@@ -129,10 +132,11 @@ int main(int argc, char**argv) {
             break;
     }
     assert(inboundAngle<(inboundVel<outboundVel?std::asin(inboundVel/outboundVel):std::asin(outboundVel/inboundVel)));
+    std::cout << "theta="<<inboundAngle<<"\nvin="<<inboundVel<<"\nvout="<<outboundVel<<std::endl;
 
     d::R range(-singleSideThickness-.5, singleSideThickness+.5);
     auto path=bezierMid(range, inboundVel, outboundVel, inboundAngle, d::R(-singleSideThickness-.4, singleSideThickness+.4));
-    auto v=calc(path, inboundVel, outboundVel, inboundAngle);
+    //auto v=calc(path, inboundVel, outboundVel, inboundAngle);
 
     //plotting
     d::conn::sage::settings::files<d::conn::sage::settings::png> pgph;
@@ -140,6 +144,6 @@ int main(int argc, char**argv) {
     std::cout << "Path Taken: \n"<<pgph<<std::endl;
     std::cout << plotpath(path, pgph) << std::endl;
     std::cout << "v(y): \n"<<vgph<<std::endl;
-    std::cout << plotpath(v, vgph) << std::endl;
+    //std::cout << plotpath(v, vgph) << std::endl;
     return 0;
 }
