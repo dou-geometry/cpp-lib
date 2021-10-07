@@ -126,12 +126,13 @@ std::string animate(const d::polarmono& m, d::conn::sage::settings::files<d::con
     return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
 }
 
-d::polarcoord runSnell(d::polarmono& m, const auto& v) {
+std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const auto& v) {
     // init log
     m.karaLog=new d::Karabinerhaken<d::polarmono>(m);
     auto karaLog=m.karaLog;
     auto curVel=v(m[0][0]*std::sin(m[0][1]));
-    double dt=1e-4; // Reducing from 1e-4 to compress data size
+    double dt=1e-2; // Reducing from 1e-4 to compress data size
+    auto prev=m[0];
     //std::cerr << m[0];
     while(m[0].cartesian()[1]>-singleSideThickness-.4) {
         // check at interface, update velocity
@@ -142,13 +143,15 @@ d::polarcoord runSnell(d::polarmono& m, const auto& v) {
         curVel=newVel;
         //std::cout << delAng << ", " << curVel << std::endl;
         // move one step
+        prev=m[0];
         m[0]+=m[1].rotate(delAng)*dt;
         m.t+=dt;
         // log
         karaLog=(new d::Karabinerhaken<d::polarmono>(m))->insertAfter(karaLog);
         //std::cout << m.cartesian() << std::endl;
     }
-    return m[0];
+    //return m[0];
+    return std::make_pair(prev, m[0]);
 }
 
 int main(int argc, char**argv) {
@@ -191,11 +194,14 @@ int main(int argc, char**argv) {
     m[0]=d::polarcoord(singleSideThickness+.4, M_PI/2.+inboundAngle);
     m[1]=d::polarcoord(singleSideThickness+.4, -M_PI/2.+inboundAngle);
     std::cout << "Init: "<<m<<std::endl;
-    runSnell(m, [&](double x){
+    auto [prevOut, res]=runSnell(m, [&](double x){
             if(x>singleSideThickness) return inboundVel;
             else if (x<-singleSideThickness) return outboundVel;
             else return inboundVel*std::pow(outboundVel/inboundVel, (singleSideThickness-x)/(2.*singleSideThickness));
         });
+    d::compact::line inboundRay(m.karaLog->d[0], m.karaLog->tugi->d[0]),
+        outboundRay(res, prevOut);
+    std::cout << "Ray intersection zu Origin dist="<<inboundRay.intersect(outboundRay).norm()<<std::endl;
     std::cout << "Res : "<<m<<std::endl;
     d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
     d::conn::sage::settings::files<d::conn::sage::settings::png> fgph;
