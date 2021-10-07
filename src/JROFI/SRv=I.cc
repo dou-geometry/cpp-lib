@@ -36,7 +36,7 @@ int main() {
     std::cout <<std::fixed<<std::setprecision(14);
     //auto lg=d::IvBackend::data(d::IvBackend::aboveC, 2, 2);
     //auto lg=d::IvBackend::data(d::IvBackend::aboveC, 1.2, 2.4);
-    auto lg=d::IvBackend::data(d::IvBackend::aboveC);
+    //auto lg=d::IvBackend::data(d::IvBackend::aboveC);
     std::cout << "Search:\n"<<d::IvSearch(d::Iv(0.2)*d::Iv(0.4)) << std::endl;
     return 0;
     //auto lg=d::IvBackend::data();

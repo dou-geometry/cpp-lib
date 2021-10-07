@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
         //return zh({vr*d::Ig(m[0][0])});
         const zh dxl({1e-12}); //must be positive
         auto migi=(ml[0]+dxl), hidari=(ml[0]-dxl);
-        double dir=d::Ig(migi.norm())>d::Ig(hidari.norm())?1.:-1.;
+        //double dir=d::Ig(migi.norm())>d::Ig(hidari.norm())?1.:-1.;
         auto res=zh({(d::Ig(migi.norm())-d::Ig(hidari.norm()))/(2*dxl.norm())});
         /*
         std::cout << m[0] << std::endl;
