@@ -52,7 +52,7 @@ int main() {
     d::conn::sage::settings::files<d::conn::sage::settings::png> gph;
     std::cout << gph << std::endl;
     std::cout << plot(m, gph) << std::endl;
-    double a;
+    //double a;
     //std::cin >> a;
     return 0;
 }
