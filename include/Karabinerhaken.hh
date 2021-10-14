@@ -10,12 +10,24 @@ namespace d{
             C d;
             Karabinerhaken()=delete;
             /*Karabinerhaken() {
-                C tmp;
-                d=tmp;
-            }*/
+              C tmp;
+              d=tmp;
+              }*/
             Karabinerhaken(C x, Karabinerhaken* n=nullptr): d(x), tugi(n){}
             ~Karabinerhaken() {
-                delete tugi;
+                if(tugi!=nullptr) {
+                    di l=this->size()-1;
+                    Karabinerhaken* ptrs[l];
+                    auto now=this->tugi;
+                    for(di i=0; i<l; ++i) {
+                        ptrs[i]=now;
+                        now=now->tugi;
+                    }
+                    for(di i=0; i<l; ++i) {
+                        ptrs[i]->tugi=nullptr;
+                        delete ptrs[i];
+                    }
+                }
             }
             Karabinerhaken& operator=(const Karabinerhaken& x)=delete;
             Karabinerhaken& operator=(const Karabinerhaken&& x)=delete;
@@ -57,10 +69,10 @@ namespace d{
                 return os;
             }
             /*inline friend std::ostream& operator<<(std::ostream& os, const Karabinerhaken* ptr) {
-                os << ptr->d << "\n";
-                if(ptr->tugi!=nullptr) os << ptr->tugi;
-                return os;
-            }*/
+              os << ptr->d << "\n";
+              if(ptr->tugi!=nullptr) os << ptr->tugi;
+              return os;
+              }*/
         };
 }
 #include"./Karabinerhaken.tt"

@@ -166,8 +166,7 @@ std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const auto& v)
         m[0]+=m[1].rotate(delAng)*dt;
         m.t+=dt;
         // log
-        if(++lgs<200000)
-            karaLog=(new d::Karabinerhaken<d::polarmono>(m))->insertAfter(karaLog);
+        karaLog=(new d::Karabinerhaken<d::polarmono>(m))->insertAfter(karaLog);
         //std::cout << m.cartesian() << std::endl;
     }
     //return m[0];
@@ -250,8 +249,8 @@ int main(int argc, char**argv) {
         //m.karaLog=nullptr;
     };
     env(symbolicGeometric, "Geometric", true);
-    //env(symbolicArithmetic, "Arithmetic", true);
-    //env(symbolicCorrect, "Correct", false);
+    env(symbolicArithmetic, "Arithmetic", true);
+    env(symbolicCorrect, "Correct", false);
     d::conn::sage::cleanup(fTr);
 #ifdef HOLD
     double t;
