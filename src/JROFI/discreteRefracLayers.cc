@@ -139,6 +139,11 @@ std::string animate(const d::polarmono& m, d::conn::sage::settings::files<d::con
 }
 #endif
 
+void OOMhandle() {
+    std::cerr << "Out of Memory"<<std::endl;
+    std::abort();
+}
+
 std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const auto& v) {
     // init log
     d::Karabinerhaken<d::polarmono>* karaLog=new d::Karabinerhaken<d::polarmono>(m);
@@ -147,6 +152,7 @@ std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const auto& v)
     double dt=1e-5; // Reducing from 1e-4 to compress data size
     auto prev=m[0];
     //std::cerr << m[0];
+    di lgs=1;
     while(m[0].cartesian()[1]>-singleSideThickness-.4) {
         // check at interface, update velocity
         auto nowAng=m[1][1];
@@ -160,7 +166,8 @@ std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const auto& v)
         m[0]+=m[1].rotate(delAng)*dt;
         m.t+=dt;
         // log
-        karaLog=(new d::Karabinerhaken<d::polarmono>(m))->insertAfter(karaLog);
+        if(++lgs<200000)
+            karaLog=(new d::Karabinerhaken<d::polarmono>(m))->insertAfter(karaLog);
         //std::cout << m.cartesian() << std::endl;
     }
     //return m[0];
@@ -168,6 +175,7 @@ std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const auto& v)
 }
 
 int main(int argc, char**argv) {
+    std::set_new_handler(OOMhandle);
     std::cout<<std::fixed<<std::setprecision(14);
     signal(SIGHUP, d::signal::handler);
     double inboundAngle, inboundVel, outboundVel;
@@ -239,10 +247,11 @@ int main(int argc, char**argv) {
         std::cout << "Path: \n"<<gph<<std::endl;
         std::cout << plot(m, gph, bge) << std::endl;
         std::cout << std::endl;
+        //m.karaLog=nullptr;
     };
     env(symbolicGeometric, "Geometric", true);
-    env(symbolicArithmetic, "Arithmetic", true);
-    env(symbolicCorrect, "Correct", false);
+    //env(symbolicArithmetic, "Arithmetic", true);
+    //env(symbolicCorrect, "Correct", false);
     d::conn::sage::cleanup(fTr);
 #ifdef HOLD
     double t;
