@@ -28,6 +28,17 @@ void noNegInFunc(const d::numerical::compact::func1d<double, DATAAMOUNT>& f) { r
 
 //d::numerical::compact::func1d<double, DATAAMOUNT> bezierArbritary(double vin, double vout, double theta, double division) {}
 
+#ifdef NOPLOT
+std::string plot(const d::numerical::compact::func1d<double, DATAAMOUNT>& f, d::conn::sage::settings::files<d::conn::sage::settings::png>& info, bool bgexec=false) {
+    return "Not Plotting.";
+}
+std::string plot(const d::polarmono& m, d::conn::sage::settings::files<d::conn::sage::settings::png>& info, bool bgexec=false) {
+    return "Not Plotting.";
+}
+std::string animate(const d::polarmono& m, d::conn::sage::settings::files<d::conn::sage::settings::gif>& info, bool bgexec=false) {
+    return "Not Plotting.";
+}
+#else
 std::string plot(const d::numerical::compact::func1d<double, DATAAMOUNT>& f, d::conn::sage::settings::files<d::conn::sage::settings::png>& info, bool bgexec=false) {
     info.scriptf<<"#!/usr/bin/env sage\n";
     info.scriptf<<"import sys\n";
@@ -126,13 +137,14 @@ std::string animate(const d::polarmono& m, d::conn::sage::settings::files<d::con
     info.scriptf.close();
     return d::conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data+(bgexec?" &":""));
 }
+#endif
 
 std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const auto& v) {
     // init log
-    m.karaLog=new d::Karabinerhaken<d::polarmono>(m);
-    auto karaLog=m.karaLog;
+    d::Karabinerhaken<d::polarmono>* karaLog=new d::Karabinerhaken<d::polarmono>(m);
+    m.karaLog=karaLog;
     auto curVel=v(m[0][0]*std::sin(m[0][1]));
-    double dt=1e-4; // Reducing from 1e-4 to compress data size
+    double dt=1e-5; // Reducing from 1e-4 to compress data size
     auto prev=m[0];
     //std::cerr << m[0];
     while(m[0].cartesian()[1]>-singleSideThickness-.4) {
@@ -156,6 +168,7 @@ std::pair<d::polarcoord, d::polarcoord> runSnell(d::polarmono& m, const auto& v)
 }
 
 int main(int argc, char**argv) {
+    std::cout<<std::fixed<<std::setprecision(14);
     signal(SIGHUP, d::signal::handler);
     double inboundAngle, inboundVel, outboundVel;
     switch(argc) {
@@ -215,8 +228,10 @@ int main(int argc, char**argv) {
         auto [prevOut, res]=runSnell(m, vofy);
         d::compact::line inboundRay(m.karaLog->d[0], m.karaLog->tugi->d[0]),
             outboundRay(res, prevOut);
-        std::cout << "Ray intersection zu Origin dist="<<inboundRay.intersect(outboundRay).norm()<<std::endl;
-        std::cout << "Res : "<<m<<std::endl;
+        auto intPt=inboundRay.intersect(outboundRay);
+        std::cout << "Ray Intersection="<<intPt<<std::endl;
+        std::cout << "Ray intersection zu Origin dist="<<intPt.norm()<<std::endl;
+        std::cout << "Res: "<<m<<std::endl;
         d::conn::sage::settings::files<d::conn::sage::settings::png> gph(fTr);
         d::conn::sage::settings::files<d::conn::sage::settings::png> fgph(fTr);
         std::cout << "Function v(x): \n"<<fgph<<std::endl;
