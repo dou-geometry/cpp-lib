@@ -1,0 +1,3 @@
+[submodule "src/ryuusi-model"]
+	path = src/ryuusi-model
+	url = https://github.com/dou-geometry/ryuusi-model.git
