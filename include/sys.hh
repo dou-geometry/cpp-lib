@@ -1,7 +1,7 @@
 #pragma once
 #define di long unsigned int
 #include<random>
-#include<settings.hh>
+#include<plot.hh>
 #include<mono.hh>
 #include<iostream>
 #include<Karabinerhaken.hh>

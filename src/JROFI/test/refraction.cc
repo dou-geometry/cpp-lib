@@ -17,7 +17,7 @@ void got_signal(int)
 #include<line.hh>
 #include<rk4.hh>
 #include<translate.hh>
-#include<settings.hh>
+#include<plot.hh>
 #include<stdout.hh>
 #include <complex>
 #include <cstdlib>

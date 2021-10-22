@@ -3,7 +3,6 @@
 #include<mono.hh>
 #include<rk4.hh>
 #include"./IgN.hh"
-#include<settings.hh>
 #include<plot.hh>
 
 #define mn d::dyn::compact::mono<double, 2ul, (di)1, true>

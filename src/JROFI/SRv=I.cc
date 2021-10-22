@@ -1,5 +1,4 @@
 #include"./IvSR.hh"
-#include<settings.hh>
 #include<plot.hh>
 
 std::string plot(auto* m, d::conn::sage::settings::files<d::conn::sage::settings::png>& info) {

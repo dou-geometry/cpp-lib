@@ -56,5 +56,6 @@ AC_CONFIG_FILES([Makefile
                  lib/manip/Makefile
                  lib/numerical/Makefile
                  src/Makefile
-                 src/test/Makefile])
+                 src/test/Makefile
+                 src/ryuusi-model/Makefile])
 AC_OUTPUT

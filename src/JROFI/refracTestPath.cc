@@ -1,7 +1,7 @@
 #include<cfenv>
 #include<iostream>
 #include<coord.hh>
-#include<settings.hh>
+#include<plot.hh>
 #include<stdout.hh>
 #include<oricoord.hh>
 #include<func.hh>

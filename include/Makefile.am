@@ -5,7 +5,7 @@ include_HEADERS = cls.hh \
 				  units.hh sets.hh \
 				  handle.hh \
 				  stdout.hh \
-				  settings.hh plot.hh \
+				  plot.hh \
 				  plot.tt \
 				  integration.hh rk4.hh func.hh \
 				  rk4.tt func.tt \

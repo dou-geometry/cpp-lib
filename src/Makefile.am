@@ -9,7 +9,7 @@ JROFI_libdouIvSR_la_SOURCES = JROFI/IvSR.cc
 JROFI_libdouIgN_la_SOURCES = JROFI/IgN.cc
 noinst_HEADERS = JROFI/IvSR.hh JROFI/IgN.hh
 
-SUBDIRS = test
+SUBDIRS = test ryuusi-model
 
 bin_PROGRAMS = $(top_builddir)/bin/main \
 			   $(top_builddir)/bin/JROFI/JROFI \
