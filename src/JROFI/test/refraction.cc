@@ -13,12 +13,12 @@ void got_signal(int)
 // By: https://stackoverflow.com/a/4250601/8460574
 
 
-#include"../../../lib/cls/coord.hh"
-#include"../../../lib/cls/line.hh"
-#include"../../../lib/numerical/rk4.hh"
-#include"../../../lib/manip/translate.hh"
-#include"../../../lib/conn/sage/settings.hh"
-#include"../../../lib/conn/bash/stdout.hh"
+#include<coord.hh>
+#include<line.hh>
+#include<rk4.hh>
+#include<translate.hh>
+#include<settings.hh>
+#include<stdout.hh>
 #include <complex>
 #include <cstdlib>
 

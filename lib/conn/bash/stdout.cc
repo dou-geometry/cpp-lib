@@ -1,5 +1,6 @@
 #include"./stdout.hh"
 #include <cstdio>
+#include<cstring>
 #include <iostream>
 #include <memory>
 #include <stdexcept>
@@ -7,16 +8,21 @@
 #include <array>
 
 std::string d::conn::bash::exec(const char* cmd) {
-    std::array<char, 128> buffer;
-    std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
-    if (!pipe) {
-        throw std::runtime_error("popen() failed!");
+    if(cmd[strlen(cmd)-1]=='&') {
+        system(cmd);
+        return "Command executed in background.";
+    } else {
+        std::array<char, 128> buffer;
+        std::string result;
+        std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+        if (!pipe) {
+            throw std::runtime_error("popen() failed!");
+        }
+        while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+            result += buffer.data();
+        }
+        return result;
     }
-    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-        result += buffer.data();
-    }
-    return result;
 }
 // https://stackoverflow.com/a/478960/8460574
 

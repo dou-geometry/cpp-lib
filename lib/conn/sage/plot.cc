@@ -1,5 +1,5 @@
-#include"../../cls.hh"
-#include"./plot.hh"
+#include<cls.hh>
+#include<plot.hh>
 #include<bits/stdc++.h>
 
 std::string d::conn::sage::plot(cov& f, conn::sage::settings::files<d::conn::sage::settings::png>& info) {
@@ -33,6 +33,15 @@ std::string d::conn::sage::plot(cov& f, conn::sage::settings::files<d::conn::sag
     info.dataf.close();
     info.scriptf.close();
     return conn::bash::exec("sage "+info.script+" "+info.plot+" < "+info.data);
+}
+
+std::string d::conn::sage::cleanup(std::stack<std::string>& l) {
+    std::string out="";
+    while(!l.empty()) {
+        out+=d::conn::bash::exec("rm "+l.top());
+        l.pop();
+    }
+    return out;
 }
 
 template std::string d::conn::sage::anime(const d::dyn::mono<float, true>&, d::conn::sage::settings::files<d::conn::sage::settings::gif>&, di shadowFrames=0);
