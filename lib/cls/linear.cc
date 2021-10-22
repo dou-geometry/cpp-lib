@@ -1,1 +1,1 @@
-#include"./linear.hh"
+#include<linear.hh>

@@ -1,2 +1,3 @@
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = lib src
+AM_CPPFLAGS = -I$(top_srcdir)/include
+SUBDIRS = include lib src

@@ -1,4 +1,4 @@
-include_HEADERS = translate.hh rotate.hh
+AM_CPPFLAGS = -I$(top_srcdir)/include
 
 noinst_LIBRARIES = libmaniptranslate.a libmaniprotate.a
 

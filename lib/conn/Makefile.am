@@ -1,1 +1,1 @@
-SUBDIRS = bash sage
+SUBDIRS = signal bash sage

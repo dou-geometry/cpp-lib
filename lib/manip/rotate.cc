@@ -1,5 +1,5 @@
-#include"./rotate.hh"
-#include"../dyn/mono.hh"
+#include<rotate.hh>
+#include<mono.hh>
 
 template d::coord<double> d::rotate(d::coord<double>, double);
 template d::compact::coord<double, 2> d::rotate(d::compact::coord<double, 2>, double);

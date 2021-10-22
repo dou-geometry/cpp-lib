@@ -13,6 +13,7 @@ AC_CONFIG_MACRO_DIRS([m4])
 AC_LANG([C++])
 AX_CHECK_COMPILE_FLAG([-std=gnu++20 -lquadmath -g3], [CXXFLAGS="$CXXFLAGS -std=gnu++20 -lquadmath -g3"])
 AM_CXXFLAGS="-std=gnu++20 -lquadmath -g3"
+#AM_LDFLAGS="--allow-shlib-undefined"
 AC_PROG_CXX
 
 AC_PROG_AWK
@@ -24,6 +25,9 @@ AC_PROG_MAKE_SET
 
 AM_PROG_AR
 
+AC_PROG_MKDIR_P
+
+#LT_INIT([disable-static])
 LT_INIT
 
 # Checks for libraries.
@@ -40,20 +44,17 @@ AC_FUNC_MALLOC
 AC_CHECK_FUNCS([floor memset pow sqrt])
 
 AC_CONFIG_FILES([Makefile
+                 include/Makefile
                  lib/Makefile
                  lib/boxCounting/Makefile
                  lib/cls/Makefile
-                 lib/cls/compact/Makefile
-                 lib/concepts/Makefile
                  lib/conn/Makefile
                  lib/conn/bash/Makefile
                  lib/conn/sage/Makefile
-                 lib/dou/Makefile
-                 lib/dou/geo/Makefile
+                 lib/conn/signal/Makefile
                  lib/dyn/Makefile
                  lib/manip/Makefile
                  lib/numerical/Makefile
-                 lib/signal/Makefile
                  src/Makefile
                  src/test/Makefile])
 AC_OUTPUT
