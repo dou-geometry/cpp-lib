@@ -6,6 +6,7 @@ Throughout the whole project, we'll be licensing under GPL v3, a strong-copyleft
 
 ## コンパイルフラグ
 
+- `-DAUTOMATED`: Disable all mechanisms that wait for user input, instead replace with either default values or (mostly in `make check`) Random Number Generator.
 - `-DSANITYCHECK`: Enable additional sanity check within the code that's normally useless (if...you know, you use the library correctly)
 - `-DHOLD`: Hold before exit, usually to fudge with data that'll be clean up after program termination
 
